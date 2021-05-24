@@ -32,14 +32,22 @@ apt install termux-api
 
 ```fish
 apt install nodejs
+
 ```
+
+``` 
+
 </details>
 <details>
 <summary>pv</summary>
 
 ```fish
 apt install pv
+
 ```
+
+``` 
+
 </details>
 
 ## Configuration
@@ -258,11 +266,12 @@ termux-backup -h <or> --help
 
 Unfortunately this function can only perform backups. Restores have to be decompressed and copied manually.
 
-## TODO
+<details>
+<summary>TODO</summary>
 
 * Add option to restore backups
 * Add support for more languages
-
+</details>
 
 [font]: https://github.com/Lokaltog/powerline-fonts
 [ranger]: http://ranger.nongnu.org/
