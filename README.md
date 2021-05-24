@@ -32,14 +32,22 @@ apt install termux-api
 
 ```fish
 apt install nodejs
+<<<<<<< HEAD
+```
+=======
 ``` 
+>>>>>>> master
 </details>
 <details>
 <summary>pv</summary>
 
 ```fish
 apt install pv
+<<<<<<< HEAD
+```
+=======
 ``` 
+>>>>>>> master
 </details>
 
 ## Configuration
@@ -127,7 +135,7 @@ set -U barracuda_alt_environment
 
 - Present working directory (on top)
 - Prompt line number
-- Barracuda ASCII logo
+- System language
 - Git repository information
 - Status symbols
     * ✻: keep track of this shell session, can be toggled with `#` to show the number of
@@ -150,7 +158,7 @@ set -U barracuda_alt_environment
 
 ## Right prompt segments
 
-- Shows current interface language
+- Shows OS and other system info.
 
 ## Quickly navigate in history of working directories
 
@@ -233,7 +241,7 @@ set -U barracuda_nobell
 ```
 ## Termux Backup
 
-With this function it's possible to perdorm a full backup of system and user's files.
+With this function it's possible to perform a full backup of system and user's files.
 
 To create a new backup type:
 ```
