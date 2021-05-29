@@ -29,6 +29,7 @@
 #     -> Bind-mode segment
 #     -> Symbols segment
 #     -> Termux Backup
+#     -> Man Pages
 #   -> Prompt initialization
 #   -> Left prompt
 #   -> Right prompt
@@ -73,9 +74,9 @@ alias ps "ps -ef"
 alias ls "ls -gh"
 alias version 'echo (set_color -o $barracuda_colors[5])Barracuda theme - $barracuda_version'
 alias backup "termux-backup"
-alias spanish "termux-language sp"
-alias english "termux-language en"
-alias french "termux-language fr"
+alias spanish "language sp"
+alias english "language en"
+alias french "language fr"
 
 ###############################################################################
 # => Files
@@ -1192,8 +1193,8 @@ function termux-backup -a opt file_name -d 'Backup file system'
 ## ------ CREATE BACKUPS ------
 
    case '-c' '--create'
-     if test -d $HOME/storage
 
+     if test -d $HOME/storage
        if test -d $tmp_dir
          echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.6 '$normal(set_color -b 000 777)''$normal\n
 
@@ -1206,6 +1207,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
        else
          echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.6 '$normal(set_color -b 000 777)''$normal\n
          mkdir -p $tmp_dir
+
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/
          rm -Rf $tmp_dir
@@ -1233,7 +1235,7 @@ end
 # Set languages
 # --------------------------------
 
-function termux-language -a lang -d "Set system language"
+function language -a lang -d "Set system language"
   switch $lang
     case 'sp'
     clear
@@ -1265,11 +1267,55 @@ function termux-language -a lang -d "Set system language"
 end
 
 ###############################################################################
+# => Man Pages
+###############################################################################
+
+function cless -d "Configure less to colorize styled text using environment variables before executing a command that will use less"
+    set -l bold_ansi_code "\u001b[1m"
+    set -l underline_ansi_code "\u001b[4m"
+    set -l reversed_ansi_code "\u001b[7m"
+    set -l reset_ansi_code "\u001b[0m"
+    set -l teal_ansi_code "\u001b[38;5;31m"
+    set -l green_ansi_code "\u001b[38;5;70m"
+    set -l gold_ansi_code "\u001b[38;5;220m"
+
+    set -x LESS_TERMCAP_md (printf $bold_ansi_code$teal_ansi_code) # start bold
+    set -x LESS_TERMCAP_me (printf $reset_ansi_code) # end bold
+    set -x LESS_TERMCAP_us (printf $underline_ansi_code$green_ansi_code) # start underline
+    set -x LESS_TERMCAP_ue (printf $reset_ansi_code) # end underline
+    set -x LESS_TERMCAP_so (printf $reversed_ansi_code$gold_ansi_code) # start standout
+    set -x LESS_TERMCAP_se (printf $reset_ansi_code) # end standout
+
+    $argv
+end
+
+function man --wraps man -d "Run man with added colors"
+    set --local --export MANPATH $MANPATH
+
+    if test -z "$MANPATH"
+        if set path (command man -p 2>/dev/null)
+            set MANPATH (string replace --regex '[^/]+$' '' $path)
+        else
+            set MANPATH ""
+        end
+    end
+
+    # prepend the directory of fish manpages to MANPATH
+    set fish_manpath $__fish_data_dir/man
+    if test -d $fish_manpath
+        set --prepend MANPATH $fish_manpath
+    end
+
+    cless (command --search man) $argv
+end
+
+###############################################################################
 # => Left prompt
 ###############################################################################
 
 function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
+   trap "__break__" INT
   fish_vi_key_bindings
   echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
   set -g last_status $status
@@ -1298,3 +1344,4 @@ end
 
 
 #              
+
