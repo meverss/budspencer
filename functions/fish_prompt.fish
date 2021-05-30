@@ -1254,7 +1254,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
 end
 
 # --------------------------------
-# Set languages
+# Set Languages
 # --------------------------------
 
 function language -a lang -d "Set system language"
@@ -1264,7 +1264,7 @@ function language -a lang -d "Set system language"
       set b_lang $lang_sp
       set bg_lang $g_lang_sp
       set -Ux lang 'español'
-      set -U yes_no s n t c
+      set -g yes_no s n t c
       exec fish
       return
 
@@ -1272,7 +1272,7 @@ function language -a lang -d "Set system language"
     clear
       set b_lang $lang_en
       set bg_lang $g_lang_en
-      set -Ux lang 'english'
+      set -U lang 'english'
       set -U yes_no y n a c
       exec fish
       return
@@ -1281,7 +1281,7 @@ function language -a lang -d "Set system language"
     clear
       set b_lang $lang_fr
       set bg_lang $g_lang_fr
-      set -Ux lang 'français'
+      set -U lang 'français'
       set -U yes_no o n t a
       exec fish
       return
@@ -1339,9 +1339,10 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
    trap "__break__" INT
   fish_vi_key_bindings
-  colored_prompt
+  colored_prompt path
 #  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
   set -g last_status $status
+#  colored_prompt prompt
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
 

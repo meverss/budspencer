@@ -32,22 +32,15 @@ apt install termux-api
 
 ```fish
 apt install nodejs
-<<<<<<< HEAD
 ```
-=======
-``` 
->>>>>>> master
 </details>
+
 <details>
 <summary>pv</summary>
 
 ```fish
 apt install pv
-<<<<<<< HEAD
 ```
-=======
-``` 
->>>>>>> master
 </details>
 
 ## Configuration
