@@ -1,12 +1,12 @@
-# Barracuda theme (for fish in Termux terminal)
+# Barracuda theme (so far optimized just for the fish shell in Termux)
 
 This theme is a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps almost all it's awesome features.
 
 Some fancy visual changes has been done taking advantage of Powerline Symbols.
 
-Barracuda is in essence:
+Barracuda theme is in essence:
 
-> A theme for nerds, makes fish even more powerful. It's equipped with a hell of a
+> A nice-looking theme that makes fish even more powerful. It's equipped with a
 lot of nice functions and key bindings to speed up your workflow
 
 ![screenshot](images/screenshot.jpg)

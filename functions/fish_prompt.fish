@@ -29,7 +29,7 @@
 #     -> Bind-mode segment
 #     -> Symbols segment
 #     -> Termux Backup
-#     -> Man Pages
+#     -> Colored Man Pages (Thanks to PatrickF1)
 #   -> Prompt initialization
 #   -> Left prompt
 #   -> Right prompt
@@ -134,6 +134,7 @@ function barracuda_help -d 'Show helpfile'
   set e (set_color normal)(set_color b58900)''(set_color normal)
   set v (echo (set_color -b 000 cb4b16)''(set_color -b cb4b16 -o 000)"v$barracuda_version"(set_color -b 000 cb4b16)''$n)
 
+
   set_color -o cb4b16
   tput cuu1 && tput cuu1
   echo " _                                         _       "
@@ -165,6 +166,7 @@ function barracuda_help -d 'Show helpfile'
   echo
 
   echo $b$bg_lang[14]$e
+
 end
 
 ################
@@ -179,6 +181,26 @@ function night -d "Set color palette for dark environment."
   set barracuda_colors $barracuda_night
   set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
 end
+
+#-------
+
+function __prueba -d "Prueba"
+set -l cmd (commandline | sed 's|\s\+|\x1e|g')
+if [ -z $cmd ]
+  return
+else
+  eval $cmd
+  commandline ''
+  commandline -f repaint
+  return
+end
+
+#if [ (count $cmd) -eq 1 ]
+#  eval $cmd
+#end
+end
+
+#-------
 
 ################
 # => Pre execute
@@ -1267,7 +1289,7 @@ function language -a lang -d "Set system language"
 end
 
 ###############################################################################
-# => Man Pages
+# => Colored Man Pages
 ###############################################################################
 
 function cless -d "Configure less to colorize styled text using environment variables before executing a command that will use less"
@@ -1317,9 +1339,10 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
    trap "__break__" INT
   fish_vi_key_bindings
-  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
+  colored_prompt
+#  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
   set -g last_status $status
-  echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2])
+  echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
 
 ###############################################################################

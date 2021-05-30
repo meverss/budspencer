@@ -9,4 +9,5 @@ bind m mark
 bind M unmark
 bind . __barracuda_edit_commandline
 bind -M insert \r __barracuda_preexec
+#bind -M insert \r __prueba
 bind \r __barracuda_preexec
