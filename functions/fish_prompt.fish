@@ -1251,11 +1251,11 @@ end
 ###############################################################################
 
 function fish_right_prompt -d 'Writes environment language'
-  set b_os (uname -o)
   set div (echo (set_color -b 444 $barracuda_colors[5])"|"(set_color normal))
   switch $b_os
     case "Android"
-      set -g os (echo (set_color cb4b16)os:(set_color normal)(set_color -b 444 aaa)(set_color normal)$div)
+      set os (echo (set_color cb4b16)os:(set_color normal)(set_color -b 444 aaa)(set_color normal)$div)
+#    case "Darwin"
 #    case "Windows"
 #    case "Debian"
 #    case "Ubuntu"

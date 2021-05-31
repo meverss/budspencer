@@ -74,6 +74,7 @@ alias french "language fr"
 ###############################################################################
 
 set -U barracuda_version "1.6.1"
+set -U b_os (uname -o)
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files'
 set -U theme_path (cd (status dirname); cd ..; pwd)
@@ -101,9 +102,14 @@ bind \r __barracuda_preexec
 ###############################################################################
 # => Install Powerline fonts
 ###############################################################################
-
-if ! test -e $termux_path/home/.termux/font.ttf
-  cp -f $theme_path/fonts/font.ttf $termux_path/home/.termux/
-  termux-reload-settings
-  commandline -f repaint
+switch $b_os
+  case 'Android'
+    if ! test -e $termux_path/home/.termux/font.ttf
+    or ! cmp -s $theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf
+      cp -fs $theme_path/fonts/font.ttf $termux_path/home/.termux/
+      termux-reload-settings
+      commandline -f repaint
+    end
 end
+#  or ! cmp -s $theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf
+#  cp -f $theme_path/fonts/font.ttf $termux_path/home/.termux/Powerline.ttf
