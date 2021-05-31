@@ -126,27 +126,28 @@ set -U barracuda_alt_environment
 
 ## Left prompt segments
 
-- Present working directory (on top)
-- Prompt line number
-- System language
-- Git repository information
-- Status symbols
-    * ✻: keep track of this shell session, can be toggled with `#` to show the number of
-       the session within the sessions list
-    * ⭐: present working directory is in bookmark list, can be toggled with `#` to
-        show the number of the bookmark
-    * V: vi is parent process
-    * R: [ranger][ranger] is parent process
-    * ⬜: there are background jobs, can be toggled with `#` to show the amount of
-        background jobs
-    * 🔒: no write permissions in present working directory
-    * ⚔: there are tasks scheduled for this week, can be toggled with `#` to
-        show the amount of weekly tasks
-    * ⚑: there are appointments for today, can be toggled with `#` to
-        show the amount of appointments
-    * ✔: last command succeeded, can be toggled with `#` to show the status value
-    * ✘: last command failed, can be toggled with `#` to show the status value
-    * ⚡: superuser indicator
+- Working directory
+- Prompt
+    * Prompt line number
+    * System language
+    * Git repository information
+    * Status symbols
+        * ✻: keep track of this shell session, can be toggled with `#` to show the number of
+           the session within the sessions list
+        * ⭐: present working directory is in bookmark list, can be toggled with `#` to
+            show the number of the bookmark
+        * V: vi is parent process
+        * R: [ranger][ranger] is parent process
+        * ⬜: there are background jobs, can be toggled with `#` to show the amount of
+            background jobs
+        * 🔒: no write permissions in present working directory
+        * ⚔: there are tasks scheduled for this week, can be toggled with `#` to
+            show the amount of weekly tasks
+        * ⚑: there are appointments for today, can be toggled with `#` to
+            show the amount of appointments
+        * ✔: last command succeeded, can be toggled with `#` to show the status value
+        * ✘: last command failed, can be toggled with `#` to show the status value
+        * ⚡: superuser indicator
 - Active Python [virtual environment](https://virtualenv.pypa.io/en/latest/). Requires [Virtual Fish](https://github.com/adambrenecki/virtualfish/)
 
 ## Right prompt segments

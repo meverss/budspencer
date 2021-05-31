@@ -1,6 +1,21 @@
-function fish_greeting -d "Welcome Message"
-  set -U barracuda_version "1.6.1"
-  title " }><(({º> "- (date)
+#############################################################
+#
+# Prompt theme name:
+#   barracuda
+#
+# Description:
+#   a sophisticated airline/powerline theme
+#
+# Author:
+#   Marvin Eversley Silva <meverss@outlook.com>
+#
+# Sections:
+#   -> Welcome message
+#
+#############################################################
+
+function fish_greeting -d "Welcome message"
+   title " }><(({º> "- (date)
   if test -e $termux_path/usr/bin/termux-toast
     termux-toast -s -b "#222222" -g top -c white "$bg_lang[15]" \n \n '                        }><(({º>'
   end

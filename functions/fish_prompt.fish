@@ -7,13 +7,9 @@
 #   a sophisticated airline/powerline theme
 #
 # Author:
-#   Marvin Eversley Silva <meverss@outlook.com>
+#   Marvin Eversley Silva <meverss@gmail.com>
 #
 # Sections:
-#   -> Language definitions
-#   -> Color definitions
-#   -> Aliases
-#   -> Files
 #   -> Functions
 #     -> Ring bell
 #     -> Window title
@@ -28,7 +24,7 @@
 #     -> Git segment
 #     -> Bind-mode segment
 #     -> Symbols segment
-#     -> Termux Backup
+#     -> Backup (Termux)
 #     -> Colored Man Pages (Thanks to PatrickF1)
 #   -> Prompt initialization
 #   -> Left prompt
@@ -37,64 +33,11 @@
 ###############################################################################
 
 ###############################################################################
-# => Languages (SP-EN-FR)
-###############################################################################
-
-# Languages
-set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar' 'Todo' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '       Nombre de archivo     Tamaño    Fecha' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto' 'Cancelar' 'Copia de respaldo eliminada' 'Se eliminaron todos los arvivos de respaldos' 'Versión' 'Abortando...'
-set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '           File name          Size      Date' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>' 'Cancel' 'popsBackup deleted' 'All backups has been deleted' 'Version' 'Aborting...'
-set -U lang_fr 'Analyser et collecter des données...' 'Compresser...' 'Aucune sauvegarde trouvée' 'Supprimer' 'Tout' 'Supprimer l\'élément' 'Supprimer TOUT (o/n)?' 'Aucun STOCKAGE_EXTERNE monté.' 'La sauvegarde sera stockée dans ~/.backup_termux' 'Essayez d\'utiliser' 'Terminé! La sauvegarde est terminée avec succès' 'Utilisation: termux-backup [OPTION]...' '             termux-backup -c [FILE]...' 'Description:' 'Effectue une sauvegarde du système et des fichiers de l\'utilisateur' 'OPTION:' '-c --create		Créer une nouvelle sauvegarde' '-d --delete		Supprimer la sauvegarde existante' '-l --list		Liste les fichiers de sauvegarde' '-h --help		Afficher cette aide' 'FILE:' '<nom_du_fichier>	Nom du fichier de sauvegarde' '         Nom du fichier      Taille     Date' 'Fichiers de sauvegarde' 'Si aucune OPTION n\'est définie, il sera créé une sauvegarde avec l\'identifiant par défaut <Backup>' 'Annuler' 'Sauvegarde supprimée' 'Toutes les sauvegardes ont été supprimées' 'Version' 'Abandon...'
-
-if not set -q b_lang
-  set -U b_lang $lang_sp
-  set -U bg_lang $g_lang_sp
-end
-
-###############################################################################
-# => Color definitions
-###############################################################################
-
-# Define colors
-set -U barracuda_night 000000 083743 445659 fdf6e3 b58900 cb4b16 dc121f af005f 6c71c4 268bd2 2aa198 859900
-set -U barracuda_day 000000 333333 666666 ffffff ffff00 ff6600 ff0000 ff0033 3300ff 00aaff 00ffff 00ff00
-if not set -q barracuda_colors
-  # Values are: black dark_gray light_gray white yellow orange red magenta violet blue cyan green
-  set -U barracuda_colors $barracuda_night
-end
-
-# Cursor color changes according to vi-mode
-# Define values for: normal_mode insert_mode visual_mode
-set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
-
-###############################################################################
-# => Aliases
-###############################################################################
-
-alias ps "ps -ef"
-alias ls "ls -gh"
-alias version 'echo (set_color -o $barracuda_colors[5])Barracuda theme - $barracuda_version'
-alias backup "termux-backup"
-alias spanish "language sp"
-alias english "language en"
-alias french "language fr"
-
-###############################################################################
-# => Files
-###############################################################################
-
-# Config file
-set -g barracuda_config "$HOME/.config/fish/barracuda_config.fish"
-
-# Temporary files
-set -g barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
-
-###############################################################################
 # => Functions
 ###############################################################################
-
-##############
+#------------------------------------------------------------
 # => Ring bell
-##############
+#------------------------------------------------------------
 if set -q barracuda_nobell
   function __barracuda_urgency -d 'Do nothing.'
   end
@@ -104,28 +47,14 @@ else
   end
 end
 
-#################
-# => Window title
-#################
-function wt -d 'Set window title'
-  set -g window_title $argv
-  function fish_title
-    echo -n $window_title
-  end
-end
-
-#########
+#------------------------------------------------------------
 # => Help
-#########
+#------------------------------------------------------------
 function barracuda_help -d 'Show helpfile'
 
   set -U g_lang_sp ' Documentación y Ayuda ' ' ⋙ Wiki:                   ' ' ⋙ Forum de la Comunidad:  ' ' ⋙ Chat en Gitter:         ' ' ⋙ Canal IRC:              ' ' Trabajo con paquetes ' ' ⋙ Buscar paquetes:        ' ' ⋙ Instalar un paquete:    ' ' ⋙ Actualizar un paquete:  ' ' Repositorios adicionales ' ' ⋙ Root:                   ' ' ⋙ Unstable:               ' ' ⋙ X11:                    ' 'Reporte cualquier problema en https://termux.com/issues ' '¡Bienvenido a Termux Barracuda!'
   set -U g_lang_en ' Documents and help ' ' ⋙ Wiki:                   ' ' ⋙ Comunity Forum:         ' ' ⋙ Chat on Gitter:         ' ' ⋙ IRC Channel:            ' ' Working with packages ' ' ⋙ Search packages:        ' ' ⋙ Install packages:       ' ' ⋙ Update a package:       ' ' Extra repositories ' ' ⋙ Root:                   ' ' ⋙ Unstable:               ' ' ⋙ X11:                    ' 'Report any issue in https://termux.com/issues ' 'Welcome to Termux Barracuda'
   set -U g_lang_fr ' Documents et aide ' ' ⋙ Wiki:		      ' ' ⋙ Forum communautaire:	      ' ' ⋙ Chat sur Gitter:	      ' ' ⋙ Canal IRC:		      ' ' Travailler avec les packages ' ' ⋙ Rechercher les packages:   ' ' ⋙ Installer les packages:    ' ' ⋙ Mettre à jour un package:  ' ' Référentiels supplémentaires ' ' ⋙ Root:		      ' ' ⋙ Unstable:		      ' ' ⋙ X11:			      ' 'Signaler tout problème dans https://termux.com/issues ' 'Bienvenue à Termux Barracuda!'
-
-  if not set -q bg_lang
-    set -U bg_lang $g_lang_sp
-  end
 
   set n (set_color normal)
   set h (set_color 999)
@@ -133,7 +62,6 @@ function barracuda_help -d 'Show helpfile'
   set t (set_color eee)
   set e (set_color normal)(set_color b58900)''(set_color normal)
   set v (echo (set_color -b 000 cb4b16)''(set_color -b cb4b16 -o 000)"v$barracuda_version"(set_color -b 000 cb4b16)''$n)
-
 
   set_color -o cb4b16
   tput cuu1 && tput cuu1
@@ -169,9 +97,9 @@ function barracuda_help -d 'Show helpfile'
 
 end
 
-################
+#------------------------------------------------------------
 # => Environment
-################
+#------------------------------------------------------------
 function day -d "Set color palette for bright environment."
   set barracuda_colors $barracuda_day
   set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
@@ -182,29 +110,9 @@ function night -d "Set color palette for dark environment."
   set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
 end
 
-#-------
-
-function __prueba -d "Prueba"
-set -l cmd (commandline | sed 's|\s\+|\x1e|g')
-if [ -z $cmd ]
-  return
-else
-  eval $cmd
-  commandline ''
-  commandline -f repaint
-  return
-end
-
-#if [ (count $cmd) -eq 1 ]
-#  eval $cmd
-#end
-end
-
-#-------
-
-################
+#------------------------------------------------------------
 # => Pre execute
-################
+#------------------------------------------------------------
 function __barracuda_preexec -d 'Execute after hitting <Enter> before doing anything else'
   set -l cmd (commandline | sed 's|\s\+|\x1e|g')
   if [ $_ = 'fish' ]
@@ -257,17 +165,17 @@ function __barracuda_preexec -d 'Execute after hitting <Enter> before doing anyt
   commandline -f execute
 end
 
-#####################
+#------------------------------------------------------------
 # => Fish termination
-#####################
+#------------------------------------------------------------
 function __barracuda_on_termination -s HUP -s QUIT -s TERM --on-process %self -d 'Execute when shell terminates'
   set -l item (contains -i %self $barracuda_sessions_active_pid 2> /dev/null)
   __barracuda_detach_session $item
 end
 
-######################
+#------------------------------------------------------------
 # => Directory history
-######################
+#------------------------------------------------------------
 function __barracuda_create_dir_hist -v PWD -d 'Create directory history without duplicates'
   if [ "$pwd_hist_lock" = false ]
     if contains $PWD $$dir_hist
@@ -345,9 +253,9 @@ function d -d 'List directory history, jump to directory in list with d <number>
   set no_prompt_hist 'T'
 end
 
-####################
+#------------------------------------------------------------
 # => Command history
-####################
+#------------------------------------------------------------
 function __barracuda_create_cmd_hist -e fish_prompt -d 'Create command history without duplicates'
   if [ $_ = 'fish' ]
     set -l IFS ''
@@ -374,7 +282,6 @@ function __barracuda_create_cmd_hist -e fish_prompt -d 'Create command history w
     end
   end
   set fish_bind_mode insert
-  #echo -n \a
   __barracuda_urgency
 end
 
@@ -424,9 +331,9 @@ function c -d 'List command history, load command from prompt with c <prompt num
   set no_prompt_hist 'T'
 end
 
-##############
+#------------------------------------------------------------
 # => Bookmarks
-##############
+#------------------------------------------------------------
 function mark -d 'Create bookmark for present working directory.'
   if not contains $PWD $bookmarks
     set -U bookmarks $PWD $bookmarks
@@ -498,9 +405,9 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
   end
 end
 
-#############
+#------------------------------------------------------------
 # => Sessions
-#############
+#------------------------------------------------------------
 function __barracuda_delete_zombi_sessions -d 'Delete zombi sessions'
   for i in $barracuda_sessions_active_pid
     if not contains $i %fish
@@ -665,9 +572,9 @@ function s -d 'Create, delete or attach session'
   end
 end
 
-#####################################
+#------------------------------------------------------------
 # => Commandline editing with $EDITOR
-#####################################
+#------------------------------------------------------------
 function __barracuda_edit_commandline -d 'Open current commandline with your editor'
   commandline > $barracuda_tmpfile
   eval $EDITOR $barracuda_tmpfile
@@ -680,9 +587,9 @@ function __barracuda_edit_commandline -d 'Open current commandline with your edi
   rm $barracuda_tmpfile
 end
 
-########################
+#------------------------------------------------------------
 # => Virtual Env segment
-########################
+#------------------------------------------------------------
 function __barracuda_prompt_virtual_env -d 'Return the current virtual env name or other custom environment information'
   if set -q VIRTUAL_ENV; or set -q barracuda_alt_environment
     set_color -b $barracuda_colors[9]
@@ -697,9 +604,9 @@ function __barracuda_prompt_virtual_env -d 'Return the current virtual env name 
   end
 end
 
-########################
+#------------------------------------------------------------
 # => Node version segment
-########################
+#------------------------------------------------------------
 function __barracuda_prompt_node_version -d 'Return the current Node version'
   if set -q barracuda_alt_environment
     set_color -b $barracuda_colors[9]
@@ -709,9 +616,9 @@ function __barracuda_prompt_node_version -d 'Return the current Node version'
   end
 end
 
-################
+#------------------------------------------------------------
 # => Git segment
-################
+#------------------------------------------------------------
 function __barracuda_prompt_git_branch -d 'Return the current branch name'
   set -l branch (command git symbolic-ref HEAD 2> /dev/null | sed -e 's|^refs/heads/||')
   if not test $branch > /dev/null
@@ -753,9 +660,9 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
   end
 end
 
-######################
+#------------------------------------------------------------
 # => Bind-mode segment
-######################
+#------------------------------------------------------------
 function __barracuda_prompt_bindmode -d 'Displays the current mode'
   switch $fish_bind_mode
     case default
@@ -783,9 +690,9 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   set_color $barracuda_colors[5]
 end
 
-####################
+#------------------------------------------------------------
 # => Symbols segment
-####################
+#------------------------------------------------------------
 function __barracuda_prompt_left_symbols -d 'Display symbols'
     set -l symbols_urgent 'F'
     set -l symbols (set_color -b $barracuda_colors[2])''
@@ -916,8 +823,9 @@ end
 ###############################################################################
 # => Prompt initialization
 ###############################################################################
-
+#------------------------------------------------------------
 # Initialize some global variables
+#------------------------------------------------------------
 set -g barracuda_prompt_error
 set -g barracuda_current_bindmode_color
 set -U barracuda_sessions_active $barracuda_sessions_active
@@ -934,33 +842,54 @@ set -g prompt_hist
 set -g no_prompt_hist 'F'
 set -g symbols_style 'symbols'
 
+#------------------------------------------------------------
+# Break
+#------------------------------------------------------------
+function __break__ -d 'Custom break function'
+  trap INT
+  echo \n"$b_lang[30]"
+  cd $PWD
+end
+
+#------------------------------------------------------------
 # Load user defined key bindings
+#------------------------------------------------------------
 if functions --query fish_user_key_bindings
   fish_user_key_bindings
 end
 
+#------------------------------------------------------------
 # Set favorite editor
+#------------------------------------------------------------
 if not set -q EDITOR
   set -g EDITOR nano
 end
 
+#------------------------------------------------------------
 # Source config file
+#------------------------------------------------------------
 if [ -e $barracuda_config ]
   source $barracuda_config
 end
 
+#------------------------------------------------------------
 # Don't save in command history
+#------------------------------------------------------------
 if not set -q barracuda_nocmdhist
   set -U barracuda_nocmdhist 'c' 'd' 'll' 'ls' 'm' 's'
 end
 
+#------------------------------------------------------------
 # Set PWD segment style
+#------------------------------------------------------------
 if not set -q barracuda_pwdstyle
   set -U barracuda_pwdstyle short long none
 end
 set pwd_style $barracuda_pwdstyle[1]
 
+#------------------------------------------------------------
 # Cd to newest bookmark if this is a login shell
+#------------------------------------------------------------
 if not begin
     set -q -x LOGIN
     or set -q -x RANGER_LEVEL
@@ -975,37 +904,18 @@ end
 set -x LOGIN $USER
 
 ###############################################################################
-# => Custom Functions
+# => Backup (Termux)
 ###############################################################################
-
-# -------------
-# TERMUX-BACKUP
-# -------------
 
 # -- Set global variables --
 
-  set -g termux_path '/data/data/com.termux/files'
   set -g tmp_dir $HOME/.backup_termux
   set -g bkup_dir $HOME/storage/shared
   set -g bkup1 $bkup_dir/.backup_termux
   set -g bkup2 $tmp_dir
 
-# -- Some cleaning and defaults --
-
-  echo '' > $termux_path/usr/etc/motd
-
-# ---------- BREAK  ----------
-
-function __break__
-  trap INT
-  echo \n"$b_lang[30]"
-  cd $HOME
-end
-
 # ---------------------------- #
-
 function __backup__ -a file_name
-
   [ $file_name ]; or set file_name 'Backup'   #Set defaults:
   echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
 
@@ -1040,12 +950,10 @@ function __backup__ -a file_name
 function termux-backup -a opt file_name -d 'Backup file system'
 
  [ $file_name ]; or set file_name ''
- trap "__break__" INT
 
  switch $opt
 
-## ------ LIST BACKUPS ------
-
+# ------ List ------
    case '-l' '--list'
      if test ! -d $bkup1 -a ! -d $bkup2
          echo $b_lang[3]
@@ -1077,8 +985,7 @@ function termux-backup -a opt file_name -d 'Backup file system'
        end
      end
 
-## ------ DELETE BACKUPS ------
-
+# ------ Delete ------
    case '-d' '--delete'
      if test ! -d $bkup1 -a ! -d $bkup2
          echo $b_lang[3]
@@ -1194,32 +1101,20 @@ function termux-backup -a opt file_name -d 'Backup file system'
        end
      end
 
-## ------ SHOW HELP ------
-
+# ------ Help ------
    case '-h' '--help' ''
      echo
-     echo "$b_lang[12]"
-     echo "$b_lang[13]"\n
-     echo "$b_lang[14]"
-     echo "$b_lang[15]"\n
-     echo "$b_lang[16]"
-     echo "$b_lang[17]"
-     echo "$b_lang[18]"
-     echo "$b_lang[19]"
-     echo "$b_lang[20]"\n
-     echo "$b_lang[21]"
-     echo "$b_lang[22]"\n
-     echo "$b_lang[25]"
+     echo "$b_lang[12]";echo "$b_lang[13]"\n; echo "$b_lang[14]"
+     echo "$b_lang[15]"\n; echo "$b_lang[16]"; echo "$b_lang[17]"
+     echo "$b_lang[18]"; echo "$b_lang[19]"; echo "$b_lang[20]"\n
+     echo "$b_lang[21]"; echo "$b_lang[22]"\n; echo "$b_lang[25]"
      return
 
-## ------ CREATE BACKUPS ------
-
+## ------ Create ------
    case '-c' '--create'
-
+     echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)" Termux-Backup v$barracuda_version "$normal(set_color -b 000 777)''$normal\n
      if test -d $HOME/storage
        if test -d $tmp_dir
-         echo (set_color -b 000 777)\n''(set_color -b 777 -o 000)' Termux-Backup v1.6 '$normal(set_color -b 000 777)''$normal\n
-
          mkdir -p $bkup1
          mv -f $tmp_dir/*.tar.gz $bkup1/
 
@@ -1248,23 +1143,23 @@ function termux-backup -a opt file_name -d 'Backup file system'
 
    case '*'
      echo "termux-backup: invalid option $argv"
-     echo "Try option '-h' or '--help' for more information"
+     echo $bg_lang[15] #"Try option '-h' or '--help' for more information"
      return
  end
 end
 
 # --------------------------------
-# Set Languages
+# Set language
 # --------------------------------
 
-function language -a lang -d "Set system language"
+function language -a lang -d "Set language"
   switch $lang
     case 'sp'
     clear
       set b_lang $lang_sp
       set bg_lang $g_lang_sp
       set -Ux lang 'español'
-      set -g yes_no s n t c
+      set -U yes_no s n t c
       exec fish
       return
 
@@ -1337,17 +1232,17 @@ end
 
 function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
-   trap "__break__" INT
+  trap 'echo \n$b_lang[30]' INT
   fish_vi_key_bindings
-  colored_prompt path
-#  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
+#  colored_prompt path
+  echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
   set -g last_status $status
 #  colored_prompt prompt
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
 
 ###############################################################################
-# => Rightprompt
+# => Right prompt
 ###############################################################################
 
 function fish_right_prompt -d 'Writes environment language'
@@ -1365,7 +1260,6 @@ function fish_right_prompt -d 'Writes environment language'
   echo (set_color -b 000)(set_color 444)''(set_color -b 444)(set_color 000) $os(set_color -b 000)(set_color 444)''(set_color normal)
   set_color normal
 end
-
 
 #              
 
