@@ -80,7 +80,6 @@ set -U termux_path '/data/data/com.termux/files'
 set -U theme_path (cd (status dirname); cd ..; pwd)
 
 echo '' > $termux_path/usr/etc/motd
-title " }><(({º> "- (date)
 
 ###############################################################################
 # => Key bindings
