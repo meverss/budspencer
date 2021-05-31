@@ -15,6 +15,7 @@
 #   -> Aliases
 #   -> General configurations
 #   -> Key bindings
+#   -> Install Powerline fonts
 #
 ###############################################################################
 
@@ -40,16 +41,20 @@ end
 # => Color definitions
 ###############################################################################
 
+#------------------------------------------------------------------------------
 # Define colors
+#------------------------------------------------------------------------------
 set -U barracuda_night 000000 083743 445659 fdf6e3 b58900 cb4b16 dc121f af005f 6c71c4 268bd2 2aa198 859900
 set -U barracuda_day 000000 333333 666666 ffffff ffff00 ff6600 ff0000 ff0033 3300ff 00aaff 00ffff 00ff00
+
 if not set -q barracuda_colors
-  # Values are: black dark_gray light_gray white yellow orange red magenta violet blue cyan green
   set -U barracuda_colors $barracuda_night
 end
 
+#------------------------------------------------------------------------------
 # Cursor color changes according to vi-mode
 # Define values for: normal_mode insert_mode visual_mode
+#------------------------------------------------------------------------------
 set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
 
 ###############################################################################
@@ -71,8 +76,10 @@ alias french "language fr"
 set -U barracuda_version "1.6.1"
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files'
+set -U theme_path (cd (status dirname); cd ..; pwd)
 
 echo '' > $termux_path/usr/etc/motd
+title " }><(({º> "- (date)
 
 ###############################################################################
 # => Key bindings
@@ -90,3 +97,13 @@ bind M unmark
 bind . __barracuda_edit_commandline
 bind -M insert \r __barracuda_preexec
 bind \r __barracuda_preexec
+
+###############################################################################
+# => Install Powerline fonts
+###############################################################################
+
+if ! test -e $termux_path/home/.termux/font.ttf
+  cp -f $theme_path/fonts/font.ttf $termux_path/home/.termux/
+  termux-reload-settings
+  commandline -f repaint
+end

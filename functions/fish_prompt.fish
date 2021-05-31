@@ -852,6 +852,11 @@ function __break__ -d 'Custom break function'
 end
 
 #------------------------------------------------------------
+# Reload settings
+#------------------------------------------------------------
+#termux-reload-settings
+
+#------------------------------------------------------------
 # Load user defined key bindings
 #------------------------------------------------------------
 if functions --query fish_user_key_bindings
