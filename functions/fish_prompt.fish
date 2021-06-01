@@ -64,7 +64,7 @@ end
 # => Help
 #------------------------------------------------------------
 function barracuda_help -d 'Show helpfile'
-
+  clear
   set -U g_lang_sp ' Documentación y Ayuda ' ' ⋙ Wiki:                   ' ' ⋙ Forum de la Comunidad:  ' ' ⋙ Chat en Gitter:         ' ' ⋙ Canal IRC:              ' ' Trabajo con paquetes ' ' ⋙ Buscar paquetes:        ' ' ⋙ Instalar un paquete:    ' ' ⋙ Actualizar un paquete:  ' ' Repositorios adicionales ' ' ⋙ Root:                   ' ' ⋙ Unstable:               ' ' ⋙ X11:                    ' 'Reporte cualquier problema en https://termux.com/issues ' '¡Bienvenido a Termux Barracuda!'
   set -U g_lang_en ' Documents and help ' ' ⋙ Wiki:                   ' ' ⋙ Comunity Forum:         ' ' ⋙ Chat on Gitter:         ' ' ⋙ IRC Channel:            ' ' Working with packages ' ' ⋙ Search packages:        ' ' ⋙ Install packages:       ' ' ⋙ Update a package:       ' ' Extra repositories ' ' ⋙ Root:                   ' ' ⋙ Unstable:               ' ' ⋙ X11:                    ' 'Report any issue in https://termux.com/issues ' 'Welcome to Termux Barracuda'
   set -U g_lang_fr ' Documents et aide ' ' ⋙ Wiki:		      ' ' ⋙ Forum communautaire:	      ' ' ⋙ Chat sur Gitter:	      ' ' ⋙ Canal IRC:		      ' ' Travailler avec les packages ' ' ⋙ Rechercher les packages:   ' ' ⋙ Installer les packages:    ' ' ⋙ Mettre à jour un package:  ' ' Référentiels supplémentaires ' ' ⋙ Root:		      ' ' ⋙ Unstable:		      ' ' ⋙ X11:			      ' 'Signaler tout problème dans https://termux.com/issues ' 'Bienvenue à Termux Barracuda!'
@@ -1209,8 +1209,8 @@ function cless -d "Configure less to colorize styled text using environment vari
     set -l bold_ansi_code "\u001b[1m"
     set -l underline_ansi_code "\u001b[4m"
     set -l reversed_ansi_code "\u001b[7m"
-    set -l reset_ansi_code "\u001b[0m"
-    set -l teal_ansi_code "\u001b[38;5;31m"
+    set -l reset_ansi_code (set_color normal)(set_color -o 999) #"\u001b[0m"
+    set -l teal_ansi_code (set_color -o ea0) #"\u001b[38;5;31m"
     set -l green_ansi_code "\u001b[38;5;70m"
     set -l gold_ansi_code "\u001b[38;5;220m"
 

@@ -78,7 +78,7 @@ alias french "language fr"
 # => General configurations
 ###############################################################################
 
-set -U barracuda_version "1.6.1"
+set -U barracuda_version "1.7.0"
 set -U b_os (uname -o)
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files'
