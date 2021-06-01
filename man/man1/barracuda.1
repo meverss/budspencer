@@ -2,24 +2,20 @@
 .TH "Help" "1" "May 31, 2021" "1.7.0" "Barracuda theme for the fish shell"
 .SH DESCRIPTION
 
+/fish/man/man1 
+
 This theme is a fork of \fBoh-my-fish/theme-budspencer\fP (\fIhttps://github.com/oh-my-fish/theme-budspencer\fP), which means it keeps almost all it's awesome features.
 
-Some fancy visual changes has been done taking advantage of \fBPowerline Symbols\fP.
+Some fancy visual changes has been made taking advantage of \fBPowerline Symbols\fP.
 
 .SH SYNOPSIS
 
-Barracuda is a nice-looking theme that makes fish even more powerful. It's equipped with a
+Barracuda is a nice-looking theme which makes fish even more powerful. It's equipped with a
 lot of nice functions and key bindings to speed up your workflow
 
-.SH REQUIREMENTS
-
+.SH COMPLEMENTARY APPS (Recommended):
 .IP \(bu 2
-An up-to-date fish shell version from \fBgithub\fP or a \fBnightly build\fP.
-.IP \(bu 2
-Patched Powerline fonts installed.
-.SS Optional tools:
-.IP \(bu 2
-Termux:API plug-in (It's recommended to download \fBTermux\fP and \fBTermux:API\fP from \fBF-Droid\fP(\fIhttps://f-droid.org\fP) as both apps most have the same PGP signature) 
+\fITermux:API plug-in\fP (Both \fBTermux\fP and \fBTermux:API plug-in\fP should be downloaded from \fBF-Droid\fP(\fIhttps://f-droid.org\fP) as both apps most have the same PGP signature)
 .IP \(bu 2
 \fItermux-api\fP
 
@@ -70,73 +66,89 @@ french
 Two color schemes for bright and dark environments are predefined. You can enable them with \fBday\fP and \fBnight\fP, respectively.
 
 .SS Command history:
-Commands that shouldn't appear in the command history are defined by a universal
-list `$barracuda_nocmdhist`. Default:
-```
+Commands that shouldn't appear in the command history are defined by a universal list \fI$barracuda_nocmdhist\fP. Default:
+
 set -U barracuda_nocmdhist c d ll ls m s
-```
 
-### Disable/reenable greeting
+.SS Disable/reenable greeting:
 
-Disable:
-```
+\fBDisable:\fP
+
 set -U barracuda_nogreeting
-```
 
-Reenable:
-```
+
+\fBReenable:\fP
+
 set -e barracuda_nogreeting
-```
 
-### Show Node version
+
+.SS Show Node version:
 
 To show your current node version, do following in your Fish configs
 
-Enable:
-```
+\fBEnable:\fP
+
 set -g barracuda_alt_environment "node -v"
-```
 
-Disable:
-```
+
+\fBDisable:\fP
+
 set -U barracuda_alt_environment
-```
 
-## Outer prompt segments
 
-- Vi mode is indicated by color of outer segments, cursor color also changes
-  if terminal supports it:
-    * green: NORMAL mode
-    * yellow: INSERT mode
-    * blue: VISUAL mode
+.SS Outer prompt segments:
+.IP \(bu 4
+Vi mode is indicated by color of outer segments, cursor color also changes if terminal supports it:
+.RS 4
+.IP \(bu 4
+\fIgreen\fP: \fBNORMAL\fP mode
+.IP \(bu 4
+\fIyellow\fP: \fBINSERT\fP mode
+.IP \(bu 4
+\fIblue\fP: \fBVISUAL\fP mode
+.RE
+.SS Left prompt segments:
+.IP \(bu 4
+Working directory
+.IP \(bu 4
+Prompt
+.RS 4
+.IP \(bu 4
+Prompt line number
+.IP \(bu 4
+Language
+.IP \(bu 4
+Git repository information
+.IP \(bu 4
+Status symbols
+.RS 4
+.IP \(bu 4
+✻: keep track of this shell session, can be toggled with `#` to show the number of the session within the sessions list
+.IP \(bu 4
+⭐: present working directory is in bookmark list, can be toggled with `#` to show the number of the bookmark
+.IP \(bu 4
+V: vi is parent process
+.IP \(bu 4
+R: [ranger][ranger] is parent process
+.IP \(bu 4
+⬜: there are background jobs, can be toggled with `#` to show the amount of background jobs
+.IP \(bu 4
+🔒: no write permissions in present working directory
+.IP \(bu 4
+⚔: there are tasks scheduled for this week, can be toggled with `#` to show the amount of weekly tasks
+.IP \(bu 4
+⚑: there are appointments for today, can be toggled with `#` to show the amount of appointments
+.IP \(bu 4
+✔: last command succeeded, can be toggled with `#` to show the status value
+.IP \(bu 4
+ ✘: last command failed, can be toggled with `#` to show the status value
+.IP \(bu 4
+⚡: superuser indicator
+.RE
+.IP \(bu 4
+Active Python [virtual environment](https://virtualenv.pypa.io/en/latest/). Requires [Virtual Fish](https://github.com/adambrenecki/virtualfish/)
 
-## Left prompt segments
-
-- Working directory
-- Prompt
-    * Prompt line number
-    * System language
-    * Git repository information
-    * Status symbols
-        * ✻: keep track of this shell session, can be toggled with `#` to show the number of
-           the session within the sessions list
-        * ⭐: present working directory is in bookmark list, can be toggled with `#` to
-            show the number of the bookmark
-        * V: vi is parent process
-        * R: [ranger][ranger] is parent process
-        * ⬜: there are background jobs, can be toggled with `#` to show the amount of
-            background jobs
-        * 🔒: no write permissions in present working directory
-        * ⚔: there are tasks scheduled for this week, can be toggled with `#` to
-            show the amount of weekly tasks
-        * ⚑: there are appointments for today, can be toggled with `#` to
-            show the amount of appointments
-        * ✔: last command succeeded, can be toggled with `#` to show the status value
-        * ✘: last command failed, can be toggled with `#` to show the status value
-        * ⚡: superuser indicator
-- Active Python [virtual environment](https://virtualenv.pypa.io/en/latest/). Requires [Virtual Fish](https://github.com/adambrenecki/virtualfish/)
-
-## Right prompt segments
+.SH Right prompt segments:
 
 - Shows OS and other system info.
 
