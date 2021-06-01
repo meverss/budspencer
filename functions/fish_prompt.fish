@@ -1235,10 +1235,17 @@ function man --wraps man -d "Run man with added colors"
         end
     end
 
-    # prepend the directory of fish manpages to MANPATH
+    # prepend the directory of fish and barracuda manpages to MANPATH
     set fish_manpath $__fish_data_dir/man
+    set barracuda_manpath $__theme_path/man
+        
     if test -d $fish_manpath
         set --prepend MANPATH $fish_manpath
+    end
+
+    if test -d $barracuda_manpath
+        set --prepend MANPATH $barracuda_manpath
+        #makewhatis $barracuda_msnpath
     end
 
     cless (command --search man) $argv

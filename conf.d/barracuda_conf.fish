@@ -82,7 +82,7 @@ set -U barracuda_version "1.7.0"
 set -U b_os (uname -o)
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files'
-set -U theme_path (cd (status dirname); cd ..; pwd)
+set -U __theme_path (cd (status dirname); cd ..; pwd)
 
 echo '' > $termux_path/usr/etc/motd
 
@@ -108,12 +108,10 @@ bind \r __barracuda_preexec
 ###############################################################################
 switch $b_os
   case 'Android'
-    if ! test -e $termux_path/home/.termux/font.ttf
-    or ! cmp -s $theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf 2> /dev/null
-      cp -fs $theme_path/fonts/font.ttf $termux_path/home/.termux/ 2> /dev/null
+    if ! test -e $__termux_path/home/.termux/font.ttf
+    or ! cmp -s $__theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf 2> /dev/null
+      cp -fs $__theme_path/fonts/font.ttf $termux_path/home/.termux/ 2> /dev/null
       termux-reload-settings
       commandline -f repaint
     end
 end
-#  or ! cmp -s $theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf
-#  cp -f $theme_path/fonts/font.ttf $termux_path/home/.termux/Powerline.ttf
