@@ -108,7 +108,7 @@ bind \r __barracuda_preexec
 ###############################################################################
 switch $b_os
   case 'Android'
-    if ! test -e $__termux_path/home/.termux/font.ttf
+    if ! test -e $termux_path/home/.termux/font.ttf
     or ! cmp -s $__theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf 2> /dev/null
       cp -fs $__theme_path/fonts/font.ttf $termux_path/home/.termux/ 2> /dev/null
       termux-reload-settings
