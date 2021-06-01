@@ -239,23 +239,23 @@ With this function it's possible to perform a full backup of system and user's f
 
 To create a new backup type:
 ```
-termux-backup -c <or> --create [file_name]
+backup [[-c] [--create]] [file_name]
 ```
 
 To list existing backups use:
 ```
-termux-backup -l <or> --list
+backup [[-l] [--list]]
 ```
 ![screenshot](images/screenshot_l.jpg)
 
 To delete an existing backup:
 ```
-termux-backup -d <or> --delete
+backup [[-d] [--delete]]
 ```
 ![screenshot](images/screenshot_d.jpg)
 To show help:
 ```
-termux-backup -h <or> --help
+backup [[-h] [--help]]
 ```
 
 Unfortunately this function can only perform backups. Restores have to be decompressed and copied manually.
