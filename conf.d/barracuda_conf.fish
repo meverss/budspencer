@@ -30,16 +30,48 @@ set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay arc
 set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '           File name          Size      Date' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>' 'Cancel' 'popsBackup deleted' 'All backups has been deleted' 'Version' 'Aborting...'
 set -U lang_fr 'Analyser et collecter des données...' 'Compresser...' 'Aucune sauvegarde trouvée' 'Supprimer' 'Tout' 'Supprimer l\'élément' 'Supprimer TOUT (o/n)?' 'Aucun STOCKAGE_EXTERNE monté.' 'La sauvegarde sera stockée dans ~/.backup_termux' 'Essayez d\'utiliser' 'Terminé! La sauvegarde est terminée avec succès' 'Utilisation: termux-backup [OPTION]...' '             termux-backup -c [FILE]...' 'Description:' 'Effectue une sauvegarde du système et des fichiers de l\'utilisateur' 'OPTION:' '-c --create		Créer une nouvelle sauvegarde' '-d --delete		Supprimer la sauvegarde existante' '-l --list		Liste les fichiers de sauvegarde' '-h --help		Afficher cette aide' 'FILE:' '<nom_du_fichier>	Nom du fichier de sauvegarde' '         Nom du fichier      Taille     Date' 'Fichiers de sauvegarde' 'Si aucune OPTION n\'est définie, il sera créé une sauvegarde avec l\'identifiant par défaut <Backup>' 'Annuler' 'Sauvegarde supprimée' 'Toutes les sauvegardes ont été supprimées' 'Version' 'Abandon...'
 
-set -U g_lang_sp ' Documentación y Ayuda ' ' ⋙ Wiki:                   ' ' ⋙ Forum de la Comunidad:  ' ' ⋙ Chat en Gitter:         ' ' ⋙ Canal IRC:              ' ' Trabajo con paquetes ' ' ⋙ Buscar paquetes:        ' ' ⋙ Instalar un paquete:    ' ' ⋙ Actualizar un paquete:  ' ' Repositorios adicionales ' ' ⋙ Root:                   ' ' ⋙ Unstable:               ' ' ⋙ X11:                    ' 'Reporte cualquier problema en https://termux.com/issues ' 'Use la opción \'-h\' or \'--help\' para más información'\
-                 "Este tema usa $pl para una mejor experiencia visual. Escriba $bh para obtener información sobre las funciones."
-set -U g_lang_en ' Documents and help ' ' ⋙ Wiki:                   ' ' ⋙ Comunity Forum:         ' ' ⋙ Chat on Gitter:         ' ' ⋙ IRC Channel:            ' ' Working with packages ' ' ⋙ Search packages:        ' ' ⋙ Install packages:       ' ' ⋙ Update a package:       ' ' Extra repositories ' ' ⋙ Root:                   ' ' ⋙ Unstable:               ' ' ⋙ X11:                    ' 'Report any issue in https://termux.com/issues ' 'Try option \'-h\' or \'--help\' for more information'\
-                 "This theme uses $pl for a better visual experience. Type $bh for info about the features."
-set -U g_lang_fr ' Documents et aide ' ' ⋙ Wiki:		      ' ' ⋙ Forum communautaire:	      ' ' ⋙ Chat sur Gitter:	      ' ' ⋙ Canal IRC:		      ' ' Travailler avec les packages ' ' ⋙ Rechercher les packages:   ' ' ⋙ Installer les packages:    ' ' ⋙ Mettre à jour un package:  ' ' Référentiels supplémentaires ' ' ⋙ Root:		      ' ' ⋙ Unstable:		      ' ' ⋙ X11:			      ' 'Signaler tout problème dans https://termux.com/issues ' 'Utilisez l\'option \'-h\' ou \'--help\' pour plus d\'informations'\
-                 "Ce thème utilise $pl pour une meilleure expérience visuelle. Tapez $bh pour plus d'informations sur les fonctionnalités."
+set -U g_lang_sp "Este tema usa $pl para una mejor experiencia visual. Escriba $bh para obtener información sobre las funciones."
+set -U g_lang_en "This theme uses $pl for a better visual experience. Type $bh for info about the features."
+set -U g_lang_fr "Ce thème utilise $pl pour une meilleure expérience visuelle. Tapez $bh pour plus d'informations sur les fonctionnalités."
 
 if not set -q b_lang
   set -U b_lang $lang_sp
   set -U bg_lang $g_lang_sp
+  set -U man_lang 'barracuda_sp'
+end
+
+function language -a lang -d 'Change language'
+switch $lang
+  case 'sp'
+  clear
+    set -U b_lang $lang_sp
+    set -U bg_lang $g_lang_sp
+    set -U man_lang 'barracuda_sp'
+    set -U lang 'español'
+    set -U yes_no marvin #s n t c
+    exec fish
+    return
+
+  case 'en'
+  clear
+    set -U b_lang $lang_en
+    set -U bg_lang $g_lang_en
+    set -U man_lang 'barracuda_en'
+    set -U lang 'english'
+    set -U yes_no y n a c
+    exec fish
+    return
+
+  case 'fr'
+  clear
+    set -U b_lang $lang_fr
+    set -u bg_lang $g_lang_fr
+    set -U man_lang 'barracuda_fr'
+    set -U lang 'français'
+    set -U yes_no o n t a
+    exec fish
+    return
+end
 end
 
 ###############################################################################
@@ -69,6 +101,7 @@ set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracud
 alias ps "ps -ef"
 alias ls "ls -gh"
 alias version 'echo Barracuda v$barracuda_version'
+alias barracuda_help 'man $man_lang'
 alias backup "termux-backup"
 alias spanish "language sp"
 alias english "language en"
