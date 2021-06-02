@@ -23,7 +23,6 @@
 # => Languages (SP-EN)
 ###############################################################################
 
-# Languages
 set -l pl (set_color fb0)'Powerline Symbols'(set_color -b normal 555)
 set -l bh (set_color -b 222 888)' barracuda_help '(set_color -b 000 555)
 set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar' 'Todo' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '       Nombre de archivo     Tamaño    Fecha' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto' 'Cancelar' 'Copia de respaldo eliminada' 'Se eliminaron todos los arvivos de respaldos' 'Versión' 'Abortando...'
@@ -32,13 +31,7 @@ set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups f
 set -U g_lang_sp "Este tema usa $pl para una mejor experiencia visual. Escriba $bh para obtener información sobre las funciones."
 set -U g_lang_en "This theme uses $pl for a better visual experience. Type $bh for info about the features."
 
-if not set -q b_lang
-  set -U b_lang $lang_sp
-  set -U bg_lang $g_lang_sp
-  set -U man_lang 'barracuda_sp'
-end
-
-function language -a lang -d 'Change language'
+function __ch_lang -a lang -d 'Change language'
 switch $lang
   case 'sp'
   clear
@@ -46,8 +39,9 @@ switch $lang
     set -U bg_lang $g_lang_sp
     set -U man_lang 'barracuda_sp'
     set -U lang 'español'
-    set -U yes_no marvin #s n t c
-    exec fish
+    set -U yes_no s n t c
+    fish_greeting
+    commandline -f repaint
     return
 
   case 'en'
@@ -57,10 +51,16 @@ switch $lang
     set -U man_lang 'barracuda_en'
     set -U lang 'english'
     set -U yes_no y n a c
-    exec fish
+    fish_greeting
+    commandline -f repaint
     return
 end
 end
+
+if not set -q b_lang
+  __ch_lang sp
+end
+
 
 ###############################################################################
 # => Color definitions
@@ -91,8 +91,8 @@ alias ls "ls -gh"
 alias version 'echo Barracuda v$barracuda_version'
 alias barracuda_help 'man $man_lang'
 alias backup "termux-backup"
-alias spanish "language sp"
-alias english "language en"
+alias spanish "__ch_lang sp"
+alias english "__ch_lang en"
 
 ###############################################################################
 # => General configurations
