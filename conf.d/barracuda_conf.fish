@@ -110,7 +110,7 @@ echo '' > $termux_path/usr/etc/motd
 # => Key bindings
 ###############################################################################
 
-set fish_key_bindings fish_vi_key_bindings
+set -U fish_key_bindings fish_vi_key_bindings
 bind '#' __barracuda_toggle_symbols
 bind -M visual '#' __barracuda_toggle_symbols
 bind ' ' __barracuda_toggle_pwd

@@ -19,7 +19,6 @@
 #     -> Command history
 #     -> Bookmarks
 #     -> Sessions
-#     -> Commandline editing with $EDITOR
 #     -> Git segment
 #     -> Bind-mode segment
 #     -> Symbols segment
@@ -195,12 +194,12 @@ function d -d 'List directory history, jump to directory in list with d <number>
     end
     echo -en $barracuda_cursors[2]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[5])" ♻ Goto [e|0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[5])' -n $input_length -l dir_num
+    read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[5])"  Goto [e|0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[5])' -n $input_length -l dir_num
     switch $dir_num
       case (seq 0 (expr $num_items - 1))
         cd $$dir_hist[1][(expr $num_items - $dir_num)]
       case 'e'
-        read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[5])" ♻ Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[5])' -n $input_length -l dir_num
+        read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[5])"  Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[5])' -n $input_length -l dir_num
         set -e $dir_hist[1][(expr $num_items - $dir_num)] 2> /dev/null
         set dir_hist_val (count $$dir_hist)
         tput cuu1
@@ -535,21 +534,6 @@ function s -d 'Create, delete or attach session'
 end
 
 #------------------------------------------------------------
-# => Commandline editing with $EDITOR
-#------------------------------------------------------------
-function __barracuda_edit_commandline -d 'Open current commandline with your editor'
-  commandline > $barracuda_tmpfile
-  eval $EDITOR $barracuda_tmpfile
-  set -l IFS ''
-  if [ -s $barracuda_tmpfile ]
-    commandline (sed 's|^\s*||' $barracuda_tmpfile)
-  else
-    commandline ''
-  end
-  rm $barracuda_tmpfile
-end
-
-#------------------------------------------------------------
 # => Virtual Env segment
 #------------------------------------------------------------
 function __barracuda_prompt_virtual_env -d 'Return the current virtual env name or other custom environment information'
@@ -720,7 +704,7 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
             set symbols $symbols(set_color -o $barracuda_colors[7])' ✘'
         end
         if [ $USER = 'root' ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])' ⚡'
+            set symbols $symbols(set_color -o $barracuda_colors[6])' '
             set symbols_urgent 'T'
         end
     else
@@ -807,8 +791,8 @@ set -g symbols_style 'symbols'
 #------------------------------------------------------------
 # Break
 #------------------------------------------------------------
-function __break__ -d 'Custom break function'
-  trap INT
+function __break__ #-s INT -d 'Custom break function'
+#  trap INT
   echo \n"$b_lang[30]"
   cd $PWD
 end
@@ -901,7 +885,7 @@ function __backup__ -a file_name
   set -g normal (set_color normal)
 
   echo (set_color -b 000 fcfca3)$b_lang[1]$normal
-  set_color 999 && rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+  set_color 999; rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp (find $tmp_dir/$file/. -type f | wc -l)
 
@@ -1110,7 +1094,6 @@ function termux-backup -a opt file_name -d 'Backup file system'
 
    case '*'
      echo "termux-backup: invalid option $argv"
-#     echo $bg_lang[15] #"Try option '-h' or '--help' for more information"
      return
  end
 end
@@ -1123,17 +1106,24 @@ function cless -d "Configure less to colorize styled text using environment vari
     set -l bold_ansi_code "\u001b[1m"
     set -l underline_ansi_code "\u001b[4m"
     set -l reversed_ansi_code "\u001b[7m"
-    set -l reset_ansi_code (set_color normal)(set_color -o 999) #"\u001b[0m"
-    set -l teal_ansi_code (set_color -o ea0) #"\u001b[38;5;31m"
+    set -l reset_ansi_code (set_color normal)(set_color -o 999)
+    set -l teal_ansi_code (set_color -o ea0)
     set -l green_ansi_code "\u001b[38;5;70m"
-    set -l gold_ansi_code "\u001b[38;5;220m"
+    set -l linux "\uf17c" 
+    set -l gold_ansi_code "\u001b[38;5;220m"
+
 
     set -x LESS_TERMCAP_md (printf $bold_ansi_code$teal_ansi_code) # start bold
     set -x LESS_TERMCAP_me (printf $reset_ansi_code) # end bold
-    set -x LESS_TERMCAP_us (printf $underline_ansi_code$green_ansi_code) # start underline
-    set -x LESS_TERMCAP_ue (printf $reset_ansi_code) # end underline
+    set -x LESS_TERMCAP_us (printf $underline_ansi_code$green_ansi_code ) # start underline
+    set -x LESS_TERMCAP_ue (printf $reset_ansi_code ) # end underline
     set -x LESS_TERMCAP_so (printf $reversed_ansi_code$gold_ansi_code) # start standout
     set -x LESS_TERMCAP_se (printf $reset_ansi_code) # end standout
+# | sed 's/a//g'
+    set -x LESS_TERMCAP_cc (printf $gold_ansi_code) # end standout
+    set -x LESS_TERMCAP_as (printf $linux) # end standout    
+    set -x LESSCHARSET "utf-8" #us-ascii, iso-8859-1, utf-8
+    set -x LANG "en_US.UTF-8"
 
     $argv
 end
@@ -1161,7 +1151,7 @@ function man --wraps man -d "Run man with added colors"
         set --prepend MANPATH $barracuda_manpath
     end
 
-    cless (command --search man) $argv
+    cless (command --search man ) $argv 
 end
 
 ###############################################################################
@@ -1170,7 +1160,6 @@ end
 
 function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
-  trap 'echo \n$b_lang[30]' INT
   fish_vi_key_bindings
 #  colored_prompt path
   echo (set_color -b black)(set_color 777)''(set_color -b 777)(set_color 000) $PWD (set_color normal)(set_color 777)''
