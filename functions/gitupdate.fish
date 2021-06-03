@@ -6,6 +6,7 @@ function gitupdate -d 'Update Git project'
     set add (command git add . 2> /dev/null)
     if test add
       read -p 'echo Descripción: ' -l desc
+      [ $desc ]; or set desc 'Update files'
       command git commit -am "$desc"
       git push -f origin $branch
       echo; echo 'Proyecto actualuzado'
