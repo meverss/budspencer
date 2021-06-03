@@ -9,7 +9,7 @@ function gitupdate -d 'Update Git project'
       [ $desc ]; or set desc 'Update files'
       command git commit -am "$desc"
       git push -f origin $branch
-      echo; echo 'Proyecto actualuzado'
+      echo; echo 'Proyecto actualizado'
     else
       echo 'El proyecto ya está actualizado'
     end
