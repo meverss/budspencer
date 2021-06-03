@@ -24,6 +24,7 @@
 #     -> Symbols segment
 #     -> Backup (Termux)
 #     -> Colored Man Pages (Thanks to PatrickF1)
+#     -> Update Git project
 #   -> Prompt initialization
 #   -> Left prompt
 #   -> Right prompt
@@ -766,99 +767,9 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
     echo -n $symbols
 end
 
-###############################################################################
-# => Prompt initialization
-###############################################################################
 #------------------------------------------------------------
-# Initialize some global variables
-#------------------------------------------------------------
-set -g barracuda_prompt_error
-set -g barracuda_current_bindmode_color
-set -U barracuda_sessions_active $barracuda_sessions_active
-set -U barracuda_sessions_active_pid $barracuda_sessions_active_pid
-set -g barracuda_session_current ''
-set -g cmd_hist_nosession
-set -g cmd_hist cmd_hist_nosession
-set -g CMD_DURATION 0
-set -g dir_hist_nosession
-set -g dir_hist dir_hist_nosession
-set -g pwd_hist_lock true
-set -g pcount 1
-set -g prompt_hist
-set -g no_prompt_hist 'F'
-set -g symbols_style 'symbols'
-
-#------------------------------------------------------------
-# Break
-#------------------------------------------------------------
-function __break__ #-s INT -d 'Custom break function'
-#  trap INT
-  echo \n"$b_lang[30]"
-  cd $PWD
-end
-
-#------------------------------------------------------------
-# Reload settings
-#------------------------------------------------------------
-#termux-reload-settings
-
-#------------------------------------------------------------
-# Load user defined key bindings
-#------------------------------------------------------------
-if functions --query fish_user_key_bindings
-  fish_user_key_bindings
-end
-
-#------------------------------------------------------------
-# Set favorite editor
-#------------------------------------------------------------
-if not set -q EDITOR
-  set -g EDITOR nano
-end
-
-#------------------------------------------------------------
-# Source config file
-#------------------------------------------------------------
-if [ -e $barracuda_config ]
-  source $barracuda_config
-end
-
-#------------------------------------------------------------
-# Don't save in command history
-#------------------------------------------------------------
-if not set -q barracuda_nocmdhist
-  set -U barracuda_nocmdhist 'c' 'd' 'll' 'ls' 'm' 's'
-end
-
-#------------------------------------------------------------
-# Set PWD segment style
-#------------------------------------------------------------
-if not set -q barracuda_pwdstyle
-  set -U barracuda_pwdstyle short long none
-end
-set pwd_style $barracuda_pwdstyle[1]
-
-#------------------------------------------------------------
-# Cd to newest bookmark if this is a login shell
-#------------------------------------------------------------
-if not begin
-    set -q -x LOGIN
-    or set -q -x RANGER_LEVEL
-    or set -q -x VIM
-  end 2> /dev/null
-  if not set -q barracuda_no_cd_bookmark
-    if set -q bookmarks[1]
-      cd $bookmarks[1]
-    end
-  end
-end
-set -x LOGIN $USER
-
-###############################################################################
 # => Backup (Termux)
-###############################################################################
-
-# -- Set global variables --
+#------------------------------------------------------------
 
   set -g tmp_dir $HOME/.backup_termux
   set -g bkup_dir $HOME/storage/shared
@@ -1098,9 +1009,9 @@ function termux-backup -a opt file_name -d 'Backup file system'
  end
 end
 
-###############################################################################
+#------------------------------------------------------------
 # => Colored Man Pages
-###############################################################################
+#------------------------------------------------------------
 
 function cless -d "Configure less to colorize styled text using environment variables before executing a command that will use less"
     set -l bold_ansi_code "\u001b[1m"
@@ -1153,6 +1064,106 @@ function man --wraps man -d "Run man with added colors"
     cless (command --search man ) $argv 
 end
 
+#------------------------------------------------------------
+# => Update Git project
+#------------------------------------------------------------
+
+function gitupdate -d 'Update Git project'
+  set -l branch (command git describe --contains --all HEAD 2> /dev/null )
+  if not test $branch > /dev/null
+    echo 'Este NO es un proyecto Git'
+  else
+    set -l add (command git add . 2> /dev/null)
+    if test add
+      read -p "echo 'Descripción: '" -l desc
+      [ $desc ]; or set desc 'Update files'
+      command git commit -am "$desc"
+      git push -f origin $branch
+      echo; echo 'Proyecto actualizado'
+    end
+  end
+end
+
+###############################################################################
+# => Prompt initialization
+###############################################################################
+set -g barracuda_prompt_error
+set -g barracuda_current_bindmode_color
+set -U barracuda_sessions_active $barracuda_sessions_active
+set -U barracuda_sessions_active_pid $barracuda_sessions_active_pid
+set -g barracuda_session_current ''
+set -g cmd_hist_nosession
+set -g cmd_hist cmd_hist_nosession
+set -g CMD_DURATION 0
+set -g dir_hist_nosession
+set -g dir_hist dir_hist_nosession
+set -g pwd_hist_lock true
+set -g pcount 1
+set -g prompt_hist
+set -g no_prompt_hist 'F'
+set -g symbols_style 'symbols'
+
+#------------------------------------------------------------
+# Break
+#------------------------------------------------------------
+function __break__ #-s INT -d 'Custom break function'
+#  trap INT
+  echo \n"$b_lang[30]"
+  cd $PWD
+end
+
+#------------------------------------------------------------
+# Load user defined key bindings
+#------------------------------------------------------------
+if functions --query fish_user_key_bindings
+  fish_user_key_bindings
+end
+
+#------------------------------------------------------------
+# Set favorite editor
+#------------------------------------------------------------
+if not set -q EDITOR
+  set -g EDITOR nano
+end
+
+#------------------------------------------------------------
+# Source config file
+#------------------------------------------------------------
+if [ -e $barracuda_config ]
+  source $barracuda_config
+end
+
+#------------------------------------------------------------
+# Don't save in command history
+#------------------------------------------------------------
+if not set -q barracuda_nocmdhist
+  set -U barracuda_nocmdhist 'c' 'd' 'll' 'ls' 'm' 's'
+end
+
+#------------------------------------------------------------
+# Set PWD segment style
+#------------------------------------------------------------
+if not set -q barracuda_pwdstyle
+  set -U barracuda_pwdstyle short long none
+end
+set pwd_style $barracuda_pwdstyle[1]
+
+#------------------------------------------------------------
+# Cd to newest bookmark if this is a login shell
+#------------------------------------------------------------
+if not begin
+    set -q -x LOGIN
+    or set -q -x RANGER_LEVEL
+    or set -q -x VIM
+  end 2> /dev/null
+  if not set -q barracuda_no_cd_bookmark
+    if set -q bookmarks[1]
+      cd $bookmarks[1]
+    end
+  end
+end
+set -x LOGIN $USER
+
 ###############################################################################
 # => Left prompt
 ###############################################################################
@@ -1188,4 +1199,3 @@ function fish_right_prompt -d 'Writes environment language'
 end
 
 #              
-
