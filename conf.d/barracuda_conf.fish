@@ -128,11 +128,22 @@ bind \r __barracuda_preexec
 ###############################################################################
 # => Install Powerline fonts
 ###############################################################################
+set -g fonts 'Default' 'DejaVu' 'FiraCode' 'Go' 'Hermit' 'Monofur'
+set -g DejaVu 'dejavu.ttf'
+set -g FiraCode 'firacode.ttf'
+set -g Hermit 'hermit.ttf'
+set -g Monofur 'monofur.ttf'
+set -g Default $Monofur
+
+if not set -q font
+  set -U font $Default
+end
+
 switch $b_os
   case 'Android'
     if ! test -e $termux_path/home/.termux/font.ttf
-    or ! cmp -s $theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf 2> /dev/null
-      cp -f $__theme_path/fonts/font.ttf $termux_path/home/.termux/ 2> /dev/null
+    or ! cmp -s $theme_path/fonts/$font $termux_path/home/.termux/font.ttf 2> /dev/null
+      cp -f $__theme_path/fonts/$font $termux_path/home/.termux/font.ttf 2> /dev/null
       termux-reload-settings
       commandline -f repaint
     end
