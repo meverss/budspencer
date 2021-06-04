@@ -1,0 +1,214 @@
+.\"Barracuda theme documentation
+.TH "Help" "1" "May 31, 2021" "}><(({º>  1.7.0" "Barracuda theme for the fish shell"
+.SH DESCRIPTION
+
+⭐
+
+.B ENGLISH
+
+Barracuda makes fish even more powerful and user-friendly. It's equipped with a set of useful functions and key bindings to speed up your workflow.
+
+Also, the use of \fBPowerline Symbols\fP makes the visual experience smooth and fancy.
+
+This theme is a fork of \fBoh-my-fish/theme-budspencer\fP (\fIhttps://github.com/oh-my-fish/theme-budspencer\fP), which means it keeps most of it's awesome features.
+
+.SH COMPLEMENTARY APPS (Recommended):
+.IP \(bu 2
+\fITermux:API plug-in\fP (Both \fBTermux\fP and \fBTermux:API plug-in\fP should be downloaded from \fBF-Droid \fP(\fIhttps://f-droid.org\fP) as both apps most have the same PGP signature)
+.IP \(bu 2
+\fItermux-api\fP
+
+.R apt install termux-api
+.IP \(bu 2
+\fInodejs\fP
+
+.R apt install nodejs
+
+.IP \(bu 2
+\fIpv\fP
+
+.R apt install pv
+
+.SH CONFIGURATION
+
+.SS Languages:
+
+Barracuda theme can be displayed whether in Spanish or English.
+
+To change language just type whether \fIspanish\fP or \fIenglish\fP on the command prompt.
+
+.SS Colors:
+
+Two color schemes for bright and dark environments are predefined. You can enable them with \fBday\fP and \fBnight\fP, respectively.
+
+.SS Command history:
+Commands that shouldn't appear in the command history are defined by a universal list \fI$barracuda_nocmdhist\fP. Default:
+
+set -U barracuda_nocmdhist c d ll ls m s
+
+.SS Show Node version:
+
+To show your current node version, do following in your Fish configs
+
+\fBEnable:\fP
+
+set -g barracuda_alt_environment "node -v"
+
+
+\fBDisable:\fP
+
+set -U barracuda_alt_environment
+
+
+.SS Outer prompt segments:
+.IP \(bu 4
+Vi mode is indicated by color of outer segments, cursor color also changes if terminal supports it:
+.RS 4
+.IP \(bu 4
+\fIgreen\fP: \fBNORMAL\fP mode
+.IP \(bu 4
+\fIyellow\fP: \fBINSERT\fP mode
+.IP \(bu 4
+\fIblue\fP: \fBVISUAL\fP mode
+.RE
+.SS Left prompt segments:
+.IP \(bu 4
+Working directory
+.IP \(bu 4
+Prompt
+.RS 4
+.IP \(bu 4
+Prompt line number
+.IP \(bu 4
+Language
+.IP \(bu 4
+Git repository information
+.IP \(bu 4
+Status symbols
+.RS 4
+.IP \(bu 4
+✻: keep track of this shell session, can be toggled with \fI#\fP to show the number of the session within the sessions list
+.IP \(bu 4
+⭐: present working directory is in bookmark list, can be toggled with \fI#\fP to show the number of the bookmark
+.IP \(bu 4
+V: vi is parent process
+.IP \(bu 4
+R: [ranger][ranger] is parent process
+.IP \(bu 4
+⬜: there are background jobs, can be toggled with \fI#\fP to show the amount of background jobs
+.IP \(bu 4
+🔒: no write permissions in present working directory
+.IP \(bu 4
+⚔: there are tasks scheduled for this week, can be toggled with \fI#\fP to show the amount of weekly tasks
+.IP \(bu 4
+⚑: there are appointments for today, can be toggled with \fI#\fP to show the amount of appointments
+.IP \(bu 4
+✔: last command succeeded, can be toggled with \fI#\fP to show the status value
+.IP \(bu 4
+ ✘: last command failed, can be toggled with \fI#\fP to show the status value
+.IP \(bu 4
+⚡: superuser indicator
+.RE
+.IP \(bu 4
+Active Python [virtual environment](https://virtualenv.pypa.io/en/latest/). Requires [Virtual Fish](https://github.com/adambrenecki/virtualfish/)
+
+.SH Right prompt segments:
+.IP \(bu 4
+Shows OS and other system info.
+
+.SS Quickly navigate in history of working directories:
+
+The function \fId\fP drops down a menu showing the history as enumerated list. Unlike
+fish's builtin \fIdir\fP, \fId\fP does not show any duplicates. Enter a number to jump
+to a directory within the list.
+
+The following shortcuts need vi-mode:
+.IP \(bu 4
+Press \fBAlt+H\fP in \fBNORMAL\fP mode to change present working directory to previous working directory in history.
+.IP \(bu 4
+Press \fBAlt+L\fP in \fBNORMAL\fP mode to change present working directory to next working directory in history.
+
+.SS Quickly navigate in command history:
+
+The function \fIc\fP drops down a menu showing the command history as enumerated list similarly to
+the \fId\fP function. Selections are also pasted into the X clipboard. It's possible
+to load a command of a former prompt by giving the prompt line number as
+argument.
+
+.SS Bookmarks:
+
+A bookmark can be created with \fImark\fP. It can be removed with \fIunmark\fP. 
+
+\fIunmark\fP can take an argument to remove a specific bookmark in the bookmark list. 
+Simply add the number of the bookmark you would like to remove as the argument.
+
+Bookmarks are universal and thus persistant.
+A new shell automatically changes working directory on startup to newest bookmark.
+\fIm\fP is a function that drops down a menu showing the bookmarks as enumerated list
+equivalently to \fId\fP.
+
+The following shortcuts need vi mode:
+.IP \(bu 4
+Create a bookmark for present working directory with \fIm\fP in \fBNORMAL\fP mode.
+.IP \(bu 4
+Remove a bookmark for present working directory with \fIM\fP in \fBNORMAL\fP mode.
+
+By default the shell will change to the directory of the latest bookmark on a new session. 
+This can be disabled by adding the following line:
+
+.R set -U barracuda_no_cd_bookmark
+
+.SS Sessions:
+
+Shell session can be stored with \fIs <session name>\fP. If a session with \fI<session name>\fP` already exists, the session with this name will be attached. If a session with
+\fI<session name>\fP is already active within another terminal, this terminal will be
+focussed.
+
+A list of available sessions can be shown with \fIs\fP.
+
+A session can be erased with \fIs -e <session name>\fP.
+
+Type \fIs -d\fP to detach current session.
+
+.SS Set window title:
+
+Just type \fIwt <title>\fP.
+
+.SS Ring the bell in order to set the urgency hint flag:
+
+If you have configured your terminal application to use the visual bell, your
+window manager will tell you when a job running in your shell has finished. You
+don't need to check manually whether it's done.
+
+If you have still activated the acoustic bell, you probably hate that feature.
+Switch it off in that case:
+
+.R set -U barracuda_nobell
+
+.SS Termux Backup:
+
+With this function it's possible to perform a full backup of system and user's files.
+
+To create a new backup type:
+
+.R backup [[-c][--create] [<file name>]
+
+To list existing backups use:
+
+.R backup [-l][--list]
+
+To delete an existing backup:
+
+.R backup [-d][--delete]
+
+To show help:
+
+.R backup [-h][--help]
+
+Unfortunately this function can only perform backups. Restores have to be decompressed and copied manually.
+
+.SH AUTHOR
+.nf
+Marvin Eversley Silva (\fBMeVeRsS\fP)
+E_mail: \fImeverss@gmail.com\fP
+.fi

@@ -1012,7 +1012,6 @@ end
 #------------------------------------------------------------
 # => Colored Man Pages
 #------------------------------------------------------------
-
 function cless -d "Configure less to colorize styled text using environment variables before executing a command that will use less"
     set -l bold_ansi_code "\u001b[1m"
     set -l underline_ansi_code "\u001b[4m"
@@ -1033,6 +1032,8 @@ function cless -d "Configure less to colorize styled text using environment vari
     set -x LESS_TERMCAP_as (printf $linux) # end standout    
     set -x LESSCHARSET "utf-8" #us-ascii, iso-8859-1, utf-8
     set -x LANG "en_US.UTF-8"
+    set -x LC_CTYPE "en_US.UTF-8"
+    set -x LC_ALL ""
     set -x GROFF_NO_SGR yes
 
     $argv
@@ -1067,7 +1068,6 @@ end
 #------------------------------------------------------------
 # => Update Git project
 #------------------------------------------------------------
-
 function gitupdate -d 'Update Git project'
   set -l branch (command git describe --contains --all HEAD 2> /dev/null )
   if not test $branch > /dev/null

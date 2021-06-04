@@ -40,6 +40,7 @@ switch $lang
     set -U man_lang 'barracuda_sp'
     set -U lang 'español'
     set -U yes_no s n t c
+    termux-reload-settings
     fish_greeting
     commandline -f repaint
     return
@@ -51,6 +52,7 @@ switch $lang
     set -U man_lang 'barracuda_en'
     set -U lang 'english'
     set -U yes_no y n a c
+    termux-reload-settings
     fish_greeting
     commandline -f repaint
     return
@@ -130,7 +132,7 @@ switch $b_os
   case 'Android'
     if ! test -e $termux_path/home/.termux/font.ttf
     or ! cmp -s $theme_path/fonts/font.ttf $termux_path/home/.termux/font.ttf 2> /dev/null
-      cp -fs $__theme_path/fonts/font.ttf $termux_path/home/.termux/ 2> /dev/null
+      cp -f $__theme_path/fonts/font.ttf $termux_path/home/.termux/ 2> /dev/null
       termux-reload-settings
       commandline -f repaint
     end
