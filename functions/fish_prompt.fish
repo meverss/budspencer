@@ -878,8 +878,8 @@ function termux-backup -a opt file_name -d 'Backup file system'
 
 	 echo && echo
          echo -en $barracuda_cursors[1]
-         set input_length (expr length (expr $num_items))
-	 set options $i $yes_no
+         set -l input_length (expr length (expr $num_items))
+	 set -l options $i $yes_no
 
 	 while ! contains $arg $options
 	   tput cuu1
@@ -1010,6 +1010,20 @@ function termux-backup -a opt file_name -d 'Backup file system'
 end
 
 #------------------------------------------------------------
+# => Font selection
+#------------------------------------------------------------
+function chfont -d 'Choose system font'
+  while ! contains $arg $options
+    echo
+    echo (set_color -b 000 777)(set_color -b 777 -o 000) $b_lang[24] (set_color normal)(set_color -b black 777)(set_color normal)\n
+    tput cuu1
+    tput cuu1
+    tput ed
+    read -p 'echo -n \n(set_color -b 777 6b052a)  (set_color -b 777 000)"$b_lang[4]"(set_color -o 000)""[1-"$num_items"] (set_color normal)(set_color -b 777 000)"$b_lang[5]"(set_color -o 000)""["$yes_no[3]"] (set_color normal)(set_color -b 777 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color -b 777 normal)(set_color -b 000 777)""""(set_color normal)' -n 1 -l b_font
+    echo 
+  end
+end
+#------------------------------------------------------------
 # => Colored Man Pages
 #------------------------------------------------------------
 function cless -d "Configure less to colorize styled text using environment variables before executing a command that will use less"
@@ -1022,7 +1036,6 @@ function cless -d "Configure less to colorize styled text using environment vari
     set -l linux "\uf17c" 
     set -l gold_ansi_code "\u001b[38;5;220m"
 
-
     set -x LESS_TERMCAP_md (printf $bold_ansi_code$teal_ansi_code) # start bold
     set -x LESS_TERMCAP_me (printf $reset_ansi_code) # end bold
     set -x LESS_TERMCAP_us (printf $underline_ansi_code$green_ansi_code ) # start underline
@@ -1031,10 +1044,6 @@ function cless -d "Configure less to colorize styled text using environment vari
     set -x LESS_TERMCAP_se (printf $reset_ansi_code) # end standout
     set -x LESS_TERMCAP_as (printf $linux) # end standout    
     set -x LESSCHARSET "utf-8" #us-ascii, iso-8859-1, utf-8
-    set -x LANG "en_US.UTF-8"
-    set -x LC_CTYPE "en_US.UTF-8"
-    set -x LC_ALL ""
-    set -x GROFF_NO_SGR yes
 
     $argv
 end
