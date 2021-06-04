@@ -41,13 +41,13 @@ set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracud
 ###############################################################################
 # => Languages (SP-EN)
 ###############################################################################
-set -l bl (set_color fb0)'}><(({º> '(set_color -b normal 555)
+set -l bl (set_color fb0)'}><(({º>'(set_color -b normal 555)
 set -l bh (set_color $barracuda_colors[6])'barracuda_help'(set_color -b 000 555)
 set -U lang_sp 'Analizando y recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar' 'Todo' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: termux-backup [OPCION]...' '     termux-backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	Nombre del archivo de respaldo' '       Nombre de archivo     Tamaño    Fecha' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto' 'Cancelar' 'Copia de respaldo eliminada' 'Se eliminaron todos los arvivos de respaldos' 'Versión' 'Abortando...'
 set -U lang_en 'Analizing and collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done\! Backup has been successfuly finished' 'Usage: termux-backup [OPTION]...' '       termux-backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '           File name          Size      Date' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>' 'Cancel' 'popsBackup deleted' 'All backups has been deleted' 'Version' 'Aborting...'
 
-set -U g_lang_sp "$bl ¡Un tema elegante y poderoso para fish shell!\nEscriba $bh para obtener información sobre las funciones."
-set -U g_lang_en "$bl A fancy and powerful theme for the fish shell!\nType $bh for info about the features."
+set -U g_lang_sp "$bl Un tema elegante y poderoso para el shell fish.\nEscriba $bh para una documentación completa."
+set -U g_lang_en "$bl A fancy and powerful theme for the fish shell.\nType $bh for a complete documentation."
 
 function __ch_lang -a lang -d 'Change language'
 switch $lang
