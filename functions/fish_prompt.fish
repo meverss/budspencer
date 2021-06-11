@@ -262,8 +262,7 @@ function d -d 'List directory history, jump to directory in list with d <number>
 
     echo && echo
     while ! contains $foo $b_lang
-      tput cuu1
-      tput cuu1
+      tput cuu 2
       tput ed
       read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[7](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
       switch "$dir_num"
@@ -282,8 +281,7 @@ function d -d 'List directory history, jump to directory in list with d <number>
 	  return        
         case "$yes_no[5]"
           while ! contains $foo $b_lang
-            tput cuu1
-            tput cuu1
+            tput cuu 2
             tput ed
             read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5]) $barracuda_icons[7] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
             switch $dir_num
@@ -444,7 +442,6 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
           set_color $barracuda_colors[4]
         end
       end
-
       echo (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i).\t$barracuda_icons[7] $bookmarks[$i] | sed "s|$HOME|~|"
     end
     if [ $num_items -eq 1 ]
@@ -454,11 +451,9 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     end
     echo -en $barracuda_cursors[1]
     set input_length (expr length (expr $num_items - 1))
-
     echo && echo
-    while ! contains $foo $b_lang
-      tput cuu1
-      tput cuu1
+    while ! contains $foo $b_lang #2>/dev/null
+      tput cuu 2
       tput ed
       read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5])" $barracuda_icons[11]"(set_color $barracuda_colors[1])" $b_lang[34]"(set_color -o $barracuda_colors[1])"[0""$last_item""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
       switch $dir_num
@@ -1143,15 +1138,15 @@ function chfont -d 'Change font'
     end
     termux-reload-settings
 
-    for x in (seq (expr 12))
+    for x in (seq 12)
       tput cuu1
       tput ed
     end
   end
-  echo
-  while ! contains $foo $bar
-    tput cuu1
-    tput cuu1
+
+  echo && echo
+  while ! contains $foo $b_lang
+    tput cuu 2
     tput ed
     read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[19] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[32]"(set_color -o 000)""[1-4] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color normal)(set_color -b black $barracuda_colors[9])""""(set_color normal)' -n 1 -g b_font
       if contains $b_font (seq 4)
@@ -1159,16 +1154,15 @@ function chfont -d 'Change font'
         __set_font__
         break
        else if test $b_font = $yes_no[4]
-         for x in (seq (expr 12))
+         for x in (seq 12)
            tput cuu1
            tput ed
          end
          break
       end
-    tput cuu1
-    tput ed
   end
 end
+
 #------------------------------------------------------------
 # => Colored Man Pages
 #------------------------------------------------------------
