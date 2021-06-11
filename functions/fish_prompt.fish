@@ -421,8 +421,7 @@ end
 function m -d 'List bookmarks, jump to directory in list with m <number>'
   set -l num_items (count $bookmarks)
   if [ $num_items -eq 0 ]
-    set_color $fish_color_error[1]
-    echo 'Bookmark list is empty. '(set_color normal)'Enter '(set_color $fish_color_command[1])'mark '(set_color normal)'in INSERT mode or '(set_color $fish_color_command[1])'m '(set_color normal)'in NORMAL mode, if you want to add the current directory to your bookmark list.'
+    echo $b_lang[40]
     return
   end
   if begin
@@ -432,17 +431,21 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     end
     cd $bookmarks[(expr $num_items - $argv[1])]
   else
+    echo -e \n(set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[41] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
+    echo -e (set_color $barracuda_colors[5])$b_lang[42] (set_color normal)
+
     for i in (seq $num_items)
       if [ $PWD = $bookmarks[$i] ]
         set_color $barracuda_colors[10]
       else
         if [ (expr \( $num_items - $i \) \% 2) -eq 0 ]
-          set_color normal
+          set_color $barracuda_colors[9]
         else
           set_color $barracuda_colors[4]
         end
       end
-      echo "$barracuda_icons[16] "(expr $num_items - $i)\t$bookmarks[$i] | sed "s|$HOME|~|"
+
+      echo (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i).\t$barracuda_icons[7] $bookmarks[$i] | sed "s|$HOME|~|"
     end
     if [ $num_items -eq 1 ]
       set last_item ''
@@ -451,16 +454,29 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     end
     echo -en $barracuda_cursors[1]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $barracuda_colors[2] 111)"  Goto [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[10])' -n $input_length -l dir_num
-    switch $dir_num
-      case (seq 0 (expr $num_items - 1))
-        cd $bookmarks[(expr $num_items - $dir_num)]
-    end
-    for i in (seq (expr $num_items + 1))
+
+    echo && echo
+    while ! contains $foo $b_lang
       tput cuu1
+      tput cuu1
+      tput ed
+      read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5])" $barracuda_icons[11]"(set_color $barracuda_colors[1])" $b_lang[34]"(set_color -o $barracuda_colors[1])"[0""$last_item""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
+      switch $dir_num
+        case (seq 0 (expr $num_items - 1))
+          cd $bookmarks[(expr $num_items - $dir_num)]
+          for i in (seq (expr $num_items + 9))
+            tput cuu1
+            tput ed
+          end
+          return
+        case "$yes_no[4]"
+          for x in (seq (expr $num_items + 9))
+            tput cuu1
+            tput ed
+	  end
+	  return        
+      end
     end
-    tput ed
-    tput cuu1
   end
 end
 
