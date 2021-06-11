@@ -342,7 +342,7 @@ function __barracuda_create_cmd_hist -e fish_prompt -d 'Create command history w
   __barracuda_urgency
 end
 
-if ! test $b_os = 'Android'
+if not test $b_os = 'Android'
 function c -d 'List command history, load command from prompt with c <prompt number>'
   set -l num_items (count $$cmd_hist)
   if [ $num_items -eq 0 ]
