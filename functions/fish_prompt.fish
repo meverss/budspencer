@@ -250,7 +250,7 @@ function d -d 'List directory history, jump to directory in list with d <number>
       else
         set_color normal
       end
-      echo -e "$barracuda_icons[16]" (tabs -2)(expr $num_items - $i)".\t$barracuda_icons[7] "$$dir_hist[1][$i] | sed "s|$HOME|~|"
+      echo -e "$barracuda_icons[16]" (tabs -2)(expr $num_items - $i)".\t$barracuda_icons[40] "$$dir_hist[1][$i] | sed "s|$HOME|~|"
     end
     if [ $num_items -eq 1 ]
       set last_item ''

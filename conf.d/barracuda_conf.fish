@@ -111,8 +111,8 @@ end
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                        
-set -U barracuda_icons_light                                        
+set -U barracuda_icons_dark                                        
+set -U barracuda_icons_light                                        
 
 # Set "dark" the default icons scheme
 if not set -q barracuda_icons
