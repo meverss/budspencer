@@ -372,16 +372,17 @@ function c -d 'List command history, load command from prompt with c <prompt num
     read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[10](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
     switch $cmd_num
       case (seq 0 (expr $num_items - 1))
-        commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
-#        echo $$cmd_hist[1][(expr $num_items - $cmd_num)] #| xsel
-        for i in (seq (count $num_items))
+        for i in (seq (expr $num_items + 9))
           tput cuu1
-          ed
+          tput ed
         end
-        return
+        commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
+        break
       case "$yes_no[4]"
-        tput cuu 2
-        tput ed
+        for i in (seq (expr $num_items + 9))
+          tput cuu1
+          tput ed
+        end
         return
       case "$yes_no[5]"
         while ! contains $foo $b_lang
