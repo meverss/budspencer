@@ -363,7 +363,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
   else
     set last_item '-'(expr $num_items - 1)
   end
-  echo -en $barracuda_cursors[4]
+  echo -en $barracuda_cursors[1]
   set input_length (expr length (expr $num_items - 1))
   echo && echo
   while ! contains $foo $b_lang
@@ -377,7 +377,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
           tput ed
         end
         commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
-        break
+        return
       case "$yes_no[4]"
         for i in (seq (expr $num_items + 9))
           tput cuu1
@@ -392,8 +392,14 @@ function c -d 'List command history, load command from prompt with c <prompt num
             switch "$cmd_num"
               case (seq 0 (expr $num_items - 1))
                 set -e $cmd_hist[1][(expr $num_items - $cmd_num)] 2> /dev/null
-                for i in (seq (count (echo $$cmd_hist\n) + 9))
-                  tput cuu
+                for i in (seq (expr $num_items + 9))
+                  tput cuu1
+                  tput ed
+                end
+                return
+              case "$yes_no[4]"
+                for i in (seq (expr $num_items + 9))
+                  tput cuu1
                   tput ed
                 end
                 return
