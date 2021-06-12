@@ -340,23 +340,24 @@ function __barracuda_create_cmd_hist -e fish_prompt -d 'Create command history w
   __barracuda_urgency
 end
 
-if not test $b_os = 'Android'
 function c -d 'List command history, load command from prompt with c <prompt number>'
   set -l num_items (count $$cmd_hist)
   if [ $num_items -eq 0 ]
     set_color $fish_color_error[1]
-    echo 'Command history is empty. '(set_color normal)'It will be created automatically.'
+    echo $b_lang[45]
     return
   end
+  echo -e \n(set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[43] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
+  echo -e (set_color $barracuda_colors[5])$b_lang[44] (set_color normal)
   for i in (seq $num_items)
     if [ (expr \( $num_items - $i \) \% 2) -eq 0 ]
-      set_color normal
+      set_color $barracuda_colors[9]
     else
       set_color $barracuda_colors[4]
     end
-    echo -n "$barracuda_icons[16] "(expr $num_items - $i)
     set -l item (echo $$cmd_hist[1][$i])
-    echo -n \t$item\n
+    echo -e (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i) \t$item
+
   end
   if [ $num_items -eq 1 ]
     set last_item ''
@@ -369,10 +370,11 @@ function c -d 'List command history, load command from prompt with c <prompt num
   switch $cmd_num
     case (seq 0 (expr $num_items - 1))
       commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
-      echo $$cmd_hist[1][(expr $num_items - $cmd_num)] | xsel
+      echo $$cmd_hist[1][(expr $num_items - $cmd_num)] #| xsel
       for i in (seq (count (echo $$cmd_hist\n)))
         tput cuu1
       end
+      return
     case 'e'
       read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[9])" ↩ Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[9])' -n $input_length -l cmd_num
       for i in (seq (count (echo $$cmd_hist\n)))
@@ -385,7 +387,6 @@ function c -d 'List command history, load command from prompt with c <prompt num
   tput cuu1
   set pcount (expr $pcount - 1)
   set no_prompt_hist 'T'
-end
 end
 
 #------------------------------------------------------------
@@ -452,7 +453,7 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     echo -en $barracuda_cursors[1]
     set input_length (expr length (expr $num_items - 1))
     echo && echo
-    while ! contains $foo $b_lang #2>/dev/null
+    while ! contains $foo $b_lang
       tput cuu 2
       tput ed
       read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5])" $barracuda_icons[11]"(set_color $barracuda_colors[1])" $b_lang[34]"(set_color -o $barracuda_colors[1])"[0""$last_item""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
