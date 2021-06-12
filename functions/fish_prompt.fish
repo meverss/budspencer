@@ -343,7 +343,6 @@ end
 function c -d 'List command history, load command from prompt with c <prompt number>'
   set -l num_items (count $$cmd_hist)
   if [ $num_items -eq 0 ]
-    set_color $fish_color_error[1]
     echo $b_lang[45]
     return
   end
