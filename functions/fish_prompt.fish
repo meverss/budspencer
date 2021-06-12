@@ -357,7 +357,6 @@ function c -d 'List command history, load command from prompt with c <prompt num
     end
     set -l item (echo $$cmd_hist[1][$i])
     echo -e (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i). \t$barracuda_icons[10] $item
-
   end
   if [ $num_items -eq 1 ]
     set last_item ''
@@ -366,25 +365,27 @@ function c -d 'List command history, load command from prompt with c <prompt num
   end
   echo -en $barracuda_cursors[4]
   set input_length (expr length (expr $num_items - 1))
-  read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[9])" ↩ Exec [e|0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[9])' -n $input_length -l cmd_num
-  switch $cmd_num
-    case (seq 0 (expr $num_items - 1))
-      commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
-      echo $$cmd_hist[1][(expr $num_items - $cmd_num)] #| xsel
-      for i in (seq (count (echo $$cmd_hist\n)))
+  echo && echo
+  while ! contains $foo $b_lang
+    tput cuu 2
+    tput ed
+    read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[10](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
+    switch $cmd_num
+      case (seq 0 (expr $num_items - 1))
+        commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
+        echo $$cmd_hist[1][(expr $num_items - $cmd_num)] #| xsel
+        for i in (seq (count (echo $$cmd_hist\n)))
+          tput cuu1
+        end
+        return
+      case 'e'
+        read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[9])" ↩ Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[9])' -n $input_length -l cmd_num
+        for i in (seq (count (echo $$cmd_hist\n)))
         tput cuu1
       end
-      return
-    case 'e'
-      read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[9])" ↩ Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[9])' -n $input_length -l cmd_num
-      for i in (seq (count (echo $$cmd_hist\n)))
-        tput cuu1
-      end
-      tput cuu1
       set -e $cmd_hist[1][(expr $num_items - $cmd_num)] 2> /dev/null
   end
-  tput ed
-  tput cuu1
+end
   set pcount (expr $pcount - 1)
   set no_prompt_hist 'T'
 end
