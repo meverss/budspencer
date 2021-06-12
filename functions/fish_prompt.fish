@@ -951,7 +951,8 @@ function __backup__ -V file_name
   set_color $barracuda_colors[4] && tar -czf - * 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
   rm -Rf $tmp_dir/$file $HOME/exclude
   cd $current_path
- end
+  functions -e __backup__
+end
 
  switch $opt
    # ------ List ------
@@ -981,7 +982,7 @@ function __backup__ -V file_name
            else
              set line_color $barracuda_colors[9]
            end
-           echo -e (set_color $line_color)(tabs -2)$i.\t$barracuda_icons[21] $list[$i]
+           echo -e (tabs -2)(set_color $line_color)$i.\t$barracuda_icons[21] $list[$i]
          end
        end
      end
@@ -1011,22 +1012,20 @@ function __backup__ -V file_name
            else
              set line_color $barracuda_colors[9]
            end
-           echo -e (set_color $line_color)(tabs -2)$i.\t$barracuda_icons[21] $list[$i]
+           echo -e (tabs -2)(set_color $line_color)$i.\t$barracuda_icons[21] $list[$i]
          end
 
 	 echo && echo
          echo -en $barracuda_cursors[1]
          set -l input_length (expr length (expr $num_items))
 	 while ! contains $foo $b_lang
-	   tput cuu1
-	   tput cuu1
+	   tput cuu 2
 	   tput ed
            read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[12] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[4]"(set_color -o 000)""[1-"$num_items"] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[5]"(set_color -o 000)""["$yes_no[3]"] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color -b $barracuda_colors[9] normal)(set_color -b black $barracuda_colors[9])""""(set_color normal)' -n $input_length -l bkup_file
            switch $bkup_file
              case (seq 0 (expr $num_items))
                while ! contains $foo $b_lang
-                 tput cuu1
-                 tput cuu1
+                 tput cuu 2
                  tput ed
                  read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[12] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[6]"(set_color -o 000)"["$bkup_file"]" (set_color normal)(set_color -b $barracuda_colors[9] 000)"("$yes_no[1]"/"$yes_no[2]")" (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l confirm
                  switch $confirm
@@ -1058,8 +1057,7 @@ function __backup__ -V file_name
               return
             case "$yes_no[3]"
              while ! contains $foo $b_lang
-             tput cuu1
-             tput cuu1
+             tput cuu 2
              tput ed
              read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5])" $barracuda_icons[12]"(set_color normal)(set_color -b $barracuda_colors[9] 000) $b_lang[7] (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l argv
                switch $argv
@@ -1102,28 +1100,25 @@ function __backup__ -V file_name
      if test -d $HOME/storage
        if test -d $tmp_dir
          mkdir -p $bkup1
-         mv -f $tmp_dir/*.tar.gz $bkup1/
-
+         mv -f $tmp_dir/*.tar.gz $bkup1/ 2>/dev/null
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
          rm -Rf $tmp_dir
        else
-
          mkdir -p $tmp_dir
-
          __backup__ $file_name
          cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
          rm -Rf $tmp_dir
        end
      else
-       mkdir -p $tmp_dir
+       mkdir -p $tmp_dir 2>/dev/null
        echo "$b_lang[8]"\n"$b_lang[9]"
        echo "$b_lang[10]"(set_color $barracuda_colors[9])' termux-setup-storage'$normal\n
        __backup__ $file_name
      end
 
      if test -e $termux_path/usr/bin/termux-toast
-       termux-toast -b "#222222" -g top -c white $b_lang[11]
+       termux-toast -b "#222222" -g top -c "#$barracuda_colors[4]" $b_lang[11]
      end
 
    case '*'
@@ -1279,7 +1274,7 @@ set -g symbols_style 'symbols'
 #------------------------------------------------------------
 # Break
 #------------------------------------------------------------
-function __break__ #-s INT -d 'Custom break function'
+function __break__ -s INT -d 'Custom break function'
 #  trap INT
   echo \n"$b_lang[30]"
   cd $PWD
