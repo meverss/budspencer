@@ -356,7 +356,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
       set_color $barracuda_colors[4]
     end
     set -l item (echo $$cmd_hist[1][$i])
-    echo -e (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i) \t$item
+    echo -e (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i). \t$barracuda_icons[10] $item
 
   end
   if [ $num_items -eq 1 ]
