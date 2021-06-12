@@ -1134,8 +1134,9 @@ end
 end
 
 #------------------------------------------------------------
-# => Font selection
+# => Font selection (Termux)
 #------------------------------------------------------------
+if test -f $PREFIX/bin/termux-info
 function chfont -d 'Change font'
   echo
   echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[31] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
@@ -1145,9 +1146,9 @@ function chfont -d 'Change font'
       set_color $barracuda_colors[5]
     end
     if test "$fonts[$n]" = 'Monofur'
-      echo "$n Monofur (Default)"; set_color $barracuda_colors[9]
+      echo "$n. Monofur (Default)"; set_color $barracuda_colors[9]
     else
-      echo $n $fonts[$n]; set_color $barracuda_colors[9]
+      echo $n. $fonts[$n]; set_color $barracuda_colors[9]
     end
   end
 
@@ -1184,6 +1185,7 @@ function chfont -d 'Change font'
          break
       end
   end
+end
 end
 
 #------------------------------------------------------------
