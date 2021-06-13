@@ -518,13 +518,21 @@ end
 
 function __barracuda_erase_session -d 'Erase current session'
   if [ (count $argv) -eq 1 ]
-    set_color $fish_color_error[1]
-    echo 'Missing argument: name of session to erase'
+    switch $lang
+      case "es" "español"
+        echo -e "Falta un argumento: nombre de la sesión a eliminar."
+      case "en" "english"
+        echo -e 'Missing argument: name of session to erase'
+    end
     return
   end
   if contains $argv[2] $barracuda_sessions_active
-    set_color $fish_color_error[1]
-    echo "Session '$argv[2]' cannot be erased because it's currently active."
+    switch $lang
+      case "es" "español"
+        echo -e "La sesión '$argv[2]' no puede ser eliminada porque actualmente se encuentra activa."
+      case "en" "english"
+        echo -e "Session '$argv[2]' cannot be erased because it's currently active."
+    end
     return
   end
   if contains $argv[2] $barracuda_sessions
@@ -532,8 +540,12 @@ function __barracuda_erase_session -d 'Erase current session'
     set -e barracuda_session_dir_hist_$argv[2]
     set -e barracuda_sessions[(contains -i $argv[2] $barracuda_sessions)]
   else
-    set_color $fish_color_error[1]
-    echo "Session '$argv[2]' not found. "(set_color normal)'Enter '(set_color $fish_color_command[1])'s '(set_color normal)'to show a list of all recorded sessions.'
+    switch $lang
+      case "es" "español"
+        echo "No se encontró la sesión '$argv[2]'. "(set_color normal)'Escriba '(set_color $fish_color_command[1])'s '(set_color normal)'para mostrar una lista de las sesiones guardadas.'      
+      case "en" "english"
+        echo "Session '$argv[2]' not found. "(set_color normal)'Enter '(set_color $fish_color_command[1])'s '(set_color normal)'to show a list of all recorded sessions.'
+    end
   end
 end
 
@@ -582,16 +594,12 @@ function s -d 'Create, delete or attach session'
     set -l active_indicator
     set -l num_items (count $barracuda_sessions)
     if [ $num_items -eq 0 ]
-      set_color $fish_color_error[1]
-      echo -n 'Session list is empty. '
-      set_color normal
-      echo -n 'Enter '
-      set_color $fish_color_command[1]
-      echo -n 's '
-      set_color $fish_color_param[1]
-      echo -n 'session-name'
-      set_color normal
-      echo ' to record the current session.'
+      switch $lang
+        case "es" "español"
+          echo -e "La lista de sesiones está vacía. Escriba "(set_color $barracuda_colors[8])"'s'"(set_color normal)" [nombre-de-sesión] para guardar la sesión actual."
+        case "en" "english"
+          echo -e "Session list is empty. Enter" (set_color $barracuda_colors[8])"'s'"(set_color normal)" [session-name] to record the current session."
+      end
       return
     end
     for i in (seq $num_items)
@@ -1274,7 +1282,7 @@ set -g symbols_style 'symbols'
 #------------------------------------------------------------
 # Break
 #------------------------------------------------------------
-function __break__ -s INT -d 'Custom break function'
+function __break__ #-s INT -d 'Custom break function'
 #  trap INT
   echo \n"$b_lang[30]"
   cd $PWD
