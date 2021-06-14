@@ -1,5 +1,4 @@
 # Barracuda
-A fancy theme for the fish shell.
 
 ![screenshot](images/screenshot.jpg)
 
@@ -13,3 +12,4 @@ Also, the use of `Powerline Symbols` makes the visual experience smooth and fanc
 
 This theme is a fork of [oh-my-fish/theme-budspencer](https://github.com/oh-my-fish/theme-budspencer), which means it keeps most of it's awesome features.
 
+![screenshot](images/screenshot.jpg)
