@@ -66,7 +66,7 @@ end
 # Set default ON
 if not set -q bat_icon; set -U bat_icon 'on'; end
 
-function battery_level -d 'Shows battery level (Termux)'
+function battery_level -d 'Shows battery level'
 if test $bat_icon = 'on'
   set -g ac_online (string split "=" (cat $ac_info_file | grep 'ONLINE'))[2]
   if test $ac_online = "1"
