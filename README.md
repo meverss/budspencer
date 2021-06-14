@@ -1,6 +1,6 @@
 # Barracuda
 
-![screenshot](images/screenshot.jpg)
+![logo](images/logo.png)
 
 ## Description:
 
