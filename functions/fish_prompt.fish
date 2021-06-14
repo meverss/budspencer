@@ -568,7 +568,7 @@ function __barracuda_attach_session -d 'Attach session'
   if contains $argv[1] $barracuda_sessions_active
     wmctrl -a "$barracuda_icons[13] $argv[1]"
   else
-    wt "$barracuda_icons[13] $argv[1]"
+    wt "}><(({º> ""[ "$argv[1]" ] - "(date)
     __barracuda_detach_session $argv[-1]
     set barracuda_sessions_active $barracuda_sessions_active $argv[1]
     set barracuda_sessions_active_pid $barracuda_sessions_active_pid %self
