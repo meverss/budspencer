@@ -561,6 +561,8 @@ function __barracuda_detach_session -d 'Detach current session'
   set barracuda_session_current ''
   cd $$dir_hist[1][$dir_hist_val]
   set no_prompt_hist 'T'
+  tput cuu 2
+  tput ed
 end
 
 function __barracuda_attach_session -d 'Attach session'
@@ -707,18 +709,6 @@ function __barracuda_prompt_virtual_env -d 'Return the current virtual env name 
     if set -q barracuda_alt_environment
       echo -n ' '(eval "$barracuda_alt_environment")' '
     end
-    set_color -b $barracuda_colors[1] $barracuda_colors[9]
-  end
-end
-
-#------------------------------------------------------------
-# => Node version segment
-#------------------------------------------------------------
-function __barracuda_prompt_node_version -d 'Return the current Node version'
-  if set -q barracuda_alt_environment
-    set_color -b $barracuda_colors[9]
-    echo -n ''
-    echo -n ' '(node -v)' '
     set_color -b $barracuda_colors[1] $barracuda_colors[9]
   end
 end
@@ -1370,7 +1360,7 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set slash (set_color -o)(set_color normal)(set_color -b $barracuda_colors[9])(set_color 000)
   echo (set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $PWD (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"
   set -g last_status $status
-  echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_node_version) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
+  echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
 
 ###############################################################################
