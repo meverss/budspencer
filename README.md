@@ -1,5 +1,3 @@
-# Barracuda
-
 ![logo](images/logo.png)
 
 ## Description:
