@@ -1270,7 +1270,6 @@ function gitupdate -d 'Update Git project'
     echo (set_color $fish_color_error)'Este NO es un proyecto Git'
   else
     set -g add (command git add . #2> /dev/null)
-    echo $add
     if test add
       read -p "echo 'Descripción: '" -l desc
       [ $desc ]; or set desc 'Update files'
