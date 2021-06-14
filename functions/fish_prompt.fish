@@ -602,12 +602,15 @@ function s -d 'Create, delete or attach session'
       end
       return
     end
+    echo -e \n(set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[46] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
+    echo -e (set_color $barracuda_colors[5])$b_lang[47] (set_color normal)
+
     for i in (seq $num_items)
       if [ $barracuda_sessions[$i] = $barracuda_session_current ]
         set_color $barracuda_colors[8]
       else
         if [ (expr \( $num_items - $i \) \% 2) -eq 0 ]
-          set_color normal
+          set_color $barracuda_colors[9]
         else
           set_color $barracuda_colors[4]
         end
@@ -617,42 +620,61 @@ function s -d 'Create, delete or attach session'
       else
         set active_indicator ' '
       end
-      echo "$barracuda_icons[16] "(expr $num_items - $i)\t$active_indicator$barracuda_sessions[$i]
+      echo (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i).\t$barracuda_icons[13] $active_indicator$barracuda_sessions[$i]
     end
     if [ $num_items -eq 1 ]
       set last_item ''
     else
       set last_item '-'(expr $num_items - 1)
     end
-    echo -en $barracuda_cursors[3]
+    echo -en $barracuda_cursors[1]
     set input_length (expr length (expr $num_items - 1))
-    read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[8])" $barracuda_icons[13] Attach [e|0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[8])' -n $input_length -l session_num
-    set pcount (expr $pcount - 1)
-    switch $session_num
-      case (seq 0 (expr $num_items - 1))
-        set argv[1] $barracuda_sessions[(expr $num_items - $session_num)]
-        for i in (seq (expr $num_items + 1))
-          tput cuu1
-        end
-        tput ed
-        tput cuu1
-      case 'e'
-        read -p 'echo -n (set_color -b $barracuda_colors[2] $barracuda_colors[8])" $barracuda_icons[13] Erase [0"$last_item"] "(set_color -b normal $barracuda_colors[2])" "(set_color $barracuda_colors[8])' -n $input_length -l session_num
-        if [ (expr $num_items - $session_num) -gt 0 ]
-          __barracuda_erase_session -e $barracuda_sessions[(expr $num_items - $session_num)]
-        end
-        for i in (seq (expr $num_items + 3))
-          tput cuu1
-        end
-        tput ed
-        return
-      case '*'
-        for i in (seq (expr $num_items + 1))
-          tput cuu1
-        end
-        tput ed
-        tput cuu1
-        return
+
+    echo && echo
+    while ! contains $foo $b_lang
+      tput cuu 2
+      tput ed
+      read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[7](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
+      set pcount (expr $pcount - 1)
+      switch $session_num
+        case (seq 0 (expr $num_items - 1))
+          set argv[1] $barracuda_sessions[(expr $num_items - $session_num)]
+          for i in (seq (expr $num_items + 9))
+            tput cuu1
+            tput ed
+          end
+          break
+        case "$yes_no[4]"
+          for i in (seq (expr $num_items + 9))
+            tput cuu1
+            tput ed
+          end
+          return
+        case "$yes_no[5]"
+          while ! contains $foo $b_lang
+            tput cuu 2
+            tput ed
+            read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5]) $barracuda_icons[7] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
+            switch "$session_num"
+              case (seq 0 (expr $num_items - 1))
+                if [ (expr $num_items - $session_num) -gt 0 ]
+                  __barracuda_erase_session -e $barracuda_sessions[(expr $num_items - $session_num)]
+                end
+                for i in (seq (expr $num_items + 9))
+                  tput cuu1
+                  tput ed
+                end
+                return
+              case "$yes_no[4]"
+                for i in (seq (expr $num_items + 9))
+                  tput cuu1
+                  tput ed
+                end
+                return
+
+            end
+          end
+      end
     end
   end
   set -l item (contains -i %self $barracuda_sessions_active_pid 2> /dev/null)
@@ -666,8 +688,7 @@ function s -d 'Create, delete or attach session'
       tput ed
       set pcount (expr $pcount - 1)
     case '-*'
-      set_color $fish_color_error[1]
-      echo "Invalid argument: $argv[1]"
+      echo "$_: $b_lang[36] $argv[1]"
     case '*'
       __barracuda_attach_session $argv $item
   end
