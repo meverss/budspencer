@@ -659,6 +659,7 @@ function s -d 'Create, delete or attach session'
               case (seq 0 (expr $num_items - 1))
                 if [ (expr $num_items - $session_num) -gt 0 ]
                   __barracuda_erase_session -e $barracuda_sessions[(expr $num_items - $session_num)]
+                  barracuda_reload
                 end
                 for i in (seq (expr $num_items + 9))
                   tput cuu1
@@ -671,7 +672,6 @@ function s -d 'Create, delete or attach session'
                   tput ed
                 end
                 return
-
             end
           end
       end
