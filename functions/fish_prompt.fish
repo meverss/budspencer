@@ -1363,6 +1363,9 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
 
+function fish_prompt_mc -d 'Nothing to do here yet..'
+# Do nothing here.. not yet
+end
 ###############################################################################
 # => Right prompt
 ###############################################################################
