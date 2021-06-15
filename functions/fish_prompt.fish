@@ -748,12 +748,16 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
     set_color -b $barracuda_colors[3]
     switch $pwd_style
       case short long
+#        set git_dirty (command git status -s --ignore-submodules=dirty 2> /dev/null)
+        set -g git_ahead_behind (git rev-list --left-right --count origin/master...origin/$branch 2>/dev/null)
+        set -l git_ahead "$barracuda_icons[42]"(set_color $barracuda_colors[12])"$git_ahead_behind[2]"(set_color $barracuda_colors[1])
+        set -l git_behind "$git_ahead_icons[43]"(set_color $barracuda_colors[12])"$git_ahead_behind[1]"(set_color $barracuda_colors[1])
         echo -n (set_color $barracuda_colors[1])" $barracuda_icons[4] "$branch' '(set_color $barracuda_colors[3])
       case none
         echo -n ''
     end
     set_color normal
-    set_color $barracuda_colors[3]
+    set_color -b $barracuda_colors[2] $barracuda_colors[3]
   end
 end
 
