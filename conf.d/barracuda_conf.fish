@@ -221,5 +221,15 @@ if test -f $PREFIX/bin/termux-info
         termux-reload-settings
         commandline -f repaint
       end
+    case 'Darwin'
+      set font_dir "$HOME/Library/Fonts"
+      mkdir -p $font_dir
+      cp -f $theme_path/fonts/$font $font_dir/$font 2>/dev/null
+      fc-cache -f "$font_dir"
+    case 'Linux' 'Windows'
+      set font_dir "$HOME/.local/share/fonts"
+      mkdir -p $font_dir
+      cp -f $theme_path/fonts/$font $font_dir/$font 2>/dev/null      
+      fc-cache -f "$font_dir"
   end
 end
