@@ -226,10 +226,12 @@ if test -f $PREFIX/bin/termux-info
       mkdir -p $font_dir
       cp -f $theme_path/fonts/$font $font_dir/$font 2>/dev/null
       fc-cache -f "$font_dir"
-    case 'Linux' 'Windows'
+      barracuda_reload
+    case '*'
       set font_dir "$HOME/.local/share/fonts"
       mkdir -p $font_dir
       cp -f $theme_path/fonts/$font $font_dir/$font 2>/dev/null      
       fc-cache -f "$font_dir"
+      barracuda_reload
   end
 end
