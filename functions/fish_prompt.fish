@@ -758,9 +758,16 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
           set -l git_behind $git_ahead_behind[1]
           set color_info (set_color $barracuda_colirs[12])
 
-#          if test $git_ahead -ge 0
+#          if test $git_dirty -gt 0
+            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$color_info$git_dirty"
+#          end
+#          if test $git_ahead -gt 0
             set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[42]$color_info$git_ahead"
 #          end
+#          if test $git_behind -gt 0
+            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[43]$color_info$git_behind"
+#          end
+
         else
           set -g git_status_info ''
         end    
