@@ -1358,7 +1358,12 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   echo
   fish_vi_key_bindings
   set slash (set_color -o)(set_color normal)(set_color -b $barracuda_colors[9])(set_color 000)
-  echo (set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $PWD (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"
+  if [ (string length (pwd)) -lt (expr (tput cols) - 5) ]
+    set working_dir (pwd)
+  else
+    set working_dir (prompt_pwd)
+  end
+  echo -e (set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $working_dir (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"  
   set -g last_status $status
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
