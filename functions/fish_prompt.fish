@@ -726,7 +726,7 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
         set_color -b $barracuda_colors[11]
         switch $pwd_style
           case short long
-            echo -n ''(set_color $barracuda_colors[1])' ➦ '$commit' '(set_color $barracuda_colors[11])
+            echo -n ''(set_color $barracuda_colors[1])" $barracuda_icons[4] "$commit' '(set_color $barracuda_colors[8])
           case none
             echo -n ''
         end
