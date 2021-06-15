@@ -753,9 +753,15 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
       case short long
         if test $git_status = 'on'
           set -l git_dirty (expr (count (git status -sb)) - 1)
-          set -g git_ahead_behind (string split '-' (git rev-list --left-right --count origin/$branch...origin/master | sed "s/\t/-/g"))
-          set -g git_ahead $git_ahead_behind[1]
-          set -g git_behind $git_ahead_behind[2]
+          set -l git_ahead_behind (string split '-' (git rev-list --left-right --count origin/master...origin/$branch | sed "s/\t/-/g"))
+          set -l git_ahead $git_ahead_behind[2]
+          set -l git_behind $git_ahead_behind[1]
+          set -g git_status_info (set_color $barracuda_colors[1])
+          set color_info (set_color $barracuda_colirs[12])
+
+          if test $git_ahead -gt 0
+            set -g git_status_info $git_status_info "$barracuda_icons[42] "$color_info"$git_ahead "
+          end
         else
           set -g git_status_info ''
         end    
