@@ -770,9 +770,9 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
         else
           set git_status_info ''
         end    
-        echo -n (set_color $barracuda_colors[1])" $barracuda_icons[4] "$branch$git_status_info' '(set_color $barracuda_colors[3])
+        echo -n (set_color $barracuda_colors[1])" $barracuda_icons[4] $branch"" $git_status_info"' '(set_color $barracuda_colors[3])
       case none
-        echo -n ' hhhhh'
+        echo -n ''
     end
     set_color normal
     set_color $barracuda_colors[3]
