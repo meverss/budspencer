@@ -745,18 +745,17 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
       set_color $barracuda_colors[9]
     end
   else
-    if not set -q git_status
-      set -g git_status 'on'
+    if not set -q git_show_info
+      set -U git_show_info 'on'
     end
     set_color -b $barracuda_colors[3]
     switch $pwd_style
       case short long
-        if test $git_status = 'on'
+        if test $git_show_info = 'on'
           set -l git_dirty (expr (count (git status -sb)) - 1)
           set -g git_ahead_behind (string split '-' (git rev-list --left-right --count origin/master...origin/$branch | sed "s/\t/-/g"))
           set -l git_ahead $git_ahead_behind[2]
           set -l git_behind $git_ahead_behind[1]
-          set color_info (set_color $barracuda_colirs[5])
 
           if test $git_dirty -gt 0
             set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$git_dirty"
@@ -776,6 +775,17 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
     end
     set_color normal
     set_color $barracuda_colors[3]
+  end
+end
+
+function gitinfo -a opt -d 'Enable/Disable Git repository info'
+  switch $opt
+    case 'on'
+      set -U git_show_info 'on'
+    case 'off'
+      set -U git_show_info 'off'
+    case '*'
+      echo "$_: $b_lang[36] $argv"
   end
 end
 
