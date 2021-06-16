@@ -734,7 +734,7 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
         set_color $barracuda_colors[11]
       end
     else
-      set_color -b $barracuda_colors[9]
+      set_color -b $barracuda_colors[3]
       switch $pwd_style
         case short long
           echo -n (set_color $barracuda_colors[1])" $barracuda_icons[4] "$position' '(set_color $barracuda_colors[9])
@@ -756,17 +756,17 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
           set -g git_ahead_behind (string split '-' (git rev-list --left-right --count origin/master...origin/$branch | sed "s/\t/-/g"))
           set -l git_ahead $git_ahead_behind[2]
           set -l git_behind $git_ahead_behind[1]
-          set color_info (set_color $barracuda_colirs[12])
+          set color_info (set_color $barracuda_colirs[5])
 
-#          if test $git_dirty -gt 0
-            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$color_info$git_dirty"
-#          end
-#          if test $git_ahead -gt 0
-            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[42]$color_info$git_ahead"
-#          end
-#          if test $git_behind -gt 0
-            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[43]$color_info$git_behind"
-#          end
+          if test $git_dirty -gt 0
+            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$git_dirty"
+          end
+          if test $git_ahead -gt 0
+            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[42]$git_ahead"
+          end
+          if test $git_behind -gt 0
+            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[43]$git_behind"
+          end
 
         else
           set -g git_status_info ''
