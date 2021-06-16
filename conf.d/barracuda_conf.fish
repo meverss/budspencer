@@ -32,25 +32,35 @@ set info (command uname)
 
 echo '' > $termux_path/usr/etc/motd
 
-if test $info = 'Linux'; and contains 'Android' (string split " " (command uname -a))
-  set info 'Android'
+# OS Info
+if contains 'Android' (string split ' ' (uname -a))
+    set -U b_os 'Android'
+    set -U i_os $barracuda_icons[25]
+else
+  switch $info
+    case 'Darwin'
+      set -U b_os 'Mac OS'
+      set -U i_os $barracuda_icons[23]
+    case 'Windows'
+      set -U b_os $info
+      set -U i_os $barracuda_icons[24]
+    case '*'
+      set -U b_os $info
+      set -U i_os $barracuda_icons[26]
+  end
 end
 
-# OS Info
-switch $info
-  case 'Android'
-    set -U b_os $info
-    set -U i_os $barracuda_icons[25]
-  case 'Darwin'
-    set -U b_os 'Mac OS'
-    set -U i_os $barracuda_icons[23]
-  case 'Windows'
-    set -U b_os $info
-    set -U i_os $barracuda_icons[24]
-  case '*'
-    set -U b_os $info
-    set -U i_os $barracuda_icons[26]
-end
+#set distro 'Debian' 'Fedora' 'Arch' 'Ubuntu' 'Suse' 'Gentoo' 'BSD'\
+#  for x in (seq (count $distro))
+#    if contains $distro[$x] (string split ' ' (uname -a))
+#      switch $distro[$x]
+#        case 'Android'
+#          echo Android
+#        case 'aarch64'
+#          echo CPU
+#      end
+#    end
+#  end
 
 # Battery info
 if not set -q ac_info_file
@@ -100,7 +110,7 @@ end
 # Define colors
 #------------------------------------------------------------------------------
 set -U barracuda_colors_dark 000 6a7a6a 445659 bbb b58900 222222 dc121f 9c9 777 268bd2 2aa198 666
-set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aaa 2aa198 666
+set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aaa 268bd2 2aa198 666
 
 # Set "dark" the default color scheme
 if not set -q barracuda_colors
@@ -112,7 +122,7 @@ end
 #------------------------------------------------------------------------------
 set -U barracuda_icons_dark                                           
 set -U barracuda_icons_light                                           
-set -U barracuda_icons_linux                
+set -U barracuda_icons_linux                
 
 #   
 
