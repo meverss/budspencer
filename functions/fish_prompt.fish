@@ -68,26 +68,27 @@ if not set -q bat_icon; set -U bat_icon 'on'; end
 
 function battery_level -d 'Shows battery level'
 if test $bat_icon = 'on'
-  set -g ac_online (string split "=" (cat $ac_info_file | grep 'ONLINE'))[2]
-  if test $ac_online = "1"
-    set -g i_battery $battery[6]
+  set ac_online (string split "=" (cat $ac_info_file | grep 'ONLINE'))[2]
+
+  if test $ac_online -gt 0
+    set -g i_battery $battery_icons[6]
   else
-    set -g battery $barracuda_icons[30..35]
-    set -g blevel (string split "=" (cat $battery_info_file | grep 'CAPACITY'))[2]
-    set -g bstatus (string split "=" (cat $battery_info_file | grep 'STATUS'))[2]
+
+    set -l blevel (string split "=" (cat $battery_info_file | grep 'CAPACITY'))[2]
+    set -l bstatus (string split "=" (cat $battery_info_file | grep 'STATUS'))[2]
 
     if not test $bstatus = 'Charging'; and contains $blevel (seq 15)
-      set -g i_battery (set_color $barracuda_colors[7])$battery[5]
+      set -g i_battery (set_color $barracuda_colors[7])$battery_icons[5]
     else if not test $bstatus = 'Charging'; and contains $blevel (seq 16 44)
-      set -g i_battery $battery[4]
+      set -g i_battery $battery_icons[4]
     else if not test $bstatus = 'Charging'; and contains $blevel (seq 46 64)
-      set -g i_battery $battery[3]
+      set -g i_battery $battery_icons[3]
     else if not test $bstatus = 'Charging'; and contains $blevel (seq 66 89)
-      set -g i_battery $battery[2]
+      set -g i_battery $battery_icons[2]
     else if not test $bstatus = 'Charging'; and contains $blevel (seq 91 100)
-      set -g i_battery $battery[1]
+      set -g i_battery $battery_icons[1]
     else if test $bstatus = 'Charging'
-      set -g i_battery $battery[6]
+      set -g i_battery $battery_icons[6]
     end
   end
 end
@@ -355,7 +356,8 @@ function c -d 'List command history, load command from prompt with c <prompt num
       set_color $barracuda_colors[4]
     end
     set -l item (echo $$cmd_hist[1][$i])
-    echo -e (tabs -2)"$barracuda_icons[16] "(expr $num_items - $i). \t$barracuda_icons[10] $item
+    if test (expr $num_items - $i) -ge 10; set t ''; else; set t '\t';end
+    echo -e "$barracuda_icons[16] "(expr $num_items - $i). $t$barracuda_icons[10] $item
   end
   if [ $num_items -eq 1 ]
     set last_item ''
@@ -609,7 +611,7 @@ function s -d 'Create, delete or attach session'
 
     for i in (seq $num_items)
       if [ $barracuda_sessions[$i] = $barracuda_session_current ]
-        set_color $barracuda_colors[8]
+        set_color $barracuda_colors[10]
       else
         if [ (expr \( $num_items - $i \) \% 2) -eq 0 ]
           set_color $barracuda_colors[9]
@@ -1186,16 +1188,13 @@ if test -f $PREFIX/bin/termux-info
 function chfont -d 'Change font'
   echo
   echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[31] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
-  for n in (seq 5)
+  for n in (seq (count $fonts))
     set_color $barracuda_colors[9]
     if test "$$fonts[$n]" = "$font"
       set_color $barracuda_colors[10]
     end
-    if test "$fonts[$n]" = 'Monofur'
-      echo "$n. Monofur (Default)"; set_color $barracuda_colors[9]
-    else
-      echo $n. $$fonts[$n]; set_color $barracuda_colors[9]
-    end
+      echo $n. $$fonts[$n] | sed "s/Monofur/Monofur (Default)/g"
+      set_color $barracuda_colors[9]
   end
 
   function __set_font__ -a sfont -d 'Set selected font'
@@ -1208,7 +1207,7 @@ function chfont -d 'Change font'
     end
     termux-reload-settings
 
-    for x in (seq 12)
+    for x in (seq (expr (count $fonts) + 8))
       tput cuu1
       tput ed
     end
@@ -1223,8 +1222,8 @@ function chfont -d 'Change font'
         set -U font $$fonts[$b_font]
         __set_font__
         break
-       else if test $b_font = $yes_no[4]
-         for x in (seq 12)
+      else if test $b_font = $yes_no[4]
+         for x in (seq (expr (count $fonts) + 8))
            tput cuu1
            tput ed
          end

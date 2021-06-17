@@ -11,7 +11,8 @@
 #
 # Sections:
 #   -> General configurations
-#   -> Colors definition
+#   -> Reload settings
+#   -> Colors and icons definition
 #   -> Language definition
 #   -> Aliases
 #   -> Key bindings
@@ -26,8 +27,7 @@
 set -U barracuda_version "1.7.2"
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files'
-set tpath (string split '/' (status dirname))[1..-2]
-set -U theme_path (string join '/' $tpath)
+set -U theme_path (status dirname | sed 's/\/conf.d//g')
 set info (command uname)
 
 echo '' > $termux_path/usr/etc/motd
@@ -66,8 +66,7 @@ end
 if not set -q ac_info_file
 for ac in ac AC
   if test -d /sys/class/power_supply/$ac
-    set b_path (string split '/' (readlink -f /sys/class/power_supply/$ac))[1..-2]
-    set b_path (string join '/' $b_path)
+    set b_path (readlink -f /sys/class/power_supply/$ac | sed 's/\/$ac//g')
     set -U ac_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_NAME=$ac" 2>/dev/null))[1]
     set -U battery_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_CAPACITY=" 2>/dev/null))[1]
     break
@@ -124,8 +123,8 @@ end
 set -U barracuda_icons_dark                                           
 set -U barracuda_icons_light                                           
 set -U barracuda_icons_linux                
-
-#   
+set -U barracuda_icons_plang   
+set -U battery_icons $barracuda_icons[30..35]
 
 # Set "dark" the default icons scheme
 if not set -q barracuda_icons

@@ -1,3 +1,20 @@
+########################################################
+#
+# Prompt theme name:
+#   barracuda
+#
+# Description:
+#   A fancy theme for the fish shell.
+#
+# Author:
+#   Marvin Eversley Silva <meverss@gmail.com>
+#
+# Sections:
+#   -> Fish prompt colors
+#
+########################################################
+
+# Set fish prompt colors
 set -U fish_color_normal normal
 set -U fish_color_command 99cc99
 set -U fish_color_quote ffcc66
