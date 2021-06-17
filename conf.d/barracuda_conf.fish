@@ -121,8 +121,8 @@ end
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                           
-set -U barracuda_icons_light                                           
+set -U barracuda_icons_dark                                           
+set -U barracuda_icons_light                                           
 set -U barracuda_icons_linux                
 
 #   
@@ -217,11 +217,12 @@ bind \r __barracuda_preexec
 # => Install Powerline fonts (Termux)
 ###############################################################################
 if test -f $PREFIX/bin/termux-info
-  set -g fonts 'Monofur' 'DejaVu' 'FiraCode' 'Go'
+  set -g fonts 'Monofur' 'DejaVu' 'FiraCode' 'Go' 'Ubuntu'
   set -g DejaVu 'DejaVu Sans Mono'
   set -g FiraCode 'Fira Code Regular'
   set -g Go 'Go Mono'
   set -g Monofur 'Monofur'
+  set -g Ubuntu 'Ubuntu'
   set -g DroidSans 'Droid Sans Mono Nerd Font Complete'
 
   if not set -q font

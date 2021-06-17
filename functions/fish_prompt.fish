@@ -1186,7 +1186,7 @@ if test -f $PREFIX/bin/termux-info
 function chfont -d 'Change font'
   echo
   echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[31] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
-  for n in (seq 4)
+  for n in (seq 5)
     set_color $barracuda_colors[9]
     if test "$$fonts[$n]" = "$font"
       set_color $barracuda_colors[10]
@@ -1219,7 +1219,7 @@ function chfont -d 'Change font'
     tput cuu 2
     tput ed
     read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[19] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[32]"(set_color -o 000)""[1-4] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color normal)(set_color -b black $barracuda_colors[9])""""(set_color normal)' -n 1 -g b_font
-      if contains $b_font (seq 4)
+      if contains $b_font (seq (count $fonts))
         set -U font $$fonts[$b_font]
         __set_font__
         break
