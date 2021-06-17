@@ -1253,7 +1253,7 @@ function cless -d "Configure less to colorize styled text using environment vari
     set -x LESS_TERMCAP_so (printf $reversed_ansi_code$gold_ansi_code) # start standout
     set -x LESS_TERMCAP_se (printf $reset_ansi_code) # end standout
     set -x LESSCHARSET 'UTF-8' #us-ascii, iso-8859-1, utf-8
-    set -x LANG "en_EN.UTF-8"
+    set -x LANG 'es_ES.UTF-8'
 
     $argv
 end
