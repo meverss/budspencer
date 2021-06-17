@@ -1189,19 +1189,19 @@ function chfont -d 'Change font'
   for n in (seq 4)
     set_color $barracuda_colors[9]
     if test "$$fonts[$n]" = "$font"
-      set_color $barracuda_colors[5]
+      set_color $barracuda_colors[10]
     end
     if test "$fonts[$n]" = 'Monofur'
       echo "$n. Monofur (Default)"; set_color $barracuda_colors[9]
     else
-      echo $n. $fonts[$n]; set_color $barracuda_colors[9]
+      echo $n. $$fonts[$n]; set_color $barracuda_colors[9]
     end
   end
 
   function __set_font__ -a sfont -d 'Set selected font'
-    if ! cmp -s $theme_path/fonts/$font $HOME/.termux/font.ttf 2> /dev/null
+    if ! cmp -s $theme_path/fonts/$font.ttf $HOME/.termux/font.ttf 2> /dev/null
       rm -f $HOME/.termux/font.ttf 2>/dev/null
-      cp -f $theme_path/fonts/$font $HOME/.termux/font.ttf 2>/dev/null
+      cp -f $theme_path/fonts/$font.ttf $HOME/.termux/font.ttf 2>/dev/null
     end
     if test -e $PATH/termux-toast
       termux-toast -b "#222222" -g top -c white $b_lang[33] $fonts[$b_font]

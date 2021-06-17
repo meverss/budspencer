@@ -218,10 +218,11 @@ bind \r __barracuda_preexec
 ###############################################################################
 if test -f $PREFIX/bin/termux-info
   set -g fonts 'Monofur' 'DejaVu' 'FiraCode' 'Go'
-  set -g DejaVu 'dejavu.ttf'
-  set -g FiraCode 'firacode.ttf'
-  set -g Go 'go.ttf'
-  set -g Monofur 'monofur.ttf'
+  set -g DejaVu 'DejaVu Sans Mono'
+  set -g FiraCode 'Fira Code Regular'
+  set -g Go 'Go Mono'
+  set -g Monofur 'Monofur'
+  set -g DroidSans 'Droid Sans Mono Nerd Font Complete'
 
   if not set -q font
     set -U font $Monofur
@@ -229,22 +230,22 @@ if test -f $PREFIX/bin/termux-info
 
   switch $b_os
     case 'Android'
-      if ! test -e $termux_path/home/.termux/font.ttf
-        or ! cmp -s $theme_path/fonts/$font $HOME/.termux/font.ttf 2>/dev/null
-        cp -f $theme_path/fonts/$font $HOME/.termux/font.ttf 2>/dev/null
+      if ! test -e $HOME/.termux/font.ttf
+        or ! cmp -s $theme_path/fonts/$font.ttf $HOME/.termux/font.ttf 2>/dev/null
+        cp -f $theme_path/fonts/$font.ttf $HOME/.termux/font.ttf 2>/dev/null
         termux-reload-settings
         commandline -f repaint
       end
     case 'Darwin'
       set font_dir "$HOME/Library/Fonts"
       mkdir -p $font_dir
-      cp -f $theme_path/fonts/$font $font_dir/$font 2>/dev/null
+      cp -f $theme_path/fonts/$DroidSans.otf $font_dir/$DroidSans.otf 2>/dev/null
       fc-cache -f "$font_dir"
       barracuda_reload
     case '*'
       set font_dir "$HOME/.local/share/fonts"
       mkdir -p $font_dir
-      cp -f $theme_path/fonts/$font $font_dir/$font 2>/dev/null      
+      cp -f $theme_path/fonts/$DroidSans.otf $font_dir/$DroidSans.otf 2>/dev/null      
       fc-cache -f "$font_dir"
       barracuda_reload
   end
