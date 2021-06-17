@@ -752,13 +752,13 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
     switch $pwd_style
       case short long
         if test $git_show_info = 'on'
-          set -l git_dirty (expr (count (git status -sb)) - 1)
+          set -g git_dirty (expr (count (git status -sb)) - 1)
           set -g git_ahead_behind (string split '-' (git rev-list --left-right --count origin/master...origin/$branch | sed "s/\t/-/g"))
           set -l git_ahead $git_ahead_behind[2]
           set -l git_behind $git_ahead_behind[1]
 
           if test $git_dirty -gt 0
-            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$git_dirty"
+            set  git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$git_dirty"
           end
           if test $git_ahead -gt 0
             set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[42]$git_ahead"
@@ -768,8 +768,9 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
           end
         else
           set git_status_info ''
-        end    
-        echo -n (set_color $barracuda_colors[1])" $barracuda_icons[4] $branch""$git_status_info"' '(set_color $barracuda_colors[3])
+        end
+        set -g i_git_info $git_status_info
+        echo -en (set_color $barracuda_colors[1])" $barracuda_icons[4] $branch""$git_status_info"' '(set_color $barracuda_colors[3])
       case none
         echo -n ''
     end
@@ -1291,7 +1292,7 @@ function gitupdate -d 'Update Git project'
   if not test $branch > /dev/null
     echo (set_color $fish_color_error)'Este NO es un proyecto Git'
   else
-    set -g add (command git add . #2> /dev/null)
+    set -l add (command git add . #2> /dev/null)
     if test add
       read -p "echo 'Descripción: '" -l desc
       [ $desc ]; or set desc 'Update files'
@@ -1391,8 +1392,8 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   fish_vi_key_bindings
   set slash (set_color -o)(set_color normal)(set_color -b $barracuda_colors[9])(set_color 000)
   set -l realhome ~
-  set -l tmp (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
-  set -l short_working_dir (string replace -ar '(\.?[^/]{''})[^/]*/' '$1/' $tmp)
+  set -l my_path (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
+  set -l short_working_dir (string replace -ar '(\.?[^/]{''})[^/]*/' '$1/' $my_path)
 
   if [ (string length (pwd)) -lt (expr (tput cols) - 5) ]
     set working_dir (pwd)
