@@ -17,6 +17,6 @@
 ###############################################################################
 # => Barracuda info
 ###############################################################################
-function barracuda-info -d 'Show theme info'
+function barracuda_info -d 'Show theme info'
 
 end
