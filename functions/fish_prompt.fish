@@ -112,13 +112,13 @@ end
 #------------------------------------------------------------
 # => Environment
 #------------------------------------------------------------
-# Dark mod
+# Dark mode
 function dark -d 'Set dark mode'
   set -U barracuda_colors $barracuda_colors_dark
   set -U barracuda_icons $barracuda_icons_dark
   set -U i_mode $barracuda_icons[1]
+  set -U scheme 'Dark'
   set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
-  barracuda_reload
   switch $lang
     case 'es' 'español'
       spanish
@@ -132,8 +132,8 @@ function light -d 'Set light mode'
   set -U barracuda_colors $barracuda_colors_light
   set -U barracuda_icons $barracuda_icons_light
   set -U i_mode $barracuda_icons[1]
+  set -U scheme 'Light'
   set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
-  barracuda_reload
   switch $lang
     case 'es' 'español'
       spanish
@@ -563,8 +563,6 @@ function __barracuda_detach_session -d 'Detach current session'
   set barracuda_session_current ''
   cd $$dir_hist[1][$dir_hist_val]
   set no_prompt_hist 'T'
-  tput cuu 3
-  tput ed
 end
 
 function __barracuda_attach_session -d 'Attach session'
@@ -685,10 +683,12 @@ function s -d 'Create, delete or attach session'
   switch $argv[1]
     case '-e'
       __barracuda_erase_session $argv
+      tput cuu 3
+      tput ed
     case '-d'
-      wt 'fish'
+      wt ' }><(({º> -' (date)
       __barracuda_detach_session $item
-      tput cuu1
+      tput cuu 3
       tput ed
       set pcount (expr $pcount - 1)
     case '-*'

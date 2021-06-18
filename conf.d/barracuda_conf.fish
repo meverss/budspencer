@@ -96,6 +96,8 @@ function barracuda_reload -a opt -d 'Reload configuration'
       source "$theme_path/functions/barracuda_info.fish"
       source "$theme_path/functions/fish_prompt.fish"
       cd $current_path
+      tput cuu 3
+      tput ed
     case "config"
       source "$theme_path/conf.d/barracuda_conf.fish"
       cd $current_path
@@ -119,16 +121,16 @@ set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aa
 if not set -q barracuda_colors
   set -U barracuda_colors $barracuda_colors_dark
 end
-#__color_scheme
+
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                             
-set -U barracuda_icons_light                                             
-set -U barracuda_icons_linux                
+set -U barracuda_icons_dark                                              
+set -U barracuda_icons_light                                              
+set -U barracuda_icons_linux              
 set -U barracuda_icons_plang   
 set -U battery_icons $barracuda_icons[30..35]
-#  
+#     
 # Set "dark" the default icons scheme
 if not set -q barracuda_icons
   set -U barracuda_icons $barracuda_icons_dark
@@ -144,7 +146,7 @@ set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracud
 ###############################################################################
 # => Languages (SP-EN)
 ###############################################################################
-set -l bl (set_color -o $barracuda_colors[5])'}><(({º>'(set_color -b normal $barracuda_colors[9])
+set -l bl (set_color -o $barracuda_colors[5])'{⋟<(({>'(set_color -b normal $barracuda_colors[9])
 set -l fs (set_color $barracuda_colors[4])'fish'(set_color -b normal $barracuda_colors[9])
 set -l bh (set_color $barracuda_colors[4])'barracuda_help'(set_color -b 000 $barracuda_colors[9])
 set -U lang_sp 'Recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar' 'Todo' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: backup [OPCION]...' '     backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	  Nombre del archivo de respaldo' '         Nombre de archivo     Tamaño       Fecha' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto' 'Cancelar' 'Copia de respaldo eliminada' 'Se eliminaron todos los arvivos de respaldos' 'Versión' 'Abortando...'\

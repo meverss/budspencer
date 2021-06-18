@@ -43,5 +43,7 @@ function barracuda_info -d 'Show theme info'
   echo -e $i\t$barracuda_icons[13]$n$d $b_lang[53]$v "$session"
   echo -e $h\n\t$b_lang[55]
   echo -e $i\t$barracuda_icons[37]$n$d $b_lang[56]$v "$lang" | sed 's/es/Español/g' | sed 's/en/English/g'
+  echo -e $i\t$barracuda_icons[46]$n$d $b_lang[57]$v "$scheme"
+
   
 end
