@@ -91,7 +91,7 @@ function barracuda_reload -a opt -d 'Reload configuration'
   set current_path (pwd)
   switch $opt
     case "" "set barracuda_colors"
-      s -d
+      __barracuda_detach_session $item
       source "$theme_path/conf.d/barracuda_conf.fish"
       source "$theme_path/functions/fish_prompt.fish"
       cd $current_path
@@ -124,8 +124,8 @@ end
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                              
-set -U barracuda_icons_light                                              
+set -U barracuda_icons_dark                                              
+set -U barracuda_icons_light                                              
 set -U barracuda_icons_linux              
 set -U barracuda_icons_plang   
 set -U battery_icons $barracuda_icons[30..35]
