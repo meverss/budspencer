@@ -24,14 +24,14 @@ function barracuda_info -d 'Show theme info'
   set i (set_color $barracuda_colors[3])
   set n (set_color normal)
 
-  if test $git_show_info = 'on'; set git_switch $barracuda_icons[27]
-  else; set git_switch $barracuda_icons[28]; end
+  if test $git_show_info = 'on'; set git_switch $b_lang[62]
+  else; set git_switch $b_lang[63]; end
   
-  if not set -q barracuda_nobell; set bell_switch $barracuda_icons[27]
-  else; set git_switch $barracuda_icons[28]; end
+  if not set -q barracuda_nobell; set bell_switch $b_lang[62]
+  else; set bell_switch $b_lang[63]; end
 
-  if test $bat_icon = 'on'; set bat_switch $barracuda_icons[27]
-  else; set git_switch $barracuda_icons[28]; end
+  if test $bat_icon = 'on'; set bat_switch $b_lang[62]
+  else; set bat_switch $b_lang[63]; end
 
   if test -z $barracuda_sessions_active; set session $b_lang[54]
   else; set session $barracuda_sessions_active; end
@@ -44,6 +44,8 @@ function barracuda_info -d 'Show theme info'
   echo -e $h\n\t$b_lang[55]
   echo -e $i\t$barracuda_icons[37]$n$d $b_lang[56]$v "$lang" | sed 's/es/Español/g' | sed 's/en/English/g'
   echo -e $i\t$barracuda_icons[46]$n$d $b_lang[57]$v "$scheme"
-
-  
+  echo -e $h\n\t$b_lang[58]
+  echo -e $i\t$barracuda_icons[4]$n$d $b_lang[59]$v "$git_switch"  
+  echo -e $i\t$barracuda_icons[6]$n$d $b_lang[60]$v "$bell_switch"
+  echo -e $i\t$battery_icons[2]$n$d $b_lang[61]$v "$bat_switch"
 end

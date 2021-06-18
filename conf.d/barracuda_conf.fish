@@ -91,9 +91,8 @@ function barracuda_reload -a opt -d 'Reload configuration'
   set current_path (pwd)
   switch $opt
     case "" "set barracuda_colors"
-      __barracuda_on_termination
+      s -d
       source "$theme_path/conf.d/barracuda_conf.fish"
-      source "$theme_path/functions/barracuda_info.fish"
       source "$theme_path/functions/fish_prompt.fish"
       cd $current_path
       tput cuu 3
@@ -151,10 +150,10 @@ set -l fs (set_color $barracuda_colors[4])'fish'(set_color -b normal $barracuda_
 set -l bh (set_color $barracuda_colors[4])'barracuda_help'(set_color -b 000 $barracuda_colors[9])
 set -U lang_sp 'Recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar' 'Todo' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: backup [OPCION]...' '     backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	  Nombre del archivo de respaldo' '         Nombre de archivo     Tamaño       Fecha' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto' 'Cancelar' 'Copia de respaldo eliminada' 'Se eliminaron todos los arvivos de respaldos' 'Versión' 'Abortando...'\
                'Cambiar fuente' 'Aplicar' 'Fuente cambiada a' 'Ir' 'Borrar' 'opción inválida' 'El historial de directorios está vacío. Se creará de manera automática.' 'Historial de directorios' '\t  Directorio' 'La lista de marcadores esta vacía.' 'Lista de marcadores' '\t    Marcadores' 'Historial de comandos' '\t    Comandos' 'El historial de comandos esta vacío. Se creará de manera automática.' 'Sesiones' '\t    Nombre de sesión' 'No hay ninguna sesión guardada'\
-               'Información del tema' 'General' 'Nombre:' 'Versión:' 'Sesión activa:' '(ninguna)' 'Interfaz' 'Idioma:' 'Esquema de color:' 'Características' 'Estado de repositorio Git:' 'Notificaciones:' 'Estado de la batería:'
+               'Información del tema' 'General' 'Nombre:' 'Versión:' 'Sesión activa:' '(ninguna)' 'Interfaz' 'Idioma:' 'Esquema de color:' 'Características' 'Estado de repositorio Git:' 'Notificaciones:' 'Estado de la batería:' 'Si' 'No'
 set -U lang_en 'Collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done! Backup has been successfuly finished' 'Usage: backup [OPTION]...' '       backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '              File name         Size        Date' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>' 'Cancel' 'Backup deleted' 'All backups has been deleted' 'Version' 'Aborting...'\
                'Change font' 'Apply' 'Font changed to' 'Goto' 'Erase' 'invalid option' 'Directory history is empty. It will be created automatically.' 'Directory history' '\t  Directory' 'Bookmark list is empty.' 'Bookmarks list' '\t    Bookmarks' 'Command history' '\t    Commands' 'Command history is empty. It will be created automatically.' 'Sessions' '\t    Session name' 'No session saved.'\
-               'Theme info' 'General' 'Name: ' 'Version:' 'Active session:' '(none)' 'Interface' 'Language:' 'Color scheme:' 'Features' 'Git status:' 'Notifications:' 'Battery status icon:'
+               'Theme info' 'General' 'Name: ' 'Version:' 'Active session:' '(none)' 'Interface' 'Language:' 'Color scheme:' 'Features' 'Git status:' 'Notifications:' 'Battery status icon:' 'Yes' 'No'
 
 set -U g_lang_sp "$bl Un tema elegante para el shell $fs.\nEscriba $bh para una documentación detallada."
 set -U g_lang_en "$bl A fancy theme for the $fs shell.\nType $bh for a complete documentation."
@@ -166,9 +165,8 @@ function ch_lang -a lang -V b_lang -V bg_lang -d 'Change language'
       set -U b_lang $lang_sp
       set -U bg_lang $g_lang_sp
       set -U man_lang 'barracuda_sp'
-      if test (tput cols) -le 56; set -U lang 'es'
-      else; set -U lang 'español'; end
       set -U yes_no s n t c b
+      set -U lang 'español'
       barracuda_reload
       return
 
@@ -176,9 +174,8 @@ function ch_lang -a lang -V b_lang -V bg_lang -d 'Change language'
       set -U b_lang $lang_en
       set -U bg_lang $g_lang_en
       set -U man_lang 'barracuda_en'
-      if test (tput cols) -le 56; set -U lang 'en'
-      else; set -U lang 'english'; end
       set -U yes_no y n a c d
+      set -U lang 'english'
       barracuda_reload
       return
   end

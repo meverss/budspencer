@@ -194,7 +194,7 @@ end
 # => Fish termination
 #------------------------------------------------------------
 function __barracuda_on_termination -s HUP -s QUIT -s TERM --on-process %self -d 'Execute when shell terminates'
-  set -l item (contains -i %self $barracuda_sessions_active_pid 2> /dev/null)
+  set -l item (contains -i %self $barracuda_sessions_active_pid #2> /dev/null)
   __barracuda_detach_session $item
 end
 
@@ -785,8 +785,12 @@ function gitinfo -a opt -d 'Enable/Disable Git repository info'
   switch $opt
     case 'on'
       set -U git_show_info 'on'
+      tput cuu 3
+      tput ed
     case 'off'
       set -U git_show_info 'off'
+      tput cuu 3
+      tput ed
     case '*'
       echo "$_: $b_lang[36] $argv"
   end
@@ -796,6 +800,15 @@ end
 # => Bind-mode segment
 #------------------------------------------------------------
 function __barracuda_prompt_bindmode -d 'Displays the current mode'
+  switch $lang
+    case 'es' 'español'
+      if test (tput cols) -le 56; set -U lang 'es'
+      else; set -U lang 'español'; end
+    case 'en' 'english'
+      if test (tput cols) -le 56; set -U lang 'en'
+      else; set -U lang 'english'; end
+  end
+  
   switch $fish_bind_mode
     case default
       set barracuda_current_bindmode_color $barracuda_colors[12]
@@ -817,7 +830,8 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   set_color -b $barracuda_current_bindmode_color $barracuda_colors[1]
   switch $pwd_style
     case short long
-      echo -n (set_color -o $barracuda_colors[5])" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])(set_color 000)" $lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
+      echo -n (set_color -o $barracuda_colors[5])" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
+              (set_color 000)"$lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
   end
   set_color $barracuda_colors[5]
 end
@@ -1393,6 +1407,7 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set -l realhome ~
   set -l my_path (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
   set -l short_working_dir (string replace -ar '(\.?[^/]{''})[^/]*/' '$1/' $my_path)
+
 
   if [ (string length (pwd)) -lt (expr (tput cols) - 5) ]
     set working_dir (pwd)
