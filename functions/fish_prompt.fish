@@ -563,7 +563,7 @@ function __barracuda_detach_session -d 'Detach current session'
   set barracuda_session_current ''
   cd $$dir_hist[1][$dir_hist_val]
   set no_prompt_hist 'T'
-  tput cuu 2
+  tput cuu 3
   tput ed
 end
 
