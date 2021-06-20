@@ -103,10 +103,12 @@ function barracuda_reload -a opt -d 'Reload configuration'
       cd $current_path
       tput cuu 3
       tput ed
+      set pcount (expr $pcount - 1)
     case "*"
       echo "$_: $b_lang[36] $argv"
   end
 end
+
 
 ###############################################################################
 # => Colors and icons definitions

@@ -13,7 +13,6 @@
 #   -> Fish prompt colors
 #
 ########################################################
-
 # Set fish prompt colors
 set -U fish_color_normal normal
 set -U fish_color_command 99cc99

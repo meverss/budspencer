@@ -49,3 +49,4 @@ function barracuda_info -d 'Show theme info'
   echo -e $i\t$barracuda_icons[6]$n$d $b_lang[60]$v "$bell_switch"
   echo -e $i\t$battery_icons[2]$n$d $b_lang[61]$v "$bat_switch"
 end
+

@@ -50,8 +50,8 @@ else
   end
 end
 
-function bell -a bell -d 'Enable/Disable bell'
-  switch $bell
+function bell -a opt -d 'Enable/Disable bell'
+  switch $opt
     case 'on'
       set -e barracuda_nobell
       barracuda_reload
@@ -71,24 +71,24 @@ function battery_level -d 'Shows battery level'
 if test $bat_icon = 'on'
   set ac_online (string split "=" (cat $ac_info_file | grep 'ONLINE'))[2]
 
-  if test $ac_online -gt 0
+  if [ $ac_online -gt 0 ]
     set -g i_battery $battery_icons[6]
   else
 
     set -l blevel (string split "=" (cat $battery_info_file | grep 'CAPACITY'))[2]
     set -l bstatus (string split "=" (cat $battery_info_file | grep 'STATUS'))[2]
 
-    if not test $bstatus = 'Charging'; and contains $blevel (seq 15)
+    if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 15)
       set -g i_battery (set_color $barracuda_colors[7])$battery_icons[5]
-    else if not test $bstatus = 'Charging'; and contains $blevel (seq 16 44)
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 16 44)
       set -g i_battery $battery_icons[4]
-    else if not test $bstatus = 'Charging'; and contains $blevel (seq 46 64)
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 46 64)
       set -g i_battery $battery_icons[3]
-    else if not test $bstatus = 'Charging'; and contains $blevel (seq 66 89)
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 66 89)
       set -g i_battery $battery_icons[2]
-    else if not test $bstatus = 'Charging'; and contains $blevel (seq 91 100)
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 91 100)
       set -g i_battery $battery_icons[1]
-    else if test $bstatus = 'Charging'
+    else if [ $bstatus = 'Charging' ]
       set -g i_battery $battery_icons[6]
     end
   end
@@ -127,6 +127,7 @@ function color_scheme  -v scheme
     case 'en' 'english'
       english
   end
+  set pcount (expr $pcount - 1)
 end
 
 # Dark mode
@@ -270,12 +271,14 @@ function d -d 'List directory history, jump to directory in list with d <number>
             tput cuu1
             tput ed
 	  end
+	  set pcount (expr $pcount - 1)
           return
         case "$yes_no[4]"
           for x in (seq (expr $num_items + 9))
             tput cuu1
             tput ed
 	  end
+	  set pcount (expr $pcount - 1)
 	  return        
         case "$yes_no[5]"
           while ! contains $foo $b_lang
@@ -290,18 +293,19 @@ function d -d 'List directory history, jump to directory in list with d <number>
 	          tput cuu1
 	    	  tput ed
 	        end
+	        set pcount (expr $pcount - 1)
 	        return
               case "$yes_no[4]"
 	        for x in (seq (expr $num_items + 9))
 	          tput cuu1
 	    	  tput ed
 	        end
+	        set pcount (expr $pcount - 1)
 	        return
             end
           end
     end
   end
-  set pcount (expr $pcount - 1)
   set no_prompt_hist 'T'
 end
 end
@@ -386,7 +390,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
         while ! contains $foo $b_lang
           tput cuu 2
           tput ed
-          read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5]) $barracuda_icons[7] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
+          read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5]) $barracuda_icons[7] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[5]"(set_color -o $barracuda_colors[1])"[""$yes_no[3]""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
             switch "$cmd_num"
               case (seq 0 (expr $num_items - 1))
                 set -e $cmd_hist[1][(expr $num_items - $cmd_num)] 2> /dev/null
@@ -484,12 +488,14 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
             tput cuu1
             tput ed
           end
+          set pcount (expr $pcount - 1)
           return
         case "$yes_no[4]"
           for x in (seq (expr $num_items + 9))
             tput cuu1
             tput ed
 	  end
+	  set pcount (expr $pcount - 1)
 	  return        
       end
     end
