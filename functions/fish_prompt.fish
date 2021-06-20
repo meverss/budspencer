@@ -24,7 +24,8 @@
 #     -> Bind-mode segment
 #     -> Symbols segment
 #     -> Backup (Termux)
-#     -> Colored Man Pages (Thanks to PatrickF1)
+#     -> Colored Man Pages
+#     -> Barracuda help
 #     -> Update Git project
 #   -> Prompt initialization
 #   -> Left prompt
@@ -112,12 +113,13 @@ end
 #------------------------------------------------------------
 # => Environment
 #------------------------------------------------------------
-# Dark mode
-function dark -d 'Set dark mode'
-  set -U barracuda_colors $barracuda_colors_dark
-  set -U barracuda_icons $barracuda_icons_dark
+# Set scheme
+function color_scheme  -v scheme
+  set colors "barracuda_colors_$scheme"
+  set icons "barracuda_icons_$scheme"
+  set -U barracuda_colors $$colors
+  set -U barracuda_icons $$icons
   set -U i_mode $barracuda_icons[1]
-  set -U scheme 'Dark'
   set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
   switch $lang
     case 'es' 'español'
@@ -127,19 +129,14 @@ function dark -d 'Set dark mode'
   end
 end
 
+# Dark mode
+function dark -d 'Set dark mode'
+  set -U scheme $_
+end
+
 # Light mode
 function light -d 'Set light mode'
-  set -U barracuda_colors $barracuda_colors_light
-  set -U barracuda_icons $barracuda_icons_light
-  set -U i_mode $barracuda_icons[1]
-  set -U scheme 'Light'
-  set barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
-  switch $lang
-    case 'es' 'español'
-      spanish
-    case 'en' 'english'
-      english
-  end
+  set -U scheme $_
 end
 
 #------------------------------------------------------------
