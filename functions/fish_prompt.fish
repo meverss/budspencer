@@ -1284,8 +1284,7 @@ function man --wraps man -d "Run man with added colors"
 
     # prepend the directory of fish and barracuda manpages to MANPATH
     set fish_manpath $__fish_data_dir/man
-    set barracuda_manpath $theme_path/man
-        
+    
     if test -d $fish_manpath
         set --prepend MANPATH $fish_manpath
     end
@@ -1294,7 +1293,22 @@ function man --wraps man -d "Run man with added colors"
         set --prepend MANPATH $barracuda_manpath
     end
 
-    cless (command --search man ) $argv 
+    cless (command --search man) $argv 
+end
+
+###############################################################################
+# => Barracuda help
+###############################################################################
+function barracuda_help -d 'Barracuda help'
+  set filter "sed 's/<logo>/{⋟<(({>/g' | sed 's/<version>/v$barracuda_version/g' |sed 's/<i.session>/$barracuda_icons[13]/g' | sed 's/<i.bookmark>/$barracuda_icons[11]/g' \
+             |sed 's/<i.jobs>/$barracuda_icons[17]/g' | sed 's/<i.lock>/$barracuda_icons[18]/g' |sed 's/<i.sched>/$barracuda_icons[22]/g' | sed 's/<i.appoint>/$barracuda_icons[8]/g' \
+             |sed 's/<i.ok>/$barracuda_icons[14]/g' | sed 's/<i.error>/$barracuda_icons[15]/g' |sed 's/<i.su>/$barracuda_icons[20]/g' | sed 's/<i.git.ahead>/$barracuda_icons[42]/g' \
+             | sed 's/<i.git.behind>/$barracuda_icons[43]/g' | sed 's/<i.git.dirty>/$barracuda_icons[41]/g'| sed 's/<i.git.branch>/$barracuda_icons[4]/g'| sed 's/<i.linux>/$barracuda_icons[26]/g' \
+             | sed 's/<i.android>/$barracuda_icons[25]/g'| sed 's/<i.windows>/$barracuda_icons[24]/g'| sed 's/<i.macosx>/$barracuda_icons[23]/g' \
+             | sed 's/<i.dark>/$barracuda_icons_dark[1]/g'| sed 's/<i.light>/$barracuda_icons_light[1]/g' | sed 's/<i.bellon>/$barracuda_icons[6]/g' \
+             | sed 's/<i.belloff>/$barracuda_icons[5]/g'| sed 's/<i.ranger>/$barracuda_icons[29]/g' "
+
+  mandoc -O width=(expr $COLUMNS) $theme_path/help/barracuda_help_en | eval $filter | cless less
 end
 
 #------------------------------------------------------------

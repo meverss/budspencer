@@ -124,12 +124,12 @@ end
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                              
-set -U barracuda_icons_light                                              
+set -U barracuda_icons_dark                                              
+set -U barracuda_icons_light                                              
 set -U barracuda_icons_linux              
 set -U barracuda_icons_plang   
 set -U battery_icons $barracuda_icons[30..35]
-#     
+
 # Set "dark" the default icons scheme
 if not set -q barracuda_icons
   set -U barracuda_icons $barracuda_icons_dark
@@ -164,7 +164,7 @@ function ch_lang -a lang -V b_lang -V bg_lang -d 'Change language'
     case 'sp'
       set -U b_lang $lang_sp
       set -U bg_lang $g_lang_sp
-      set -U man_lang 'barracuda_sp'
+      set -U man_lang 'barracuda_help_es.gz'
       set -U yes_no s n t c b
       set -U lang 'español'
       barracuda_reload
@@ -173,7 +173,7 @@ function ch_lang -a lang -V b_lang -V bg_lang -d 'Change language'
     case 'en'
       set -U b_lang $lang_en
       set -U bg_lang $g_lang_en
-      set -U man_lang 'barracuda_en'
+      set -U man_lang 'barracuda_help_en.gz'
       set -U yes_no y n a c d
       set -U lang 'english'
       barracuda_reload
@@ -193,7 +193,6 @@ function ps -w ps
 end
 alias ls "ls -gh"
 alias version 'echo Barracuda v$barracuda_version'
-alias barracuda_help 'man $man_lang'
 alias spanish "ch_lang sp"
 alias español "ch_lang sp"
 alias english "ch_lang en"
