@@ -14,7 +14,7 @@
 #
 #############################################################
 function fish_greeting -d "Welcome message"
-  set -l bl (set_color -o $barracuda_colors[5])'{⋟<(({>'(set_color -b normal $barracuda_colors[9])
+  set -l bl (set_color -o $barracuda_colors[5])'}⋟<(({>'(set_color -b normal $barracuda_colors[9])
   set -l fs (set_color $barracuda_colors[4])'fish'(set_color -b normal $barracuda_colors[9])
   set -l bh (set_color $barracuda_colors[4])'barracuda_help'(set_color -b 000 $barracuda_colors[9])
   set -U g_lang_sp "Un tema elegante para el shell $fs.\nEscriba $bh para una documentación detallada."
