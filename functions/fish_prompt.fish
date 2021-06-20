@@ -379,12 +379,14 @@ function c -d 'List command history, load command from prompt with c <prompt num
           tput ed
         end
         commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
+        set pcount (expr $pcount - 1)
         return
       case "$yes_no[4]"
         for i in (seq (expr $num_items + 9))
           tput cuu1
           tput ed
         end
+        set pcount (expr $pcount - 1)
         return
       case "$yes_no[5]"
         while ! contains $foo $b_lang
@@ -398,18 +400,29 @@ function c -d 'List command history, load command from prompt with c <prompt num
                   tput cuu1
                   tput ed
                 end
+                set pcount (expr $pcount - 1)
+                return
+              case "$yes_no[3]"
+                for x in (seq 0 (expr $num_items - 1))
+                  set -e $cmd_hist[1][(expr $num_items - $x)] 2>/dev/null
+                end
+                for i in (seq (expr $num_items + 9))
+                  tput cuu1
+                  tput ed
+                end
+                set pcount (expr $pcount - 1)
                 return
               case "$yes_no[4]"
                 for i in (seq (expr $num_items + 9))
                   tput cuu1
                   tput ed
                 end
+                set pcount (expr $pcount - 1)
                 return
             end
         end
     end
   end
-  set pcount (expr $pcount - 1)
   set no_prompt_hist 'T'
 end
 
