@@ -89,8 +89,9 @@ wt ' }><(({º> -' (date); tabs -2
 function barracuda_reload -a opt -d 'Reload configuration'
   [ $opt ]; or set opt ""
   set current_path (pwd)
+  set item (contains -i %self $barracuda_sessions_active_pid 2> /dev/null)
   switch $opt
-    case "" "set barracuda_colors"
+    case ""
       __barracuda_detach_session $item
       source "$theme_path/conf.d/barracuda_conf.fish"
       source "$theme_path/functions/fish_prompt.fish"
