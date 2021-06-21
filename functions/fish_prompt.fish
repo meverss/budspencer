@@ -740,59 +740,35 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
     if not test $position > /dev/null
       set -l commit (command git rev-parse HEAD 2> /dev/null | sed 's|\(^.......\).*|\1|')
       if test $commit
-        set_color -b $barracuda_colors[11]
-        switch $pwd_style
-          case short long
-            echo -n ''(set_color $barracuda_colors[1])" $barracuda_icons[4] "$commit' '(set_color $barracuda_colors[8])
-          case none
-            echo -n ''
-        end
-        set_color normal
-        set_color $barracuda_colors[11]
+        echo -n (set_color -b $barracuda_colors[9])''(set_color $barracuda_colors[1])" $barracuda_icons[4] "$commit' '(set_color -b $barracuda_colors[9] $barracuda_colors[2])''
       end
     else
-      set_color -b $barracuda_colors[3]
-      switch $pwd_style
-        case short long
-          echo -n (set_color $barracuda_colors[1])" $barracuda_icons[4] "$position' '(set_color $barracuda_colors[9])
-        case none
-          echo -n ''
-      end
-      set_color normal
-      set_color $barracuda_colors[9]
+      echo -n (set_color -b $barracuda_colors[9])''(set_color $barracuda_colors[1])" $barracuda_icons[4] "$position' '(set_color -b $barracuda_colors[9] $barracuda_colors[2])''
     end
   else
     if not set -q git_show_info
       set -U git_show_info 'on'
     end
-    set_color -b $barracuda_colors[3]
-    switch $pwd_style
-      case short long
-        if test $git_show_info = 'on'
-          set -g git_dirty (expr (count (git status -sb)) - 1)
-          set -g git_ahead_behind (string split '-' (git rev-list --left-right --count origin/master...origin/$branch | sed "s/\t/-/g"))
-          set -l git_ahead $git_ahead_behind[2]
-          set -l git_behind $git_ahead_behind[1]
+    if test $git_show_info = 'on'
+      set -g git_dirty (expr (count (git status -sb)) - 1)
+      set -g git_ahead_behind (string split '-' (git rev-list --left-right --count origin/master...origin/$branch | sed "s/\t/-/g"))
+      set -l git_ahead $git_ahead_behind[2]
+      set -l git_behind $git_ahead_behind[1]
 
-          if test $git_dirty -gt 0
-            set  git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$git_dirty"
-          end
-          if test $git_ahead -gt 0
-            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[42]$git_ahead"
-          end
-          if test $git_behind -gt 0
-            set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[43]$git_behind"
-          end
-        else
-          set git_status_info ''
-        end
-        set -g i_git_info $git_status_info
-        echo -en (set_color $barracuda_colors[1])" $barracuda_icons[4] $branch""$git_status_info"' '(set_color $barracuda_colors[3])
-      case none
-        echo -n ''
+      if test $git_dirty -gt 0
+        set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$git_dirty"
+      end
+      if test $git_ahead -gt 0
+        set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[42]$git_ahead"
+      end
+      if test $git_behind -gt 0
+        set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[43]$git_behind"
+      end
+    else
+      set git_status_info ''
     end
-    set_color normal
-    set_color $barracuda_colors[3]
+    set -g i_git_info $git_status_info
+    echo -en (set_color -b $barracuda_colors[3])''(set_color $barracuda_colors[1])" $barracuda_icons[4] $branch""$git_status_info"' '(set_color -b $barracuda_colors[2] $barracuda_colors[3])''
   end
 end
 
@@ -843,12 +819,8 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
     set barracuda_current_bindmode_color $barracuda_colors[7]
   end
   set_color -b $barracuda_current_bindmode_color $barracuda_colors[1]
-  switch $pwd_style
-    case short long
-      echo -n (set_color -o $barracuda_colors[5])" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
-              (set_color $barracuda_colors[1])"$lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
-  end
-  set_color $barracuda_colors[5]
+  echo -n (set_color -o $barracuda_colors[5])" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
+          (set_color $barracuda_colors[1])"$lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
 end
 
 #------------------------------------------------------------
@@ -857,7 +829,7 @@ end
 # Left prompt
 function __barracuda_prompt_left_symbols -d 'Display symbols'
     set -l symbols_urgent 'F'
-    set -l symbols (set_color -b $barracuda_colors[2])''
+    set -l symbols (set_color -b $barracuda_colors[2])
 
     set -l jobs (jobs | wc -l | tr -d '[:space:]')
     if [ -e ~/.taskrc ]
@@ -890,7 +862,7 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
             set symbols_urgent 'T'
         end
         if set -q -x RANGER_LEVEL
-            set symbols $symbols(set_color -o $barracuda_colors[6])' R'
+            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[29]"
             set symbols_urgent 'T'
         end
         if [ $jobs -gt 0 ]
@@ -936,49 +908,41 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
             set symbols_urgent 'T'
         end
         if set -q -x RANGER_LEVEL
-            set symbols $symbols(set_color $barracuda_colors[6])' '$RANGER_LEVEL
+            set symbols $symbols(set_color $barracuda_colors[1])$RANGER_LEVEL
             set symbols_urgent 'T'
         end
         if [ $jobs -gt 0 ]
-            set symbols $symbols(set_color $barracuda_colors[6])' '$jobs
+            set symbols $symbols(set_color $barracuda_colors[1])$jobs
             set symbols_urgent 'T'
         end
         if [ ! -w . ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[18]"(set_color normal)(set_color -b $barracuda_colors[2])
+            set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[18]"(set_color normal)(set_color -b $barracuda_colors[2])
         end
         if [ $todo -gt 0 ]
-            set symbols $symbols(set_color $barracuda_colors[6])
+            set symbols $symbols(set_color $barracuda_colors[1])
         end
         if [ $overdue -gt 0 ]
-            set symbols $symbols(set_color $barracuda_colors[6])
+            set symbols $symbols(set_color $barracuda_colors[1])
         end
         if [ (expr $todo + $overdue) -gt 0 ]
             set symbols $symbols" $todo"
             set symbols_urgent 'T'
         end
         if [ $appointments -gt 0 ]
-            set symbols $symbols(set_color 222)" $appointments"
+            set symbols $symbols(set_color $barracuda_colors[1])" $appointments"
             set symbols_urgent 'T'
         end
         if [ $last_status -eq 0 ]
-            set symbols $symbols(set_color 222)' '$last_status
+            set symbols $symbols(set_color $barracuda_colors[1])' '$last_status
         else
-            set symbols $symbols(set_color 222)' '$last_status
+            set symbols $symbols(set_color $barracuda_colors[1])' '$last_status
         end
         if [ $USER = 'root' ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[38]"
+            set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[20]"
             set symbols_urgent 'T'
         end
     end
     set symbols $symbols(set_color $barracuda_colors[2])' '(set_color normal)(set_color $barracuda_colors[2])
-    switch $pwd_style
-        case none
-            if test $symbols_urgent = 'T'
-                set symbols (set_color -b $barracuda_colors[2])''(set_color normal)(set_color $barracuda_colors[2])
-            else
-                set symbols ''
-            end
-    end
     echo -n $symbols
 end
 
