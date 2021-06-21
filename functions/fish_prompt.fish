@@ -127,7 +127,6 @@ function color_scheme  -v scheme
     case 'en' 'english'
       english
   end
-  set pcount (expr $pcount - 1)
 end
 
 # Dark mode
@@ -847,7 +846,7 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   switch $pwd_style
     case short long
       echo -n (set_color -o $barracuda_colors[5])" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
-              (set_color 000)"$lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
+              (set_color $barracuda_colors[1])"$lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
   end
   set_color $barracuda_colors[5]
 end

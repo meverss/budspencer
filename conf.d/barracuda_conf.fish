@@ -98,6 +98,7 @@ function barracuda_reload -a opt -d 'Reload configuration'
       cd $current_path
       tput cuu 3
       tput ed
+      set pcount 1
     case "config"
       source "$theme_path/conf.d/barracuda_conf.fish"
       cd $current_path
