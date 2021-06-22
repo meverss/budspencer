@@ -651,7 +651,7 @@ function s -d 'Create, delete or attach session'
     while ! contains $foo $b_lang
       tput cuu 2
       tput ed
-      read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[13](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
+      read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[39](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
       set pcount (expr $pcount - 1)
       switch $session_num
         case (seq 0 (expr $num_items - 1))
@@ -1246,13 +1246,13 @@ end
 # => Update Git project
 #------------------------------------------------------------
 function gitupdate -d 'Update Git project'
-  set -l branch (command git describe --contains --all HEAD 2> /dev/null )
+  set branch (command git describe --contains --all HEAD 2> /dev/null )
   if not test $branch > /dev/null
     echo (set_color $fish_color_error)'Este NO es un proyecto Git'
   else
-    set -l add (command git add . )
+    set add (command git add . 2>/dev/null)
     if [ add ]
-      read -p "echo 'Descripción: '" -l desc
+      read -p "echo 'Descripción: '" desc
       [ $desc ]; or set desc 'Update files'
       command git commit -am "$desc"
       git push -f origin $branch
@@ -1303,26 +1303,11 @@ if not set -q EDITOR
 end
 
 #------------------------------------------------------------
-# Source config file
-#------------------------------------------------------------
-if [ -e $barracuda_config ]
-  source $barracuda_config
-end
-
-#------------------------------------------------------------
 # Don't save in command history
 #------------------------------------------------------------
 if not set -q barracuda_nocmdhist
   set -U barracuda_nocmdhist 'c' 'd' 'll' 'ls' 'm' 's'
 end
-
-#------------------------------------------------------------
-# Set PWD segment style
-#------------------------------------------------------------
-if not set -q barracuda_pwdstyle
-  set -U barracuda_pwdstyle short long none
-end
-set pwd_style $barracuda_pwdstyle[1]
 
 #------------------------------------------------------------
 # Cd to newest bookmark if this is a login shell

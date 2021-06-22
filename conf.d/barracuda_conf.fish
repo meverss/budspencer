@@ -128,10 +128,10 @@ end
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                          ↑ ↓   
-set -U barracuda_icons_light                                          ↑ ↓   
+set -U barracuda_icons_dark                                          ↑ ↓   
+set -U barracuda_icons_light                                          ↑ ↓   
 set -U barracuda_icons_linux              
-set -U barracuda_icons_plang   
+set -U barracuda_icons_plang   
 set -U battery_icons $barracuda_icons[30..35]
 
 
@@ -203,10 +203,6 @@ alias ingles "ch_lang en"
 ###############################################################################
 
 set -U fish_key_bindings fish_vi_key_bindings
-bind '#' __barracuda_toggle_symbols
-bind -M visual '#' __barracuda_toggle_symbols
-bind ' ' __barracuda_toggle_pwd
-bind -M visual ' ' __barracuda_toggle_pwd
 bind L __barracuda_cd_next
 bind H __barracuda_cd_prev
 bind m mark
