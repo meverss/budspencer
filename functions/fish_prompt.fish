@@ -1237,7 +1237,7 @@ function barracuda_help -d 'Barracuda help'
              | sed 's/<i.git.behind>/$barracuda_icons[43]/g' | sed 's/<i.git.dirty>/$barracuda_icons[41]/g'| sed 's/<i.git.branch>/$barracuda_icons[4]/g'| sed 's/<i.linux>/$barracuda_icons[26]/g' \
              | sed 's/<i.android>/$barracuda_icons[25]/g'| sed 's/<i.windows>/$barracuda_icons[24]/g'| sed 's/<i.macosx>/$barracuda_icons[23]/g' \
              | sed 's/<i.dark>/$barracuda_icons_dark[1]/g'| sed 's/<i.light>/$barracuda_icons_light[1]/g' | sed 's/<i.bellon>/$barracuda_icons[6]/g' \
-             | sed 's/<i.belloff>/$barracuda_icons[5]/g'| sed 's/<i.ranger>/$barracuda_icons[29]/g'| sed 's/<i.vignet>/$barracuda_icons[16]/g' "
+             | sed 's/<i.belloff>/$barracuda_icons[5]/g'| sed 's/<i.ranger>/$barracuda_icons[29]/g'| sed -r 's/\B- \b/$barracuda_icons[16] /g'| sed 's/Barracuda()/Barracuda/g' "
 
   mandoc -O width=(expr $COLUMNS) $theme_path/help/$man_lang | eval $filter | cless less
 end
