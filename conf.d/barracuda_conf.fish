@@ -62,10 +62,10 @@ end
 #  end
 
 # Battery info
-if not set -q ac_info_file
+if not set -q ac_info_file; or not set -q battery_info_file
 for ac in ac AC
   if test -d /sys/class/power_supply/$ac
-    set b_path (readlink -f /sys/class/power_supply/$ac | sed 's/\/$ac//g')
+    set b_path (readlink -f /sys/class/power_supply/$ac | sed "s/\/$ac//g")
     set -U ac_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_NAME=$ac" 2>/dev/null))[1]
     set -U battery_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_CAPACITY=" 2>/dev/null))[1]
     break
@@ -81,7 +81,7 @@ function wt -d 'Set window title'
   end
 end
 
-wt ' }><(({º> -' (date); tabs -2
+wt ' }⋟<(({º> -' (date); tabs -2
 
 ###############################################################################
 # => Reload settings

@@ -585,7 +585,7 @@ function __barracuda_attach_session -d 'Attach session'
   if contains $argv[1] $barracuda_sessions_active
     wmctrl -a "$barracuda_icons[13] $argv[1]"
   else
-    wt "}><(({º> ""[ "$argv[1]" ] - "(date)
+    wt "}⋟<(({º> ""[ "$argv[1]" ] - "(date)
     __barracuda_detach_session $argv[-1]
     set barracuda_sessions_active $barracuda_sessions_active $argv[1]
     set barracuda_sessions_active_pid $barracuda_sessions_active_pid %self
@@ -701,7 +701,7 @@ function s -d 'Create, delete or attach session'
       tput cuu 3
       tput ed
     case '-d'
-      wt ' }><(({º> -' (date)
+      wt ' }⋟<(({º> -' (date)
       __barracuda_detach_session $item
       tput cuu 3
       tput ed
@@ -891,7 +891,7 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
         set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[15]"
     end
     if [ $USER = 'root' ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[38]"
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[20]"
         set symbols_urgent 'T'
     end
     set symbols $symbols(set_color $barracuda_colors[2])' '(set_color normal)(set_color $barracuda_colors[2])
