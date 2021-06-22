@@ -756,13 +756,13 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
       set -l git_behind $git_ahead_behind[1]
 
       if test $git_dirty -gt 0
-        set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[41]$git_dirty"
+        set git_status_info "$git_status_info "(set_color -b $barracuda_colors[3] -o $barracuda_colors[1])"$barracuda_icons[41]"(set_color normal)(set_color -b $barracuda_colors[3] $barracuda_colors[1])"$git_dirty"
       end
       if test $git_ahead -gt 0
-        set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[42]$git_ahead"
+        set git_status_info "$git_status_info "(set_color -b $barracuda_colors[3]  -o $barracuda_colors[1])"$barracuda_icons[42]"(set_color normal)(set_color -b $barracuda_colors[3] $barracuda_colors[1])"$git_ahead"
       end
       if test $git_behind -gt 0
-        set git_status_info "$git_status_info "(set_color $barracuda_colors[1])"$barracuda_icons[43]$git_behind"
+        set git_status_info "$git_status_info "(set_color -b $barracuda_colors[3]  -o $barracuda_colors[1])"$barracuda_icons[43]"(set_color normal)(set_color -b $barracuda_colors[3] $barracuda_colors[1])"$git_behind"
       end
     else
       set git_status_info ''
@@ -849,98 +849,50 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
         set appointments 0
     end
 
-    if [ $symbols_style = 'symbols' ]
-        if [ $barracuda_session_current != '' ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[13]"
-            set symbols_urgent 'T'
-        end
-        if contains $PWD $bookmarks
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[11]"
-        end
-        if set -q -x VIM
-            set symbols $symbols(set_color -o $barracuda_colors[6])' V'
-            set symbols_urgent 'T'
-        end
-        if set -q -x RANGER_LEVEL
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[29]"
-            set symbols_urgent 'T'
-        end
-        if [ $jobs -gt 0 ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[17]"
-            set symbols_urgent 'T'
-        end
-        if [ ! -w . ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[18]"
-        end
-        if [ $todo -gt 0 ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])
-        end
-        if [ $overdue -gt 0 ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])
-        end
-        if [ (expr $todo + $overdue) -gt 0 ]
-            set symbols $symbols" $barracuda_icons[29]"
-            set symbols_urgent 'T'
-        end
-        if [ $appointments -gt 0 ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[8]"
-            set symbols_urgent 'T'
-        end
-        if [ $last_status -eq 0 ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[14]"
-        else
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[15]"
-        end
-        if [ $USER = 'root' ]
-            set symbols $symbols(set_color -o $barracuda_colors[6])" $barracuda_icons[38]"
-            set symbols_urgent 'T'
-        end
+    if [ $barracuda_session_current != '' ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[13]"
+        set symbols_urgent 'T'
+    end
+    if contains $PWD $bookmarks
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[11]"
+    end
+    if set -q -x VIM
+        set symbols $symbols(set_color -o $barracuda_colors[1])' V'
+        set symbols_urgent 'T'
+    end
+    if set -q -x RANGER_LEVEL
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[29]"
+        set symbols_urgent 'T'
+    end
+    if [ $jobs -gt 0 ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[17]"
+        set symbols_urgent 'T'
+    end
+    if [ ! -w . ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[18]"
+    end
+    if [ $todo -gt 0 ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])
+    end
+    if [ $overdue -gt 0 ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])
+    end
+    if [ (expr $todo + $overdue) -gt 0 ]
+        set symbols $symbols" $barracuda_icons[29]"
+        set symbols_urgent 'T'
+    end
+    if [ $appointments -gt 0 ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[8]"
+        set symbols_urgent 'T'
+    end
+    if [ $last_status -eq 0 ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[14]"
     else
-        if [ $barracuda_session_current != '' ] 2> /dev/null
-            set symbols $symbols(set_color $barracuda_colors[6])' '(expr (count $barracuda_sessions) - (contains -i $barracuda_session_current $barracuda_sessions))
-            set symbols_urgent 'T'
-        end
-        if contains $PWD $bookmarks
-            set symbols $symbols(set_color $barracuda_colors[6])' '(expr (count $bookmarks) - (contains -i $PWD $bookmarks))
-        end
-        if set -q -x VIM
-            set symbols $symbols(set_color -o $barracuda_colors[6])' V'(set_color normal)(set_color -b $barracuda_colors[2])
-            set symbols_urgent 'T'
-        end
-        if set -q -x RANGER_LEVEL
-            set symbols $symbols(set_color $barracuda_colors[1])$RANGER_LEVEL
-            set symbols_urgent 'T'
-        end
-        if [ $jobs -gt 0 ]
-            set symbols $symbols(set_color $barracuda_colors[1])$jobs
-            set symbols_urgent 'T'
-        end
-        if [ ! -w . ]
-            set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[18]"(set_color normal)(set_color -b $barracuda_colors[2])
-        end
-        if [ $todo -gt 0 ]
-            set symbols $symbols(set_color $barracuda_colors[1])
-        end
-        if [ $overdue -gt 0 ]
-            set symbols $symbols(set_color $barracuda_colors[1])
-        end
-        if [ (expr $todo + $overdue) -gt 0 ]
-            set symbols $symbols" $todo"
-            set symbols_urgent 'T'
-        end
-        if [ $appointments -gt 0 ]
-            set symbols $symbols(set_color $barracuda_colors[1])" $appointments"
-            set symbols_urgent 'T'
-        end
-        if [ $last_status -eq 0 ]
-            set symbols $symbols(set_color $barracuda_colors[1])' '$last_status
-        else
-            set symbols $symbols(set_color $barracuda_colors[1])' '$last_status
-        end
-        if [ $USER = 'root' ]
-            set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[20]"
-            set symbols_urgent 'T'
-        end
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[15]"
+    end
+    if [ $USER = 'root' ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[38]"
+        set symbols_urgent 'T'
     end
     set symbols $symbols(set_color $barracuda_colors[2])' '(set_color normal)(set_color $barracuda_colors[2])
     echo -n $symbols
@@ -1326,7 +1278,6 @@ set -g pwd_hist_lock true
 set -g pcount 1
 set -g prompt_hist
 set -g no_prompt_hist 'F'
-set -g symbols_style 'symbols'
 
 #------------------------------------------------------------
 # Break
