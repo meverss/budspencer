@@ -740,10 +740,10 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
     if not test $position > /dev/null
       set -l commit (command git rev-parse HEAD 2> /dev/null | sed 's|\(^.......\).*|\1|')
       if test $commit
-        echo -n (set_color -b $barracuda_colors[9])''(set_color $barracuda_colors[1])" $barracuda_icons[4] "$commit' '(set_color -b $barracuda_colors[9] $barracuda_colors[2])''
+        echo -n (set_color -b $barracuda_colors[9])''(set_color $barracuda_colors[1])" $barracuda_icons[4]"$commit' '(set_color -b $barracuda_colors[9] $barracuda_colors[2])''
       end
     else
-      echo -n (set_color -b $barracuda_colors[9])''(set_color $barracuda_colors[1])" $barracuda_icons[4] "$position' '(set_color -b $barracuda_colors[9] $barracuda_colors[2])''
+      echo -n (set_color -b $barracuda_colors[9])''(set_color $barracuda_colors[1])" $barracuda_icons[4]"$position' '(set_color -b $barracuda_colors[9] $barracuda_colors[2])''
     end
   else
     if not set -q git_show_info
@@ -768,7 +768,7 @@ function __barracuda_prompt_git_branch -d 'Return the current branch name'
       set git_status_info ''
     end
     set -g i_git_info $git_status_info
-    echo -en (set_color -b $barracuda_colors[3])''(set_color $barracuda_colors[1])" $barracuda_icons[4] $branch""$git_status_info"' '(set_color -b $barracuda_colors[2] $barracuda_colors[3])''
+    echo -en (set_color -b $barracuda_colors[3])''(set_color $barracuda_colors[1])" $barracuda_icons[4]$branch""$git_status_info"' '(set_color -b $barracuda_colors[2] $barracuda_colors[3])''
   end
 end
 
@@ -857,7 +857,7 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
         set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[11]"
     end
     if set -q -x VIM
-        set symbols $symbols(set_color -o $barracuda_colors[1])' V'
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[38]"
         set symbols_urgent 'T'
     end
     if set -q -x RANGER_LEVEL
@@ -885,17 +885,17 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
         set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[8]"
         set symbols_urgent 'T'
     end
+    if [ $USER = 'root' ]
+        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[20]"
+        set symbols_urgent 'T'
+    end
     if [ $last_status -eq 0 ]
         set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[14]"
     else
         set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[15]"
     end
-    if [ $USER = 'root' ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[20]"
-        set symbols_urgent 'T'
-    end
     set symbols $symbols(set_color $barracuda_colors[2])' '(set_color normal)(set_color $barracuda_colors[2])
-    echo -n $symbols
+    echo -en $symbols
 end
 
 # Right prompt
@@ -906,7 +906,7 @@ function __barracuda_right_prompt_symbols -d 'Display symbols'
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_mode"
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_bell"
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_battery"
-  echo -n $r_symbols
+  echo -en $r_symbols
 end
 
 #------------------------------------------------------------

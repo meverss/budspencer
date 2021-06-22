@@ -128,11 +128,13 @@ end
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                          ↑ ↓   
-set -U barracuda_icons_light                                          ↑ ↓   
+set -U barracuda_icons_dark                                          ↑ ↓   
+set -U barracuda_icons_light                                          ↑ ↓   
 set -U barracuda_icons_linux              
 set -U barracuda_icons_plang   
 set -U battery_icons $barracuda_icons[30..35]
+
+
 
 # Set "dark" the default icons scheme
 if not set -q barracuda_icons
