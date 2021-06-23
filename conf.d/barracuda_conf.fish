@@ -117,8 +117,8 @@ end
 #------------------------------------------------------------------------------
 # Define colors
 #------------------------------------------------------------------------------
-set -U barracuda_colors_dark 000 6a7a6a 445659 bbb b58900 222222 dc121f 9c9 777 268bd2 2aa198 666
-set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aaa 268bd2 2aa198 666
+set -U barracuda_colors_dark 000 6a7a6a 445659 bbb b58900 222222 dc121f 9c9 777 268bd2 2aa198 666 333
+set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aaa 268bd2 2aa198 666 444
 
 # Set "dark" the default color scheme
 if not set -q barracuda_colors
@@ -128,13 +128,14 @@ end
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark                                          ↑ ↓   
-set -U barracuda_icons_light                                          ↑ ↓   
-set -U barracuda_icons_linux              
+set -U barracuda_icons_dark                                          ↑ ↓    
+set -U barracuda_icons_light                                          ↑ ↓    
+set -U barracuda_icons_linux              
 set -U barracuda_icons_plang   
-set -U battery_icons $barracuda_icons[30..35]
+set -U battery_icons             ﮣ
 
-
+# 
+     
 
 # Set "dark" the default icons scheme
 if not set -q barracuda_icons

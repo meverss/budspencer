@@ -72,24 +72,37 @@ if test $bat_icon = 'on'
   set ac_online (string split "=" (cat $ac_info_file | grep 'ONLINE'))[2]
 
   if [ $ac_online -gt 0 ]
-    set -g i_battery $battery_icons[6]
+    set -g i_battery $battery_icons[13]
   else
-
     set -l blevel (string split "=" (cat $battery_info_file | grep 'CAPACITY'))[2]
     set -l bstatus (string split "=" (cat $battery_info_file | grep 'STATUS'))[2]
 
-    if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 15)
-      set -g i_battery (set_color $barracuda_colors[7])$battery_icons[5]
-    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 16 44)
-      set -g i_battery $battery_icons[4]
-    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 46 64)
-      set -g i_battery $battery_icons[3]
-    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 66 89)
+    if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 5)
+      set -g i_battery (set_color $barracuda_colors[7]) $battery_icons[1]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 6 15)
+      set -g i_battery (set_color $barracuda_colors[7]) $battery_icons[2]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 16 19)
       set -g i_battery $battery_icons[2]
-    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 91 100)
-      set -g i_battery $battery_icons[1]
-    else if [ $bstatus = 'Charging' ]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 20 29)
+      set -g i_battery $battery_icons[3]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 30 39)
+      set -g i_battery $battery_icons[4]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 40 49)
+      set -g i_battery $battery_icons[5]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 50 59)
       set -g i_battery $battery_icons[6]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 60 69)
+      set -g i_battery $battery_icons[7]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 70 79)
+      set -g i_battery $battery_icons[8]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 80 89)
+      set -g i_battery $battery_icons[9]
+    else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 90 99)
+      set -g i_battery $battery_icons[10]
+    else if not [ $bstatus = 'Charging' ]; and [ $blevel -eq 100 ]
+      set -g i_battery $battery_icons[11]
+    else if [ $bstatus = 'Charging' ]
+      set -g i_battery $battery_icons[12]
     end
   end
 end
@@ -899,14 +912,20 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
 end
 
 # Right prompt
-function __barracuda_right_prompt_symbols -d 'Display symbols'
+function __barracuda_right_prompt_symbols -V bat_icon -d 'Display symbols'
   battery_level
   set -l r_symbols (set_color -b black $barracuda_colors[6])''
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_os"
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_mode"
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_bell"
-  set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_battery"
-  echo -en $r_symbols
+  if test $bat_icon = 'on'
+    set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[13])' '(set_color -b $barracuda_colors[13] $barracuda_colors[5])" $i_battery"(set_color -b $barracuda_colors[1] $barracuda_colors[13])''(set_color normal)
+    echo -en $r_symbols
+  else
+    set -l r_symbols $r_symbols(set_color -b $barracuda_colors[1] $barracuda_colors[6])''(set_color normal)
+    echo -en $r_symbols
+  end
+
 end
 
 #------------------------------------------------------------
@@ -1235,9 +1254,9 @@ function barracuda_help -d 'Barracuda help'
              |sed 's/<i.jobs>/$barracuda_icons[17]/g' | sed 's/<i.lock>/$barracuda_icons[18]/g' |sed 's/<i.sched>/$barracuda_icons[22]/g' | sed 's/<i.appoint>/$barracuda_icons[8]/g' \
              |sed 's/<i.ok>/$barracuda_icons[14]/g' | sed 's/<i.error>/$barracuda_icons[15]/g' |sed 's/<i.su>/$barracuda_icons[20]/g' | sed 's/<i.git.ahead>/$barracuda_icons[42]/g' \
              | sed 's/<i.git.behind>/$barracuda_icons[43]/g' | sed 's/<i.git.dirty>/$barracuda_icons[41]/g'| sed 's/<i.git.branch>/$barracuda_icons[4]/g'| sed 's/<i.linux>/$barracuda_icons[26]/g' \
-             | sed 's/<i.android>/$barracuda_icons[25]/g'| sed 's/<i.windows>/$barracuda_icons[24]/g'| sed 's/<i.macosx>/$barracuda_icons[23]/g' \
+             | sed 's/<i.android>/$barracuda_icons[25]/g'| sed 's/<i.windows>/$barracuda_icons[24]/g'| sed 's/<i.macosx>/$barracuda_icons[23]/g' | sed 's/<i.vim>/$barracuda_icons[38]/g' \
              | sed 's/<i.dark>/$barracuda_icons_dark[1]/g'| sed 's/<i.light>/$barracuda_icons_light[1]/g' | sed 's/<i.bellon>/$barracuda_icons[6]/g' \
-             | sed 's/<i.belloff>/$barracuda_icons[5]/g'| sed 's/<i.ranger>/$barracuda_icons[29]/g'| sed -r 's/\B- \b/$barracuda_icons[16] /g'| sed 's/Barracuda()/Barracuda/g' "
+             | sed 's/<i.belloff>/$barracuda_icons[5]/g'| sed 's/<i.ranger>/$barracuda_icons[29]/g'| sed -r 's/\B- \b/$barracuda_icons[47] /g'| sed 's/Barracuda()/Barracuda/g' "
 
   mandoc -O width=(expr $COLUMNS) $theme_path/help/$man_lang | eval $filter | cless less
 end
@@ -1351,6 +1370,6 @@ end
 ###############################################################################
 # => Right prompt
 ###############################################################################
-function fish_right_prompt -d 'Show system info'
-  echo -n -s (__barracuda_right_prompt_symbols)(set_color -b black $barracuda_colors[6])''(set_color normal)
+function fish_right_prompt -d 'Show right pronpt icons'
+  echo -n -s (__barracuda_right_prompt_symbols)
 end
