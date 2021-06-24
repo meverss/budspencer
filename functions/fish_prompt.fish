@@ -277,7 +277,7 @@ function d -d 'List directory history, jump to directory in list with d <number>
     while ! contains $foo $b_lang
       tput cuu 2
       tput ed
-      read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[7](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
+      read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[7](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
       switch "$dir_num"
         case (seq 0 (expr $num_items - 1))
           cd $$dir_hist[1][(expr $num_items - $dir_num)]
@@ -298,7 +298,7 @@ function d -d 'List directory history, jump to directory in list with d <number>
           while ! contains $foo $b_lang
             tput cuu 2
             tput ed
-            read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5]) $barracuda_icons[7] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
+            read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[12] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
             switch $dir_num
               case (seq 0 (expr $num_items - 1))
                 set -e $dir_hist[1][(expr $num_items - $dir_num)] 2> /dev/null
@@ -385,7 +385,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
   while ! contains $foo $b_lang
     tput cuu 2
     tput ed
-    read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[10](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
+    read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[10](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
     switch $cmd_num
       case (seq 0 (expr $num_items - 1))
         for i in (seq (expr $num_items + 9))
@@ -406,7 +406,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
         while ! contains $foo $b_lang
           tput cuu 2
           tput ed
-          read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5]) $barracuda_icons[7] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[5]"(set_color -o $barracuda_colors[1])"[""$yes_no[3]""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
+          read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[12] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[5]"(set_color -o $barracuda_colors[1])"[""$yes_no[3]""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l cmd_num
             switch "$cmd_num"
               case (seq 0 (expr $num_items - 1))
                 set -e $cmd_hist[1][(expr $num_items - $cmd_num)] 2> /dev/null
@@ -507,7 +507,7 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
     while ! contains $foo $b_lang
       tput cuu 2
       tput ed
-      read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5])" $barracuda_icons[11]"(set_color $barracuda_colors[1])" $b_lang[34]"(set_color -o $barracuda_colors[1])"[0""$last_item""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
+      read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1])" $barracuda_icons[11]"(set_color $barracuda_colors[1])" $b_lang[34]"(set_color -o $barracuda_colors[1])"[0""$last_item""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l dir_num
       switch $dir_num
         case (seq 0 (expr $num_items - 1))
           cd $bookmarks[(expr $num_items - $dir_num)]
@@ -666,7 +666,7 @@ function s -d 'Create, delete or attach session'
     while ! contains $foo $b_lang
       tput cuu 2
       tput ed
-      read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[39](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
+      read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[13](set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[34]"(set_color -o $barracuda_colors[1])"[0$last_item]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[4]"(set_color -o $barracuda_colors[1])"[""$yes_no[5]""]"(set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
       set pcount (expr $pcount - 1)
       switch $session_num
         case (seq 0 (expr $num_items - 1))
@@ -686,7 +686,7 @@ function s -d 'Create, delete or attach session'
           while ! contains $foo $b_lang
             tput cuu 2
             tput ed
-            read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[5]) $barracuda_icons[7] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
+            read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[12] (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1])"$b_lang[35]"(set_color -o $barracuda_colors[1])"[0""$last_item""]" (set_color normal)(set_color -b $barracuda_colors[9] $barracuda_colors[1]) "$b_lang[26]"(set_color -o $barracuda_colors[1])"[""$yes_no[4]""]" (set_color -b normal $barracuda_colors[9])""""(set_color normal)' -n $input_length -l session_num
             switch "$session_num"
               case (seq 0 (expr $num_items - 1))
                 if [ (expr $num_items - $session_num) -gt 0 ]
@@ -834,7 +834,7 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
     set barracuda_current_bindmode_color $barracuda_colors[7]
   end
   set_color -b $barracuda_current_bindmode_color $barracuda_colors[1]
-  echo -n (set_color -o $barracuda_colors[5])" $pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
+  echo -n (set_color -o $barracuda_colors[5])"$pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
           (set_color $barracuda_colors[1])"$lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
 end
 
