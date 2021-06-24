@@ -47,6 +47,6 @@ function barracuda_info -d 'Show theme info'
   echo -e $h\n\t$b_lang[58]
   echo -e $i\t$barracuda_icons[4]$n$d $b_lang[59]$v "$git_active"  
   echo -e $i\t$barracuda_icons[6]$n$d $b_lang[60]$v "$bell_active"
-  echo -e $i\t$battery_icons[6]$n$d $b_lang[61]$v "$bat_active"
+  echo -e $i\t$battery_icons[11]$n$d $b_lang[61]$v "$bat_active"
 end
 
