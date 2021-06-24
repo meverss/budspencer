@@ -152,6 +152,8 @@ function light -d 'Set light mode'
   set -U scheme $_
 end
 
+if not set -q scheme; set -U scheme dark; end
+
 #------------------------------------------------------------
 # => Pre execute
 #------------------------------------------------------------
@@ -919,7 +921,7 @@ function __barracuda_right_prompt_symbols -V bat_icon -d 'Display symbols'
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_mode"
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_bell"
   if test $bat_icon = 'on'
-    set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[13])''(set_color -b $barracuda_colors[13] $barracuda_colors[5])" $i_battery"(set_color -b $barracuda_colors[1] $barracuda_colors[13])''(set_color normal)
+    set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])' '(set_color -b $barracuda_colors[5] $barracuda_colors[1])" $i_battery"(set_color -b $barracuda_colors[1] $barracuda_colors[5])''(set_color normal)
     echo -en $r_symbols
   else
     set -l r_symbols $r_symbols(set_color -b $barracuda_colors[1] $barracuda_colors[6])''(set_color normal)

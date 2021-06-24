@@ -140,12 +140,6 @@ if not set -q barracuda_icons
   set -U i_mode $barracuda_icons[1]
 end
 
-#------------------------------------------------------------------------------
-# Cursor color changes according to vi-mode
-# Define values for: normal_mode insert_mode visual_mode
-#------------------------------------------------------------------------------
-set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
-
 ###############################################################################
 # => Languages (SP-EN)
 ###############################################################################
