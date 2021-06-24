@@ -72,7 +72,7 @@ if test $bat_icon = 'on'
   set ac_online (string split "=" (cat $ac_info_file | grep 'ONLINE'))[2]
 
   if [ $ac_online -gt 0 ]
-    set -g i_battery $battery_icons[13]
+    set -g i_battery "$battery_icons[13] "
   else
     set -l blevel (string split "=" (cat $battery_info_file | grep 'CAPACITY'))[2]
     set -l bstatus (string split "=" (cat $battery_info_file | grep 'STATUS'))[2]
@@ -919,7 +919,7 @@ function __barracuda_right_prompt_symbols -V bat_icon -d 'Display symbols'
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_mode"
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_bell"
   if test $bat_icon = 'on'
-    set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[13])' '(set_color -b $barracuda_colors[13] $barracuda_colors[5])" $i_battery"(set_color -b $barracuda_colors[1] $barracuda_colors[13])''(set_color normal)
+    set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[13])''(set_color -b $barracuda_colors[13] $barracuda_colors[5])" $i_battery"(set_color -b $barracuda_colors[1] $barracuda_colors[13])''(set_color normal)
     echo -en $r_symbols
   else
     set -l r_symbols $r_symbols(set_color -b $barracuda_colors[1] $barracuda_colors[6])''(set_color normal)
