@@ -78,9 +78,9 @@ if test $bat_icon = 'on'
     set -l bstatus (string split "=" (cat $battery_info_file | grep 'STATUS'))[2]
 
     if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 5)
-      set -g i_battery (set_color $barracuda_colors[7]) $battery_icons[1]
+      set -g i_battery (set_color $barracuda_colors[7])$battery_icons[1]
     else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 6 15)
-      set -g i_battery (set_color $barracuda_colors[7]) $battery_icons[2]
+      set -g i_battery (set_color $barracuda_colors[7])$battery_icons[2]
     else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 16 19)
       set -g i_battery $battery_icons[2]
     else if not [ $bstatus = 'Charging' ]; and contains $blevel (seq 20 29)
