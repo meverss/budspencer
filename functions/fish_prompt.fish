@@ -818,23 +818,23 @@ function __barracuda_prompt_bindmode -d 'Displays the current mode'
   switch $fish_bind_mode
     case default
       set barracuda_current_bindmode_color $barracuda_colors[12]
-      echo -en $barracuda_cursors[2](set_color $barracuda_colors[12])
+      echo -en $barracuda_cursors[2]
     case insert
       set barracuda_current_bindmode_color $barracuda_colors[6]
-      echo -en  $barracuda_cursors[1](set_color $barracuda_colors[6])
+      echo -en  $barracuda_cursors[1]
       if [ "$pwd_hist_lock" = true ]
         set pwd_hist_lock false
         __barracuda_create_dir_hist
       end
     case visual
       set barracuda_current_bindmode_color $barracuda_colors[12]
-      echo -en $barracuda_cursors[3](set_color $barracuda_colors[10])
+      echo -en $barracuda_cursors[3]
   end
   if [ (count $barracuda_prompt_error) -eq 1 ]
     set barracuda_current_bindmode_color $barracuda_colors[7]
   end
   set_color -b $barracuda_current_bindmode_color $barracuda_colors[1]
-  echo -n (set_color -o $barracuda_colors[5])"$pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
+  echo -n (set_color -b $barracuda_colors[1] $barracuda_colors[6])''(set_color -b $barracuda_colors[6] -o $barracuda_colors[5])"$pcount "(set_color normal)(set_color -b $barracuda_colors[5] $barracuda_current_bindmode_color)(set_color -b $barracuda_colors[5])\
           (set_color $barracuda_colors[1])"$lang "(set_color normal)(set_color -b $barracuda_colors[2])(set_color $barracuda_colors[5])
 end
 
