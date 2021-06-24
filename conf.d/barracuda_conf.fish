@@ -27,7 +27,7 @@
 set -U barracuda_version "1.7.3"
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files'
-set -U theme_path (status dirname | sed 's/\/conf.d//g')
+set -U theme_path (status dirname | sed -r 's/barracuda.*/barracuda/')
 
 echo '' > $termux_path/usr/etc/motd
 
