@@ -63,14 +63,14 @@ end
 
 # Battery info
 if not set -q ac_info_file; or not set -q battery_info_file
-for ac in ac AC
-  if test -d /sys/class/power_supply/$ac
-    set b_path (readlink -f /sys/class/power_supply/$ac | sed "s/\/$ac//g")
-    set -U ac_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_NAME=$ac" 2>/dev/null))[1]
-    set -U battery_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_CAPACITY=" 2>/dev/null))[1]
-    break
+  for ac in 'ac' 'AC'
+    if test -d /sys/class/power_supply/$ac
+      set b_path (readlink -f /sys/class/power_supply/$ac | sed "s/\/$ac//g")
+      set -U ac_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_NAME=$ac" 2>/dev/null))[1]
+      set -U battery_info_file (string split ":" (find $b_path -type f |xargs grep "POWER_SUPPLY_CAPACITY=" 2>/dev/null))[1]
+      break
+    end
   end
-end
 end
 
 # Window title
@@ -110,7 +110,6 @@ function barracuda_reload -a opt -d 'Reload configuration'
   end
 end
 
-
 ###############################################################################
 # => Colors and icons definitions
 ###############################################################################
@@ -119,11 +118,6 @@ end
 #------------------------------------------------------------------------------
 set -U barracuda_colors_dark 000 6a7a6a 445659 bbb b58900 222222 dc121f 9c9 777 268bd2 2aa198 666 333
 set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aaa 268bd2 2aa198 666 444
-
-# Set "dark" the default color scheme
-if not set -q barracuda_colors
-  set -U barracuda_colors $barracuda_colors_dark
-end
 
 #------------------------------------------------------------------------------
 # Define icons
@@ -134,19 +128,13 @@ set -U barracuda_icons_linux             
 set -U barracuda_icons_plang   
 set -U battery_icons             ﮣ
 
-# Set "dark" the default icons scheme
-if not set -q barracuda_icons
-  set -U barracuda_icons $barracuda_icons_dark
-  set -U i_mode $barracuda_icons[1]
-end
-
 ###############################################################################
 # => Languages (SP-EN)
 ###############################################################################
-set -U lang_sp 'Recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar' 'Todo' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: backup [OPCION]...' '     backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	  Nombre del archivo de respaldo' '         Nombre de archivo     Tamaño       Fecha' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto' 'Cancelar' 'Copia de respaldo eliminada' 'Se eliminaron todos los arvivos de respaldos' 'Versión' 'Abortando...'\
+set lang_sp 'Recopilando datos...' 'Comprimiendo...' 'No hay archivos de respaldo' 'Borrar' 'Todo' 'Borrar archivo' 'Borrar TODO (s/n)?' 'No se encontró ALMACENAMIENTO_EXTERNO.' 'El respaldo se guardará en ~/.backup_termux' 'Intente escribiendo' '¡Listo! Respaldo realizado con éxito' 'Uso: backup [OPCION]...' '     backup -c [ARCHIVO]...' 'Descripción:' 'Realiza un respaldo de los archivos de usuario y sistema' 'OPCION:' '-c --create		Crear nuevo respaldo' '-d --delete		Borrar archivo de respaldo' '-l --list		Listar archivos de respaldo' '-h --help		Muestra esta ayuda' 'ARCHIVO:' '<nombre_de_archivo>	  Nombre del archivo de respaldo' '         Nombre de archivo     Tamaño       Fecha' 'Archivos de respaldo' 'Si no se especifica ninguna OPCION, se creará un archivo de respaldo con <Backup> como identificador por defecto' 'Cancelar' 'Copia de respaldo eliminada' 'Se eliminaron todos los arvivos de respaldos' 'Versión' 'Abortando...'\
                'Cambiar fuente' 'Aplicar' 'Fuente cambiada a' 'Ir' 'Borrar' 'opción inválida' 'El historial de directorios está vacío. Se creará de manera automática.' 'Historial de directorios' '\t  Directorio' 'La lista de marcadores esta vacía.' 'Lista de marcadores' '\t    Marcadores' 'Historial de comandos' '\t    Comandos' 'El historial de comandos esta vacío. Se creará de manera automática.' 'Sesiones' '\t    Nombre de sesión' 'No hay ninguna sesión guardada'\
                'Información del tema' 'General' 'Nombre:' 'Versión:' 'Sesión activa:' '(ninguna)' 'Interfaz' 'Idioma:' 'Esquema de color:' 'Características' 'Mostrar stado de repositorio Git:' 'Notificaciones activas:' 'Mostrar estado de la batería:' 'Si' 'No'
-set -U lang_en 'Collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done! Backup has been successfuly finished' 'Usage: backup [OPTION]...' '       backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '              File name         Size        Date' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>' 'Cancel' 'Backup deleted' 'All backups has been deleted' 'Version' 'Aborting...'\
+set lang_en 'Collecting data...' 'Compressing...' 'No backups found' 'Delete' 'All' 'Delete item' ' Delete ALL backups (y/n)? ' 'No EXTERNAL_STORAGE mounted.' 'Backup will be stored in ~/.backup_termux' 'Try using ' 'All done! Backup has been successfuly finished' 'Usage: backup [OPTION]...' '       backup -c [FILE]...' 'Description:' 'Performs a backup of system and user\'s files' 'OPTION:' '-c --create		Create new backup' '-d --delete		Delete existing backup' '-l --list		List backup files' '-h --help		Show this help' 'FILE:' '<bakup_file_name>	Name of backup file' '              File name         Size        Date' 'Backup files' 'If no OPTION is defined, it will be created a backup with default identifier <Backup>' 'Cancel' 'Backup deleted' 'All backups has been deleted' 'Version' 'Aborting...'\
                'Change font' 'Apply' 'Font changed to' 'Goto' 'Erase' 'invalid option' 'Directory history is empty. It will be created automatically.' 'Directory history' '\t  Directory' 'Bookmark list is empty.' 'Bookmarks list' '\t    Bookmarks' 'Command history' '\t    Commands' 'Command history is empty. It will be created automatically.' 'Sessions' '\t    Session name' 'No session saved.'\
                'Theme info' 'General' 'Name: ' 'Version:' 'Active session:' '(none)' 'Interface' 'Language:' 'Color scheme:' 'Features' 'Show Git status:' 'Active notifications:' 'Show battery status icon:' 'Yes' 'No'
 
@@ -206,7 +194,7 @@ bind \r __barracuda_preexec
 ###############################################################################
 # => Install Powerline fonts (Termux)
 ###############################################################################
-if test -f $PREFIX/bin/termux-info
+if [ -f $PREFIX/bin/termux-info ]
   set -g fonts 'Monofur' 'DejaVu' 'FiraCode' 'Go' 'Ubuntu'
   set -g DejaVu 'DejaVu Sans Mono'
   set -g FiraCode 'Fira Code Regular'
@@ -221,7 +209,7 @@ if test -f $PREFIX/bin/termux-info
 
   switch $b_os
     case 'Android'
-      if ! test -e $HOME/.termux/font.ttf
+      if ! [ -e $HOME/.termux/font.ttf ]
         or ! cmp -s $theme_path/fonts/$font.ttf $HOME/.termux/font.ttf 2>/dev/null
         cp -f $theme_path/fonts/$font.ttf $HOME/.termux/font.ttf 2>/dev/null
         termux-reload-settings

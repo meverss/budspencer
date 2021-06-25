@@ -133,7 +133,7 @@ function color_scheme  -v scheme
   set -U barracuda_colors $$colors
   set -U barracuda_icons $$icons
   set -U i_mode $barracuda_icons[1]
-  set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[12]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
+  set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[11]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
   switch $lang
     case 'es' 'español'
       spanish
@@ -1357,13 +1357,7 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set -l my_path (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
   set -l short_working_dir (string replace -ar '(\.?[^/]{''})[^/]*/' '$1/' $my_path)
 
-
-  if [ (string length (pwd)) -lt (expr (tput cols) - 5) ]
-    set working_dir (pwd)
-  else
-    set working_dir $short_working_dir
-  end
-  echo -e (set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $working_dir (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"  
+  echo -e (set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $short_working_dir (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"  
   set -g last_status $status
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
