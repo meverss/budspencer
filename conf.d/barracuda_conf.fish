@@ -174,9 +174,7 @@ end
 alias ls "ls -gh"
 alias version 'echo Barracuda v$barracuda_version'
 alias spanish "ch_lang sp"
-alias español "ch_lang sp"
 alias english "ch_lang en"
-alias ingles "ch_lang en"
 
 ###############################################################################
 # => Key bindings
