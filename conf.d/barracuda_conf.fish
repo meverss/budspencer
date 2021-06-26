@@ -47,18 +47,6 @@ else
   end
 end
 
-#set distro 'Debian' 'Fedora' 'Arch' 'Ubuntu' 'Suse' 'Gentoo' 'BSD'\
-#  for x in (seq (count $distro))
-#    if contains $distro[$x] (string split ' ' (uname -a))
-#      switch $distro[$x]
-#        case 'Android'
-#          echo Android
-#        case 'aarch64'
-#          echo CPU
-#      end
-#    end
-#  end
-
 # Battery info
 if not set -q ac_info_file; or not set -q battery_info_file
   for ac in 'ac' 'AC'
@@ -122,7 +110,7 @@ set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aa
 #------------------------------------------------------------------------------
 set barracuda_icons_dark  \uf186 \ue725 \uf1f7 \uf0a2 \uf115 \ue5fe \uf11d \uf489 \uf006 \uf014 \uf2c0 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
 set barracuda_icons_light \uf0a3 \ue725 \uf1f6 \uf0f3 \uf07c \ue5fe \uf024 \ue795 \uf005 \uf1f8 \uf007 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
-set barracuda_icons_linux \uE77D \uE73A \uF30E \uF30D \uF268 \uF303 \uF30B \uF304 \uF305 \uF307 \uF309 \uF30C \uF311 \uF312
+set barracuda_icons_linux \ue77d \ue73a \uf30e \uf30d \uf268 \uf303 \uf30b \uf304 \uf305 \uf307 \uf309 \uf30c \uf311 \uf312
 set barracuda_icons_plang \ue73c \ue718 \ue791
 set battery_icons \uf582 \uf579 \uf57a \uf57b \uf57c \uf57d \uf57e \uf57f \uf580 \uf581 \uf578 \uf583 \ufba3
 
