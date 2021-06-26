@@ -132,7 +132,7 @@ function color_scheme  -v scheme
   set icons "barracuda_icons_$scheme"
   set -U barracuda_colors $$colors
   set -U barracuda_icons $$icons
-  set -U i_mode $barracuda_icons[1]
+  set -U i_scheme $barracuda_icons[1]
   set -U barracuda_cursors "\033]12;#$barracuda_colors[5]\007" "\033]12;#$barracuda_colors[11]\007" "\033]12;#$barracuda_colors[10]\007" "\033]12;#$barracuda_colors[9]\007"
   switch $lang
     case 'es' 'español'
@@ -918,7 +918,7 @@ function __barracuda_right_prompt_symbols -V bat_icon -d 'Display symbols'
   battery_level
   set -l r_symbols (set_color -b black $barracuda_colors[6])''
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_os"
-  set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_mode"
+  set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_scheme"
   set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])" $i_bell"
   if test $bat_icon = 'on'
     set -l r_symbols $r_symbols(set_color -b $barracuda_colors[6] $barracuda_colors[5])' '(set_color -b $barracuda_colors[5] $barracuda_colors[1])" $i_battery"(set_color -b $barracuda_colors[1] $barracuda_colors[5])''(set_color normal)

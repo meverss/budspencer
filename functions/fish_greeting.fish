@@ -20,7 +20,12 @@ function fish_greeting -d "Welcome message"
   set -l bh (set_color $barracuda_colors[4])'barracuda_help'(set_color -b 000 $barracuda_colors[9])
   set -U g_lang_sp "Un tema elegante para el shell $fs.\nEscriba $bh para una documentación detallada."
   set -U g_lang_en "A fancy theme for the $fs shell.\nType $bh for a complete documentation."
- 
+  if [ $b_os = 'Android' ]
+    echo '' > $termux_path/usr/etc/motd 2>/dev/null
+  else
+    echo '' > /etc/motd 2>/dev/null
+  end
+  
   switch $lang
     case 'es' 'español'
       set -U bg_lang $g_lang_sp

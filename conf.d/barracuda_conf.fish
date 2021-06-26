@@ -10,7 +10,7 @@
 #   Marvin Eversley Silva <meverss@gmail.com>
 #
 # Sections:
-#   -> General configurations
+#   -> General config
 #   -> Reload settings
 #   -> Colors and icons definition
 #   -> Language definition
@@ -20,16 +20,14 @@
 #
 ###############################################################################
 
-
 ###############################################################################
-# => General configurations
+# => General config
 ###############################################################################
 set -U barracuda_version "1.7.3"
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files'
 set -U theme_path (status dirname | sed -r 's/barracuda.*/barracuda/')
-
-echo '' > $termux_path/usr/etc/motd
+set info (uname)
 
 # OS Info
 if contains 'Android' (string split ' ' (uname -a))
@@ -122,11 +120,11 @@ set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aa
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-set -U barracuda_icons_dark  \uf186 \ue725 \uf1f7 \uf0a2 \uf115 \ue5fe \uf11d \uf489 \uf006 \uf014 \uf2c0 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
-set -U barracuda_icons_light \uf0a3 \ue725 \uf1f6 \uf0f3 \uf07c \ue5fe \uf024 \ue795 \uf005 \uf1f8 \uf007 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
-set -U barracuda_icons_linux \uE77D \uE73A \uF30E \uF30D \uF268 \uF303 \uF30B \uF304 \uF305 \uF307 \uF309 \uF30C \uF311 \uF312
-set -U barracuda_icons_plang \ue73c \ue718 \ue791
-set -U battery_icons \uf582 \uf579 \uf57a \uf57b \uf57c \uf57d \uf57e \uf57f \uf580 \uf581 \uf578 \uf583 \ufba3
+set barracuda_icons_dark  \uf186 \ue725 \uf1f7 \uf0a2 \uf115 \ue5fe \uf11d \uf489 \uf006 \uf014 \uf2c0 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
+set barracuda_icons_light \uf0a3 \ue725 \uf1f6 \uf0f3 \uf07c \ue5fe \uf024 \ue795 \uf005 \uf1f8 \uf007 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
+set barracuda_icons_linux \uE77D \uE73A \uF30E \uF30D \uF268 \uF303 \uF30B \uF304 \uF305 \uF307 \uF309 \uF30C \uF311 \uF312
+set barracuda_icons_plang \ue73c \ue718 \ue791
+set battery_icons \uf582 \uf579 \uf57a \uf57b \uf57c \uf57d \uf57e \uf57f \uf580 \uf581 \uf578 \uf583 \ufba3
 
 ###############################################################################
 # => Languages (SP-EN)
