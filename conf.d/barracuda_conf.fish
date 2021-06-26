@@ -34,18 +34,18 @@ echo '' > $termux_path/usr/etc/motd
 # OS Info
 if contains 'Android' (string split ' ' (uname -a))
     set -U b_os 'Android'
-    set -U i_os $barracuda_icons[25]
+    set -U i_os $barracuda_icons[23]
 else
   switch $info
     case 'Darwin'
       set -U b_os 'Mac OS'
-      set -U i_os $barracuda_icons[23]
+      set -U i_os $barracuda_icons[21]
     case 'Windows'
       set -U b_os $info
-      set -U i_os $barracuda_icons[24]
+      set -U i_os $barracuda_icons[22]
     case '*'
       set -U b_os $info
-      set -U i_os $barracuda_icons[26]
+      set -U i_os $barracuda_icons[24]
   end
 end
 
@@ -122,21 +122,13 @@ set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aa
 #------------------------------------------------------------------------------
 # Define icons
 #------------------------------------------------------------------------------
-#set -U barracuda_icons_dark                                          ↑ ↓    
-#set -U barracuda_icons_light                                          ↑ ↓    
 set -U barracuda_icons_dark  \uf186 \ue725 \uf1f7 \uf0a2 \uf115 \ue5fe \uf11d \uf489 \uf006 \uf014 \uf2c0 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
 set -U barracuda_icons_light \uf0a3 \ue725 \uf1f6 \uf0f3 \uf07c \ue5fe \uf024 \ue795 \uf005 \uf1f8 \uf007 \uf42e \uf467 \uf101 \uf24d \uf023 \uf031 \ue231 \uf1c6 \uf455 \uF179 \uf17a \uf17b \uf17c \uf25d \uf1Ab \ue62b \uf440 \u2191 \u2193 \uf12e \uf02c \uf1fc \ue27a
 
 set -U barracuda_icons_linux              
 set -U barracuda_icons_plang   
-set -U battery_icons             ﮣ
-
-
-# \ufb9b - Favorite folder
-
-
-
-
+set -U battery_icons \uf582 \uf579 \uf57a \uf57b \uf57c \uf57d \uf57e \uf57f \uf580 \uf581 \uf578 \uf583 \ufba3
+#            ﮣ
 
 ###############################################################################
 # => Languages (SP-EN)

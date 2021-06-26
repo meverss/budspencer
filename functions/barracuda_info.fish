@@ -38,15 +38,15 @@ function barracuda_info -d 'Show theme info'
 
   echo -e \n(set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[49] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)
   echo -e $h\n\t$b_lang[50]
-  echo -e $i\t$barracuda_icons[44]$n$d $b_lang[51]$v 'Barracuda'
-  echo -e $i\t$barracuda_icons[45]$n$d $b_lang[52]$v "v$barracuda_version"
-  echo -e $i\t$barracuda_icons[13]$n$d $b_lang[53]$v "$session"
+  echo -e $i\t$barracuda_icons[31]$n$d $b_lang[51]$v 'Barracuda'
+  echo -e $i\t$barracuda_icons[32]$n$d $b_lang[52]$v "v$barracuda_version"
+  echo -e $i\t$barracuda_icons[11]$n$d $b_lang[53]$v "$session"
   echo -e $h\n\t$b_lang[55]
-  echo -e $i\t$barracuda_icons[37]$n$d $b_lang[56]$v "$lang" | sed 's/es/Español/g' | sed 's/en/English/g'
-  echo -e $i\t$barracuda_icons[46]$n$d $b_lang[57]$v "$scheme"
+  echo -e $i\t$barracuda_icons[26]$n$d $b_lang[56]$v "$lang" | sed 's/es/Español/g' | sed 's/en/English/g'
+  echo -e $i\t$barracuda_icons[33]$n$d $b_lang[57]$v "$scheme"
   echo -e $h\n\t$b_lang[58]
-  echo -e $i\t$barracuda_icons[4]$n$d $b_lang[59]$v "$git_active"  
-  echo -e $i\t$barracuda_icons[6]$n$d $b_lang[60]$v "$bell_active"
+  echo -e $i\t$barracuda_icons[2]$n$d $b_lang[59]$v "$git_active"  
+  echo -e $i\t$barracuda_icons[4]$n$d $b_lang[60]$v "$bell_active"
   echo -e $i\t$battery_icons[11]$n$d $b_lang[61]$v "$bat_active"
 end
 
