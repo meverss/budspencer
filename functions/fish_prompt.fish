@@ -936,39 +936,39 @@ end
 if test $b_os = 'Android'; and test -e "$PATH/termux-info"
 function backup -a opt file_name -d 'Backup file system'
   [ $file_name ]; or set file_name 'Backup'
-  set -g tmp_dir $HOME/.backup_termux
+  set -g tmp_dir $PREFIX/tmp/.backup
   set -g bkup_dir $HOME/storage/shared
-  set -g bkup1 $bkup_dir/.backup_termux
-  set -g bkup2 $tmp_dir
+  set -g bkup1 $bkup_dir/.backup
+  set -g bkup2 $HOME/.backup
+  set -g current_path (pwd)
 
 function __backup__ -V file_name
-  echo "home/storage/"\n"home/.backup_termux/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
+  echo "home/storage/"\n"home/.backup/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
 
-  set current_path (pwd)
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
-  set f_count_total (find $termux_path/. -type f | wc -l)
-  if test -d $tmp_dir
-    set f_count_bkup (find $tmp_dir/. -type f | wc -l)
+  set f_count_total (find $termux_path/. 2>/dev/null | wc -l)
+  if [ -d $bkup2 ]
+    set f_count_bkup2 (find $bkup2/. 2>/dev/null | wc -l)
   else
-    set f_count_bkup 0
+    set f_count_bkup2 0
   end
-  set f_count (expr $f_count_total - $f_count_bkup)
-  set -g text (set_color -o cb4b16)
-  set -g frame (set_color -o white)
+  set f_count (expr $f_count_total - $f_count_bkup2)
   set -g normal (set_color normal)
 
-  echo -e (set_color -b black $barracuda_colors[9])\n''(set_color -b $barracuda_colors[9] -o 000)" Backup v$barracuda_version "$normal(set_color -b black $barracuda_colors[9])''$normal
+  echo -e (set_color -b black $barracuda_colors[9])\n''(set_color -b $barracuda_colors[9] -o $barracuda_colors[1])" Backup v$barracuda_version "$normal(set_color -b black $barracuda_colors[9])''$normal
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[1]$normal
-  set_color $barracuda_colors[4]; rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+  set_color $barracuda_colors[4]
+  rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
-  set f_count_tmp (find $tmp_dir/$file/. -type f | wc -l)
-
-  cd $tmp_dir/$file
+  set f_count_tmp (find $tmp_dir/$file/. | wc -l)
+#  cd $tmp_dir/$file
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[2]$normal
-  set_color $barracuda_colors[4] && tar -czf - * 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
-  rm -Rf $tmp_dir/$file $HOME/exclude
+  set_color $barracuda_colors[4]
+  tar -czf - $tmp_dir/$file/* 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
+  rm -Rf $tmp_dir/$file $HOME/exclude 2>/dev/null
   cd $current_path
+  set -e current_path
   functions -e __backup__
 end
 
@@ -1048,8 +1048,8 @@ end
                  read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[10] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[6]"(set_color -o 000)"["$bkup_file"]" (set_color normal)(set_color -b $barracuda_colors[9] 000)"("$yes_no[1]"/"$yes_no[2]")" (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l confirm
                  switch $confirm
                    case "$yes_no[1]"
-                     rm -f $bkup1/$list1[$bkup_file]
-                     rm -f $bkup2/$list1[$bkup_file]
+                     rm -f $bkup1/$list1[$bkup_file] 2>/dev/null
+                     rm -f $bkup2/$list1[$bkup_file] 2>/dev/null
                      cd $current_path
        		     if test -e $PATH/termux-toast
     		       termux-toast -b "#222222" -g top -c white $b_lang[27]
@@ -1080,8 +1080,8 @@ end
              read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5])" $barracuda_icons[10]"(set_color normal)(set_color -b $barracuda_colors[9] 000) $b_lang[7] (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l argv
                switch $argv
                  case "$yes_no[1]"
-                     rm -Rf $HOME/.backup_termux
-                     rm -Rf $bkup_dir/.backup_termux
+                     rm -Rf $HOME/.backup
+                     rm -Rf $bkup_dir/.backup
                      cd $current_path
 		     if test -e $PATH/termux-toast
 		       termux-toast -b "#222222" -g top -c white $b_lang[28]
