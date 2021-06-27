@@ -936,171 +936,76 @@ end
 if test $b_os = 'Android'; and test -e "$PATH/termux-info"
 function backup -a opt file_name -d 'Backup file system'
   [ $file_name ]; or set file_name 'Backup'
-  set -g tmp_dir $PREFIX/tmp/.backup
-  set -g bkup_dir $HOME/storage/shared
-  set -g bkup1 $bkup_dir/.backup
-  set -g bkup2 $HOME/.backup
+  set -g tmp_dir $PREFIX/tmp/.barracuda_backup
+  set -g ext_strg $HOME/storage/shared
+  set -g bkup1 $ext_strg/.barracuda_backup
+  set -g bkup2 $HOME/.barracuda_backup
   set -g current_path (pwd)
+  if [ -d $ext_strg ]
+    set bkup_dir $bkup1; else; set bkup_dir $bkup2
+  end
 
 function __backup__ -V file_name
-  echo "home/storage/"\n"home/.backup/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
+  echo "home/storage/"\n"home/.barracuda_backup/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
+  rm -Rf $tmp_dir 2>/dev/null
 
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
-  set f_count_total (find $termux_path/. 2>/dev/null | wc -l)
+  set -g normal (set_color normal)
+  set f_count_raw (find $termux_path/. 2>/dev/null | wc -l)
   if [ -d $bkup2 ]
     set f_count_bkup2 (find $bkup2/. 2>/dev/null | wc -l)
   else
     set f_count_bkup2 0
   end
-  set f_count (expr $f_count_total - $f_count_bkup2)
-  set -g normal (set_color normal)
+  set f_count (expr $f_count_raw - $f_count_bkup2)
 
+  mkdir -p $tmp_dir
   echo -e (set_color -b black $barracuda_colors[9])\n''(set_color -b $barracuda_colors[9] -o $barracuda_colors[1])" Backup v$barracuda_version "$normal(set_color -b black $barracuda_colors[9])''$normal
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[1]$normal
   set_color $barracuda_colors[4]
   rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp (find $tmp_dir/$file/. | wc -l)
-#  cd $tmp_dir/$file
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[2]$normal
   set_color $barracuda_colors[4]
   tar -czf - $tmp_dir/$file/* 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
-  rm -Rf $tmp_dir/$file $HOME/exclude 2>/dev/null
+  mkdir -p $bkup_dir
+  mv -f $tmp_dir/*.tar.gz $bkup_dir/ 2>/dev/null
+  rm -Rf $tmp_dir $HOME/exclude 2>/dev/null
   cd $current_path
   set -e current_path
   functions -e __backup__
 end
 
- switch $opt
+switch $opt
    # ------ List ------
    case '-l' '--list'
-     if test ! -d $bkup1 -a ! -d $bkup2
-         echo $b_lang[3]
-         return
+     if [ -d $ext_strg ]; and [ -d $bkup2 ]; and [ (count (ls $bkup2)) != 0 ]
+       mkdir -p $bkup1
+       mv -u $bkup2/*.tar.gz $bkup1/ 2>/dev/null
+       rm -Rf $bkup2 2>/dev/null
      end
 
-     if test -d $bkup1 -o -d $bkup2
-       set list (ls -gh $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"\t"$4"\t\t"$6"-"$5"-"$7}' | sort -nr)
-       set list1 (ls $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz" | sort -nr)
-       set -l num_items (count $list1)
-
-       if [ $num_items -eq 0 ]
+     if ! [ -d $bkup_dir ]; or [ (count (ls $bkup_dir)) -eq 0 ]
          echo $b_lang[3]
          return
-       else
-         echo
-         echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[24] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
-         echo (set_color $barracuda_colors[5])$b_lang[23] (set_color normal)
+     else
+       set list (ls -gh $bkup_dir 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"\t"$4"\t\t"$6"-"$5"-"$7}' | sort -nr)
+       set num_items (count $list)
 
-         for i in (seq $num_items)
-           set even_odd (math $i % 2)
+       echo
+       echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[24] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
+       echo (set_color $barracuda_colors[5])$b_lang[23] (set_color normal)
+
+       for i in (seq $num_items)
+         set even_odd (expr $i % 2)
            if test $even_odd -eq 0
              set line_color $barracuda_colors[4]
            else
              set line_color $barracuda_colors[9]
            end
            echo -e (tabs -2)(set_color $line_color)$i.\t$barracuda_icons[19] $list[$i]
-         end
-       end
-     end
-
-   # ------ Delete ------
-   case '-d' '--delete'
-     if test ! -d $bkup1 -a ! -d $bkup2
-       echo $b_lang[3]
-     end
-     if test -d $bkup1 -o -d $bkup2
-       set list (ls -gh $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"  "$4"  "$6"-"$5"-"$7}' | sort -nr)
-       set list1 (ls $bkup1 $bkup2 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8}' | sort -nr)
-       set -l num_items (count $list1)
-
-       if [ $num_items -eq 0 ]
-         echo $b_lang[3]
-         return 1
-       else
-         echo
-         echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[24] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
-         echo (set_color -o $barracuda_colors[5])"$b_lang[23]" (set_color normal)
-
-         for i in (seq $num_items)
-           set even_odd (math $i % 2)
-           if test $even_odd -eq 0
-             set line_color  $barracuda_colors[4]
-           else
-             set line_color $barracuda_colors[9]
-           end
-           echo -e (tabs -2)(set_color $line_color)$i.\t$barracuda_icons[19] $list[$i]
-         end
-
-	 echo && echo
-         echo -en $barracuda_cursors[1]
-         set -l input_length (expr length (expr $num_items))
-	 while ! contains $foo $b_lang
-	   tput cuu 2
-	   tput ed
-           read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[10] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[4]"(set_color -o 000)""[1-"$num_items"] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[5]"(set_color -o 000)""["$yes_no[3]"] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color -b $barracuda_colors[9] normal)(set_color -b black $barracuda_colors[9])""""(set_color normal)' -n $input_length -l bkup_file
-           switch $bkup_file
-             case (seq 0 (expr $num_items))
-               while ! contains $foo $b_lang
-                 tput cuu 2
-                 tput ed
-                 read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[10] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[6]"(set_color -o 000)"["$bkup_file"]" (set_color normal)(set_color -b $barracuda_colors[9] 000)"("$yes_no[1]"/"$yes_no[2]")" (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l confirm
-                 switch $confirm
-                   case "$yes_no[1]"
-                     rm -f $bkup1/$list1[$bkup_file] 2>/dev/null
-                     rm -f $bkup2/$list1[$bkup_file] 2>/dev/null
-                     cd $current_path
-       		     if test -e $PATH/termux-toast
-    		       termux-toast -b "#222222" -g top -c white $b_lang[27]
-  		     end
-  	             for x in (seq (expr $num_items + 9))
-	               tput cuu1
-	               tput ed
-	             end
-                     return
-        	   case "$yes_no[2]"
-		     for x in (seq (expr $num_items + 9))
-		       tput cuu1
-	               tput ed
-		     end
-	             return
-                  end
-             end
-            case "$yes_no[4]"
-	      for x in (seq (expr $num_items + 9))
-	        tput cuu1
-	        tput ed
-	      end
-              return
-            case "$yes_no[3]"
-             while ! contains $foo $b_lang
-             tput cuu 2
-             tput ed
-             read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5])" $barracuda_icons[10]"(set_color normal)(set_color -b $barracuda_colors[9] 000) $b_lang[7] (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l argv
-               switch $argv
-                 case "$yes_no[1]"
-                     rm -Rf $HOME/.backup
-                     rm -Rf $bkup_dir/.backup
-                     cd $current_path
-		     if test -e $PATH/termux-toast
-		       termux-toast -b "#222222" -g top -c white $b_lang[28]
-		     end
-	             for x in (seq (expr $num_items + 9))
-	               tput cuu1
-	               tput ed
-	             end
-                     return
-        	  case "$yes_no[2]"
-		      for x in (seq (expr $num_items + 9))
-		        tput cuu1
-	    		tput ed
-		      end
-    		      return
-               end
-             end
-         end
-         end
        end
      end
 
@@ -1114,31 +1019,120 @@ end
      return
 
    # ------ Create ------
-   case '-c' '--create'
-     if test -d $HOME/storage
-       if test -d $tmp_dir
-         mkdir -p $bkup1
-         mv -f $tmp_dir/*.tar.gz $bkup1/ 2>/dev/null
-         __backup__ $file_name
-         cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
-         rm -Rf $tmp_dir
-       else
-         mkdir -p $tmp_dir
-         __backup__ $file_name
-         cp -rf $tmp_dir/ $bkup_dir/ 2>/dev/null
-         rm -Rf $tmp_dir
-       end
+    case '-c' '--create'
+      if [ -d $ext_strg ]; and [ -d $bkup2 ]; and [ count (ls $bkup2) != 0 ]
+        mkdir -p $bkup1
+        mv -u $bkup2/*.tar.gz $bkup1/ 2>/dev/null
+        rm -Rf $bkup2 2>/dev/null
+        __backup__ $file_name
+      else if ! [ -d $ext_strg ]
+        echo "$b_lang[8]"\n"$b_lang[9]"
+        echo "$b_lang[10]"(set_color $barracuda_colors[9])' termux-setup-storage'$normal\n
+        __backup__ $file_name
+      else
+        __backup__ $file_name
+      end
+      if test -e $termux_path/usr/bin/termux-toast
+        termux-toast -b "#222222" -g top -c "#$barracuda_colors[4]" $b_lang[11]
+      end
+
+   # ------ Delete ------
+   case '-d' '--delete'
+     if [ -d $ext_strg ]; and [ -d $bkup2 ]; and [ count (ls $bkup2) != 0 ]
+       mkdir -p $bkup1
+       mv -u $bkup2/*.tar.gz $bkup1/ 2>/dev/null
+       rm -Rf $bkup2 2>/dev/null
+     end
+
+     if ! [ -d $bkup_dir ]; or [ (count (ls $bkup_dir)) -eq 0 ]
+       echo $b_lang[3]
      else
-       mkdir -p $tmp_dir 2>/dev/null
-       echo "$b_lang[8]"\n"$b_lang[9]"
-       echo "$b_lang[10]"(set_color $barracuda_colors[9])' termux-setup-storage'$normal\n
-       __backup__ $file_name
-     end
+       set list (ls -gh $bkup_dir 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"  "$4"  "$6"-"$5"-"$7}' | sort -nr)
+       set -l num_items (count $list)
+       echo
+       echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[24] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
+       echo (set_color -o $barracuda_colors[5])"$b_lang[23]" (set_color normal)
 
-     if test -e $termux_path/usr/bin/termux-toast
-       termux-toast -b "#222222" -g top -c "#$barracuda_colors[4]" $b_lang[11]
-     end
+       for i in (seq $num_items)
+         set even_odd (expr $i % 2)
+         if [ $even_odd -eq 0 ]
+           set line_color  $barracuda_colors[4]
+         else
+           set line_color $barracuda_colors[9]
+         end
+         echo -e (tabs -2)(set_color $line_color)$i.\t$barracuda_icons[19] $list[$i]
+       end
 
+       echo && echo
+       echo -en $barracuda_cursors[1]
+       set -l input_length (expr length (expr $num_items))
+       while ! contains $foo $b_lang
+	 tput cuu 2
+	 tput ed
+         read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[10] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[4]"(set_color -o 000)""[1-"$num_items"] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[5]"(set_color -o 000)""["$yes_no[3]"] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color -b $barracuda_colors[9] normal)(set_color -b black $barracuda_colors[9])""""(set_color normal)' -n $input_length -l bkup_file
+           switch $bkup_file
+             case (seq 1 (expr $num_items))
+               while ! contains $foo $b_lang
+                 tput cuu 2
+                 tput ed
+                 read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[10] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[6]"(set_color -o 000)"["$bkup_file"]" (set_color normal)(set_color -b $barracuda_colors[9] 000)"("$yes_no[1]"/"$yes_no[2]")" (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l confirm
+                 switch $confirm
+                   case "$yes_no[1]"
+                     set item (echo $list[$bkup_file] | awk '{print $1}')
+                     rm -f $bkup_dir/$item 2>/dev/null
+                     cd $current_path
+
+       		     if test -e $PATH/termux-toast
+    		       termux-toast -b "#222222" -g top -c white $b_lang[27]
+  		     end
+  	             for x in (seq (expr $num_items + 9))
+	               tput cuu1
+	               tput ed
+	             end
+                     return
+
+        	   case "$yes_no[2]"
+		     for x in (seq (expr $num_items + 9))
+		       tput cuu1
+	               tput ed
+		     end
+	             return
+                 end
+               end
+            case "$yes_no[4]"
+	      for x in (seq (expr $num_items + 9))
+	        tput cuu1
+	        tput ed
+	      end
+              return
+            case "$yes_no[3]"
+              while ! contains $foo $b_lang
+              tput cuu 2
+              tput ed
+              read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1])" $barracuda_icons[10]"(set_color normal)(set_color -b $barracuda_colors[9] 000) $b_lang[7] (set_color -b normal $barracuda_colors[9])""(set_color normal)' -n 1 -l argv
+                switch $argv
+                  case "$yes_no[1]"
+                    rm -Rf $bkup_dir 2>/dev/null
+                    cd $current_path
+		    if [ -e $PATH/termux-toast ]
+		       termux-toast -b "#222222" -g top -c white $b_lang[28]
+		    end
+	            for x in (seq (expr $num_items + 9))
+	              tput cuu1
+	              tput ed
+	            end
+                    return
+        	  case "$yes_no[2]"
+		    for x in (seq (expr $num_items + 9))
+		      tput cuu1
+	    	      tput ed
+		    end
+    		    return
+                end
+            end
+        end
+    end
+  end
    case '*'
      echo "$_: $b_lang[36] $argv"
      return
