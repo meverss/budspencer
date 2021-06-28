@@ -942,7 +942,7 @@ function backup -a opt file_name -d 'Backup file system'
   set -g bkup2 $HOME/.barracuda_backup
   set -g current_path (pwd)
   if [ -d $ext_strg ]
-    set bkup_dir $bkup1; else; set bkup_dir $bkup2
+    set -g bkup_dir $bkup1; else; set -g bkup_dir $bkup2
   end
 
 function __backup__ -V file_name
@@ -952,21 +952,23 @@ function __backup__ -V file_name
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
   set -g normal (set_color normal)
-  set f_count_raw (find $termux_path/. 2>/dev/null | wc -l)
+#  set f_count_raw (find $termux_path/. 2>/dev/null | wc -l)
+  set ignore  --ignore='storage' --ignore='.barracuda_backup' --ignore='exclude' --ignore='tmp' --ignore='.suroot'
+  set f_count_raw (expr (ls $termux_path/ -R $ignore 2>/dev/null| wc -l) + (count $ignore))
   if [ -d $bkup2 ]
-    set f_count_bkup2 (find $bkup2/. 2>/dev/null | wc -l)
+    set f_count_bkup2 (ls $bkup2/ -R 2>/dev/null | wc -l)
   else
     set f_count_bkup2 0
   end
   set f_count (expr $f_count_raw - $f_count_bkup2)
 
   mkdir -p $tmp_dir
-  echo -e (set_color -b black $barracuda_colors[9])\n''(set_color -b $barracuda_colors[9] -o $barracuda_colors[1])" Backup v$barracuda_version "$normal(set_color -b black $barracuda_colors[9])''$normal
+  echo -e (set_color -b black $barracuda_colors[9])\n''(set_color -b $barracuda_colors[9] -o $barracuda_colors[1])" Backup "$normal(set_color -b black $barracuda_colors[9])''$normal
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[1]$normal
   set_color $barracuda_colors[4]
-  rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+  rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null 
 
-  set f_count_tmp (find $tmp_dir/$file/. | wc -l)
+  set f_count_tmp (ls $tmp_dir/$file/ -R | wc -l)
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[2]$normal
   set_color $barracuda_colors[4]
   tar -czf - $tmp_dir/$file/* 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
@@ -975,6 +977,7 @@ function __backup__ -V file_name
   rm -Rf $tmp_dir $HOME/exclude 2>/dev/null
   cd $current_path
   set -e current_path
+  set -e bkup_dir
   functions -e __backup__
 end
 
