@@ -945,6 +945,12 @@ function backup -a opt file_name -d 'Backup file system'
     set -g bkup_dir $bkup1; else; set -g bkup_dir $bkup2
   end
 
+function brsync
+  set -gx exit_cleanup echo 'Hola'
+  $argv
+end
+
+
 function __backup__ -V file_name
   echo "home/storage/"\n"home/.barracuda_backup/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
   rm -Rf $tmp_dir 2>/dev/null
@@ -952,7 +958,6 @@ function __backup__ -V file_name
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
   set -g normal (set_color normal)
-#  set f_count_raw (find $termux_path/. 2>/dev/null | wc -l)
   set ignore  --ignore='storage' --ignore='.barracuda_backup' --ignore='exclude' --ignore='tmp' --ignore='.suroot'
   set f_count_raw (expr (ls $termux_path/ -R $ignore 2>/dev/null| wc -l) + (count $ignore))
   if [ -d $bkup2 ]
@@ -966,7 +971,9 @@ function __backup__ -V file_name
   echo -e (set_color -b black $barracuda_colors[9])\n''(set_color -b $barracuda_colors[9] -o $barracuda_colors[1])" Backup "$normal(set_color -b black $barracuda_colors[9])''$normal
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[1]$normal
   set_color $barracuda_colors[4]
-  rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null 
+  rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+
+# --rsync-path='env LD_PRELOAD=$HOME/download/signal.h rsync'
 
   set f_count_tmp (ls $tmp_dir/$file/ -R | wc -l)
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[2]$normal
@@ -1347,15 +1354,14 @@ set -x LOGIN $USER
 ###############################################################################
 
 function fish_prompt -d 'Write out the left prompt of the barracuda theme'
-  echo
-  fish_vi_key_bindings
+  set -g last_status $status
   set slash (set_color -o)(set_color normal)(set_color -b $barracuda_colors[9])(set_color 000)
   set -l realhome ~
   set -l my_path (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
   set -l short_working_dir (string replace -ar '(\.?[^/]{''})[^/]*/' '$1/' $my_path)
+  fish_vi_key_bindings
 
-  echo -e (set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $short_working_dir (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"  
-  set -g last_status $status
+  echo -e \n(set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $short_working_dir (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"  
   echo -n -s (__barracuda_prompt_bindmode) (__barracuda_prompt_git_branch) (__barracuda_prompt_left_symbols) (set_color normal)(set_color $barracuda_colors[2]) 
 end
 
