@@ -394,14 +394,14 @@ function c -d 'List command history, load command from prompt with c <prompt num
         end
         commandline $$cmd_hist[1][(expr $num_items - $cmd_num)]
         set pcount (expr $pcount - 1)
-        return
+        return 0
       case "$yes_no[4]"
         for i in (seq (expr $num_items + 9))
           tput cuu1
           tput ed
         end
         set pcount (expr $pcount - 1)
-        return
+        return 0
       case "$yes_no[5]"
         while ! contains $foo $b_lang
           tput cuu 2
@@ -415,7 +415,7 @@ function c -d 'List command history, load command from prompt with c <prompt num
                   tput ed
                 end
                 set pcount (expr $pcount - 1)
-                return
+                return 0
               case "$yes_no[3]"
                 for x in (seq 0 (expr $num_items - 1))
                   set -e $cmd_hist[1][(expr $num_items - $x)] 2>/dev/null
@@ -425,14 +425,14 @@ function c -d 'List command history, load command from prompt with c <prompt num
                   tput ed
                 end
                 set pcount (expr $pcount - 1)
-                return
+                return 0
               case "$yes_no[4]"
                 for i in (seq (expr $num_items + 9))
                   tput cuu1
                   tput ed
                 end
                 set pcount (expr $pcount - 1)
-                return
+                return 0
             end
         end
     end
@@ -462,7 +462,7 @@ function unmark -d 'Remove bookmark for present working directory, or remove the
   else if contains $PWD $bookmarks
     set -e bookmarks[(contains -i $PWD $bookmarks)]
   else
-    return
+    return 0
   end
   set pwd_hist_lock true
   commandline -f repaint
@@ -472,7 +472,7 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
   set -l num_items (count $bookmarks)
   if [ $num_items -eq 0 ]
     echo $b_lang[40]
-    return
+    return 0
   end
   if begin
       [ (count $argv) -eq 1 ]
@@ -516,14 +516,14 @@ function m -d 'List bookmarks, jump to directory in list with m <number>'
             tput ed
           end
           set pcount (expr $pcount - 1)
-          return
+          return 0
         case "$yes_no[4]"
           for x in (seq (expr $num_items + 9))
             tput cuu1
             tput ed
 	  end
 	  set pcount (expr $pcount - 1)
-	  return        
+	  return 0
       end
     end
   end
@@ -632,7 +632,7 @@ function s -d 'Create, delete or attach session'
         case "en" "english"
           echo -e "Session list is empty. Enter" (set_color $barracuda_colors[8])"'s'"(set_color normal)" [session-name] to record the current session."
       end
-      return
+      return 0
     end
     echo -e \n(set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[46] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
     echo -e (set_color $barracuda_colors[5])$b_lang[47] (set_color normal)
@@ -681,7 +681,7 @@ function s -d 'Create, delete or attach session'
             tput cuu1
             tput ed
           end
-          return
+          return 0
         case "$yes_no[5]"
           while ! contains $foo $b_lang
             tput cuu 2
@@ -697,13 +697,13 @@ function s -d 'Create, delete or attach session'
                   tput cuu1
                   tput ed
                 end
-                return
+                return 0
               case "$yes_no[4]"
                 for i in (seq (expr $num_items + 9))
                   tput cuu1
                   tput ed
                 end
-                return
+                return 0
             end
           end
       end
@@ -865,49 +865,49 @@ function __barracuda_prompt_left_symbols -d 'Display symbols'
     end
 
     if [ $barracuda_session_current != '' ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[11]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[11]"
         set symbols_urgent 'T'
     end
     if contains $PWD $bookmarks
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[9]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[9]"
     end
     if set -q -x VIM
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[27]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[27]"
         set symbols_urgent 'T'
     end
     if set -q -x RANGER_LEVEL
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[25]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[25]"
         set symbols_urgent 'T'
     end
     if [ $jobs -gt 0 ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[15]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[15]"
         set symbols_urgent 'T'
     end
     if [ ! -w . ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[16]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[16]"
     end
     if [ $todo -gt 0 ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])
+        set symbols $symbols(set_color $barracuda_colors[1])
     end
     if [ $overdue -gt 0 ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])
+        set symbols $symbols(set_color $barracuda_colors[1])
     end
     if [ (expr $todo + $overdue) -gt 0 ]
         set symbols $symbols" $barracuda_icons[23]"
         set symbols_urgent 'T'
     end
     if [ $appointments -gt 0 ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[7]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[7]"
         set symbols_urgent 'T'
     end
     if [ $USER = 'root' ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[18]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[18]"
         set symbols_urgent 'T'
     end
     if [ $last_status -eq 0 ]
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[12]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[12]"
     else
-        set symbols $symbols(set_color -o $barracuda_colors[1])" $barracuda_icons[13]"
+        set symbols $symbols(set_color $barracuda_colors[1])" $barracuda_icons[13]"
     end
     set symbols $symbols(set_color $barracuda_colors[2])' '(set_color normal)(set_color $barracuda_colors[5])
     echo -en $symbols
@@ -977,11 +977,14 @@ function __backup__ -V file_name
   set f_count_tmp (ls $tmp_dir/$file/ -R | wc -l)
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[2]$normal
   set_color $barracuda_colors[4]
+#  trap __break__ STOP
   tar -czf - $tmp_dir/$file/* 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
 
+#  if [ $status -eq 0 ]
   mkdir -p $bkup_dir
   mv -f $tmp_dir/*.tar.gz $bkup_dir/ 2>/dev/null
   rm -Rf $tmp_dir $HOME/exclude 2>/dev/null
+#  else; echo Hola;end#rm -Rf $tmp_dir; end
   cd $current_path
   set -e current_path
   set -e bkup_dir
@@ -1263,7 +1266,7 @@ function barracuda_help -d 'Barracuda help'
              s/<i.dark>/$barracuda_icons_dark[1]/g; s/<i.light>/$barracuda_icons_light[1]/g; s/<i.bellon>/$barracuda_icons[4]/g
              s/<i.belloff>/$barracuda_icons[3]/g; s/<i.ranger>/$barracuda_icons[25]/g; s/Barracuda()/Barracuda/g; s/\B-\s/$barracuda_icons[34] /g' "
 
-  mandoc -O width=(expr $COLUMNS) $theme_path/help/$man_lang | eval $filter | cless less
+  mandoc -O width=$COLUMNS $theme_path/help/$man_lang | eval $filter | cless less
 end
 
 #------------------------------------------------------------
@@ -1307,7 +1310,7 @@ set -g no_prompt_hist 'F'
 # Break
 #------------------------------------------------------------
 function __break__ #-s INT -d 'Custom break function'
-#  trap INT
+  trap INT
   echo \n"$b_lang[30]"
   cd $PWD
 end
@@ -1358,7 +1361,7 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set slash (set_color -o)(set_color normal)(set_color -b $barracuda_colors[9])(set_color 000)
   set -l realhome ~
   set -l my_path (string replace -r '^'"$realhome"'($|/)' "~/$1" $PWD)
-  set -l short_working_dir (string replace -ar '(\.?[^/]{''})[^/]*/' '$1/' $my_path)
+  set -l short_working_dir (string replace -ar '(\.?[^/]{3})[^/]*/' '$1/' $my_path)
   fish_vi_key_bindings
 
   echo -e \n(set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $short_working_dir (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"  
