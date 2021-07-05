@@ -952,13 +952,14 @@ end
 
 
 function __backup__ -V file_name
-  echo "home/storage/"\n"home/.barracuda_backup/"\n"home/exclude"\n"home/termux_backup_log.txt"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
+  echo "home/storage/"\n"home/.barracuda_backup/"\n"home/exclude"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
   rm -Rf $tmp_dir 2>/dev/null
 
   set bkup_date (date +%s)
   set file $file_name-$bkup_date
   set -g normal (set_color normal)
-  set ignore  --ignore='storage' --ignore='.barracuda_backup' --ignore='exclude' --ignore='tmp' --ignore='.suroot'
+  set ignore_list (cat $HOME/exclude 2>/dev/null)
+  for x in (seq (expr (count $ignore_list) - 1)); set ignore $ignore "--ignore='"(echo $ignore_list[$x] | sed 's/home\///g' | sed 's/\///g'| sed 's/usr//g')"'";end
   set f_count_raw (expr (ls $termux_path/ -R $ignore 2>/dev/null| wc -l) + (count $ignore))
   if [ -d $bkup2 ]
     set f_count_bkup2 (ls $bkup2/ -R 2>/dev/null | wc -l)
@@ -973,12 +974,11 @@ function __backup__ -V file_name
   set_color $barracuda_colors[4]
   rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
-# --rsync-path='env LD_PRELOAD=$HOME/download/signal.h rsync'
-
   set f_count_tmp (ls $tmp_dir/$file/ -R | wc -l)
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[2]$normal
   set_color $barracuda_colors[4]
   tar -czf - $tmp_dir/$file/* 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
+
   mkdir -p $bkup_dir
   mv -f $tmp_dir/*.tar.gz $bkup_dir/ 2>/dev/null
   rm -Rf $tmp_dir $HOME/exclude 2>/dev/null
@@ -1255,13 +1255,13 @@ end
 # => Barracuda help
 ###############################################################################
 function barracuda_help -d 'Barracuda help'
-  set filter "sed 's/<logo>/}⋟<(({>/g' | sed 's/<version>/v$barracuda_version/g' |sed 's/<i.session>/$barracuda_icons[11]/g' | sed 's/<i.bookmark>/$barracuda_icons[9]/g' \
-             |sed 's/<i.jobs>/$barracuda_icons[15]/g' | sed 's/<i.lock>/$barracuda_icons[16]/g' |sed 's/<i.sched>/$barracuda_icons[20]/g' | sed 's/<i.appoint>/$barracuda_icons[7]/g' \
-             |sed 's/<i.ok>/$barracuda_icons[12]/g' | sed 's/<i.error>/$barracuda_icons[13]/g' |sed 's/<i.su>/$barracuda_icons[18]/g' | sed 's/<i.git.ahead>/$barracuda_icons[29]/g' \
-             | sed 's/<i.git.behind>/$barracuda_icons[30]/g' | sed 's/<i.git.dirty>/$barracuda_icons[28]/g'| sed 's/<i.git.branch>/$barracuda_icons[2]/g'| sed 's/<i.linux>/$barracuda_icons[24]/g' \
-             | sed 's/<i.android>/$barracuda_icons[23]/g'| sed 's/<i.windows>/$barracuda_icons[22]/g'| sed 's/<i.osx>/$barracuda_icons[21]/g' | sed 's/<i.vim>/$barracuda_icons[27]/g' \
-             | sed 's/<i.dark>/$barracuda_icons_dark[1]/g'| sed 's/<i.light>/$barracuda_icons_light[1]/g' | sed 's/<i.bellon>/$barracuda_icons[4]/g' \
-             | sed 's/<i.belloff>/$barracuda_icons[3]/g'| sed 's/<i.ranger>/$barracuda_icons[25]/g'| sed -r 's/\B- \b/$barracuda_icons[34] /g'| sed 's/Barracuda()/Barracuda/g' "
+  set filter "sed 's/<logo>/}⋟<(({>/g; s/<version>/v$barracuda_version/g; s/<i.session>/$barracuda_icons[11]/g; s/<i.bookmark>/$barracuda_icons[9]/g
+             s/<i.jobs>/$barracuda_icons[15]/g; s/<i.lock>/$barracuda_icons[16]/g; s/<i.sched>/$barracuda_icons[20]/g; s/<i.appoint>/$barracuda_icons[7]/g
+             s/<i.ok>/$barracuda_icons[12]/g; s/<i.error>/$barracuda_icons[13]/g; s/<i.su>/$barracuda_icons[18]/g; s/<i.git.ahead>/$barracuda_icons[29]/g
+             s/<i.git.behind>/$barracuda_icons[30]/g; s/<i.git.dirty>/$barracuda_icons[28]/g; s/<i.git.branch>/$barracuda_icons[2]/g; s/<i.linux>/$barracuda_icons[24]/g
+             s/<i.android>/$barracuda_icons[23]/g; s/<i.windows>/$barracuda_icons[22]/g; s/<i.osx>/$barracuda_icons[21]/g; s/<i.vim>/$barracuda_icons[27]/g
+             s/<i.dark>/$barracuda_icons_dark[1]/g; s/<i.light>/$barracuda_icons_light[1]/g; s/<i.bellon>/$barracuda_icons[4]/g
+             s/<i.belloff>/$barracuda_icons[3]/g; s/<i.ranger>/$barracuda_icons[25]/g; s/Barracuda()/Barracuda/g; s/\B-\s/$barracuda_icons[34] /g' "
 
   mandoc -O width=(expr $COLUMNS) $theme_path/help/$man_lang | eval $filter | cless less
 end
@@ -1357,7 +1357,7 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set -g last_status $status
   set slash (set_color -o)(set_color normal)(set_color -b $barracuda_colors[9])(set_color 000)
   set -l realhome ~
-  set -l my_path (string replace -r '^'"$realhome"'($|/)' '~$1' $PWD)
+  set -l my_path (string replace -r '^'"$realhome"'($|/)' "~/$1" $PWD)
   set -l short_working_dir (string replace -ar '(\.?[^/]{''})[^/]*/' '$1/' $my_path)
   fish_vi_key_bindings
 

@@ -42,8 +42,8 @@ function barracuda_info -d 'Show theme info'
   echo -e $i\t$barracuda_icons[32]$n$d $b_lang[52]$v "v$barracuda_version"
   echo -e $i\t$barracuda_icons[11]$n$d $b_lang[53]$v "$session"
   echo -e $h\n\t$b_lang[55]
-  echo -e $i\t$barracuda_icons[26]$n$d $b_lang[56]$v "$lang" | sed 's/es/Español/g' | sed 's/en/English/g'
-  echo -e $i\t$barracuda_icons[33]$n$d $b_lang[57]$v "$scheme"
+  echo -e $i\t$barracuda_icons[26]$n$d $b_lang[56]$v "$lang" | sed 's/es/Español/g; s/en/English/g'
+  echo -e $i\t$barracuda_icons[33]$n$d $b_lang[57]$v (echo $scheme | sed 's/^[a-z]*/\u&/g')
   echo -e $h\n\t$b_lang[58]
   echo -e $i\t$barracuda_icons[2]$n$d $b_lang[59]$v "$git_active"  
   echo -e $i\t$barracuda_icons[4]$n$d $b_lang[60]$v "$bell_active"
