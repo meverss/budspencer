@@ -1361,7 +1361,7 @@ function fish_prompt -d 'Write out the left prompt of the barracuda theme'
   set slash (set_color -o)(set_color normal)(set_color -b $barracuda_colors[9])(set_color 000)
   set -l realhome ~
   set -l my_path (string replace -r '^'"$realhome"'($|/)' "~/$1" $PWD)
-  set -l short_working_dir (string replace -ar '(\.?[^/]{3})[^/]*/' '$1/' $my_path)
+  set -l short_working_dir (string replace -ar '(\.?[^/]{})[^/]*/' '$1/' $my_path)
   fish_vi_key_bindings
 
   echo -e \n(set_color -b black)(set_color $barracuda_colors[9])''(set_color -b $barracuda_colors[9])(set_color 000) $short_working_dir (set_color normal)(set_color $barracuda_colors[9])'' | sed "s/\//$slash/g"  
