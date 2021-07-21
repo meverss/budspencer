@@ -1158,8 +1158,7 @@ end
 #------------------------------------------------------------
 if test -f $PREFIX/bin/termux-info
 function chfont -d 'Change font'
-  echo
-  echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[31] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
+  echo -e \n(set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[31] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
   for n in (seq (count $fonts))
     set_color $barracuda_colors[9]
     if test "$$fonts[$n]" = "$font"
@@ -1189,7 +1188,7 @@ function chfont -d 'Change font'
   while ! contains $foo $b_lang
     tput cuu 2
     tput ed
-    read -p 'echo -n \n(set_color -b $barracuda_colors[9] -o $barracuda_colors[5]) $barracuda_icons[17] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[32]"(set_color -o 000)""[1-4] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color normal)(set_color -b black $barracuda_colors[9])""""(set_color normal)' -n 1 -g b_font
+    read -p 'echo -n \n(set_color -b $barracuda_colors[9] $barracuda_colors[1]) $barracuda_icons[17] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[32]"(set_color -o 000)""[1-4] (set_color normal)(set_color -b $barracuda_colors[9] 000)"$b_lang[26]"(set_color -o 000)""["$yes_no[4]"] (set_color normal)(set_color -b black $barracuda_colors[9])""""(set_color normal)' -n 1 -g b_font
       if contains $b_font (seq (count $fonts))
         set -U font $$fonts[$b_font]
         __set_font__
@@ -1230,7 +1229,7 @@ function cless -d "Configure less to colorize styled text using environment vari
 end
 
 function man --wraps man -d "Run man with added colors"
-    set --local --export MANPATH $MANPATH
+    set -lx MANPATH $MANPATH
 
     if test -z "$MANPATH"
         if set path (command man -p 2>/dev/null)
@@ -1243,12 +1242,8 @@ function man --wraps man -d "Run man with added colors"
     # prepend the directory of fish and barracuda manpages to MANPATH
     set fish_manpath $__fish_data_dir/man
     
-    if test -d $fish_manpath
+    if [ -d $fish_manpath ]
         set --prepend MANPATH $fish_manpath
-    end
-
-    if test -d $barracuda_manpath
-        set --prepend MANPATH $barracuda_manpath
     end
 
     cless (command --search man) $argv 
