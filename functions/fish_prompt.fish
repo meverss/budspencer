@@ -65,7 +65,7 @@ end
 # => Battery indicator
 #------------------------------------------------------------
 # Set default ON
-if not set -q bat_icon; set -U bat_icon 'on'; end
+if not set -q bat_icon; set -U bat_icon 'off'; end
 
 function battery_level -d 'Shows battery level'
 if test $bat_icon = 'on'
