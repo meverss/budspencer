@@ -64,8 +64,8 @@ end
 #------------------------------------------------------------
 # => Battery indicator
 #------------------------------------------------------------
-# Set default ON
-if not set -q bat_icon; set -U bat_icon 'on'; end
+# Set default OFF
+if not set -q bat_icon; set -U bat_icon 'off'; end
 
 function battery_level -d 'Shows battery level'
 if test $bat_icon = 'on'
@@ -205,10 +205,10 @@ end
 #------------------------------------------------------------
 # => Fish termination
 #------------------------------------------------------------
-function __barracuda_on_termination -s HUP -s QUIT -s TERM --on-process %self -d 'Execute when shell terminates'
-  set -l item (contains -i %self $barracuda_sessions_active_pid #2> /dev/null)
-  __barracuda_detach_session $item
-end
+#function __barracuda_on_termination -s HUP -s QUIT -s TERM --on-process %self -d 'Execute when shell terminates'
+#  set -l item (contains -i %self $barracuda_sessions_active_pid #2> /dev/null)
+#  __barracuda_detach_session $item
+#end
 
 #------------------------------------------------------------
 # => Directory history
