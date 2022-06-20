@@ -1273,7 +1273,8 @@ function gitupdate -d 'Update Git project'
       read -p "echo 'Descripción: '" desc
       [ $desc ]; or set desc 'Update files'
       command git commit -am "$desc"
-      git push -f origin $branch
+      git push
+#      git push -f origin $branch
       echo; echo 'Proyecto actualizado'
     end
   end
