@@ -111,9 +111,14 @@ end
 function battery -a opt -d 'Enable/Disable battery icon'
   switch $opt
     case 'on'
-     set -U bat_icon 'on'
-      battery_level
-      barracuda_reload
+      if [ ! -r "/sys/class/power_suply/" ]
+	echo $b_lang[64]
+        set -U bat_icon 'off'
+      else
+        set -U bat_icon 'on'
+        battery_level
+        barracuda_reload
+      end
     case 'off'
      set -U bat_icon 'off'
       set -e i_battery
@@ -1274,7 +1279,6 @@ function gitupdate -d 'Update Git project'
       [ $desc ]; or set desc 'Update files'
       command git commit -am "$desc"
       git push
-##      git push -f origin $branch
       echo; echo 'Proyecto actualizado'
     end
   end
