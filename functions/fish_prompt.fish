@@ -945,12 +945,6 @@ function backup -a opt file_name -d 'Backup file system'
     set -g bkup_dir $bkup1; else; set -g bkup_dir $bkup2
   end
 
-function brsync
-  set -gx exit_cleanup echo 'Hola'
-  $argv
-end
-
-
 function __backup__ -V file_name
   echo "home/storage/"\n"home/.barracuda_backup/"\n"home/exclude"\n"usr/tmp"\n"home/.suroot/"\n > $HOME/exclude
   rm -Rf $tmp_dir 2>/dev/null
@@ -972,19 +966,16 @@ function __backup__ -V file_name
   echo -e (set_color -b black $barracuda_colors[9])\n''(set_color -b $barracuda_colors[9] -o $barracuda_colors[1])" Backup "$normal(set_color -b black $barracuda_colors[9])''$normal
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[1]$normal
   set_color $barracuda_colors[4]
-  rsync -av --exclude-from=$termux_path/home/exclude $termux_path/ $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
+  rsync -av --exclude-from=$termux_path/home/exclude $termux_path $tmp_dir/$file/ | pv -lpes $f_count >/dev/null
 
   set f_count_tmp (ls $tmp_dir/$file/ -R | wc -l)
   echo -e \n(set_color -b black $barracuda_colors[5])$b_lang[2]$normal
   set_color $barracuda_colors[4]
-#  trap __break__ STOP
   tar -czf - $tmp_dir/$file/* 2>/dev/null | pv -leps $f_count_tmp > $tmp_dir/$file.tar.gz
 
-#  if [ $status -eq 0 ]
   mkdir -p $bkup_dir
   mv -f $tmp_dir/*.tar.gz $bkup_dir/ 2>/dev/null
   rm -Rf $tmp_dir $HOME/exclude 2>/dev/null
-#  else; echo Hola;end#rm -Rf $tmp_dir; end
   cd $current_path
   set -e current_path
   set -e bkup_dir
