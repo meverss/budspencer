@@ -1274,7 +1274,7 @@ function gitupdate -d 'Update Git project'
       [ $desc ]; or set desc 'Update files'
       command git commit -am "$desc"
       git push
-#      git push -f origin $branch
+##      git push -f origin $branch
       echo; echo 'Proyecto actualizado'
     end
   end
