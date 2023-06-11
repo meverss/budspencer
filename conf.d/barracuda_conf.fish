@@ -160,6 +160,8 @@ function ps -w ps
  command ps -ef | awk '{print $2"\t"$8}'
 end
 alias ls "ls -gh"
+#alias ls "ls | awk '{print $8 "\t" $4 "\t" $5 "\t" $6 "\t" $7}'"
+#alias ls "ls awk '{print $8"\t\t\t"$4"\t"$6"-"$5"-"$7}'| awk NF=NF OFS== FS=' + |[ \t]*\t[ \t]*' | column -s= -t"
 alias version 'echo Barracuda v$barracuda_version'
 alias spanish "ch_lang sp"
 alias english "ch_lang en"

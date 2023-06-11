@@ -1000,7 +1000,7 @@ switch $opt
          echo $b_lang[3]
          return
      else
-       set list (ls -gh $bkup_dir 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"\t"$4"\t\t"$6"-"$5"-"$7}' | sort -nr)
+       set list (ls -gh $bkup_dir 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"\t"$4"\t"$6"-"$5"-"$7}'| awk NF=NF OFS== FS=' + |[ \t]*\t[ \t]*' | sort -nr | column -s= -t)
        set num_items (count $list)
 
        echo
@@ -1056,7 +1056,7 @@ switch $opt
      if ! [ -d $bkup_dir ]; or [ (count (ls $bkup_dir)) -eq 0 ]
        echo $b_lang[3]
      else
-       set list (ls -gh $bkup_dir 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"  "$4"  "$6"-"$5"-"$7}' | sort -nr)
+       set list (ls -gh $bkup_dir 2>/dev/null | grep --color=never ".tar.gz" | awk '{print $8"\t"$4"\t"$6"-"$5"-"$7}'| awk NF=NF OFS== FS=' + |[ \t]*\t[ \t]*' | sort -nr | column -s= -t)
        set -l num_items (count $list)
        echo
        echo (set_color -b black $barracuda_colors[9])(set_color -b $barracuda_colors[9] -o 000) $b_lang[24] (set_color normal)(set_color -b black $barracuda_colors[9])(set_color normal)\n
