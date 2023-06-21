@@ -17,34 +17,38 @@
 #   -> Aliases
 #   -> Key bindings
 #   -> Install Powerline fonts
+#   -> Install needed apps
 #
 ###############################################################################
 
 ###############################################################################
 # => General config
 ###############################################################################
-set -U barracuda_version "1.7.3"
+set -U barracuda_version "1.7.5"
 set -U barracuda_tmpfile '/tmp/'(echo %self)'_barracuda_edit.fish'
 set -U termux_path '/data/data/com.termux/files/'
 set -U theme_path (status dirname | sed -r 's/barracuda.*/barracuda/')
-set info (uname)
 
 # OS Info
-if contains 'Android' (string split ' ' (uname -a))
-    set -U b_os 'Android'
-    set -U i_os $barracuda_icons[23]
-else
-  switch $info
+set my_os "Android" "Darwin" "Windows"
+for x in $my_os
+    set o (uname -a | grep -io "$x")
+    if [ -n "$o" ]
+        set -U b_os "$o"
+        break
+    else
+	set -U b_os "Linux"
+    end
+end
+switch $b_os
+    case 'Android'
+	set -U i_os $barracuda_icons[23]
     case 'Darwin'
-      set -U b_os 'Mac OS'
-      set -U i_os $barracuda_icons[21]
+	set -U i_os $barracuda_icons[21]
     case 'Windows'
-      set -U b_os $info
-      set -U i_os $barracuda_icons[22]
+	set -U i_os $barracuda_icons[22]
     case '*'
-      set -U b_os $info
-      set -U i_os $barracuda_icons[24]
-  end
+    	set -U i_os $barracuda_icons[24]
 end
 
 # Battery info
@@ -68,6 +72,11 @@ function wt -d 'Set window title'
 end
 
 wt ' }⋟<(({º> -' (date); tabs -2
+
+#Set Environment Variables
+if [ -f "$PATH/micro" ]
+    export EDITOR=micro
+end
 
 ###############################################################################
 # => Reload settings
@@ -102,8 +111,14 @@ end
 #------------------------------------------------------------------------------
 # Define colors
 #------------------------------------------------------------------------------
-set -U barracuda_colors_dark 000 6a7a6a 445659 bbb b58900 222222 dc121f 9c9 777 268bd2 2aa198 666 333
-set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aaa 268bd2 2aa198 666 444
+set -U barracuda_colors_dark 000 6a7a6a 445659 bbb b58900 222222 c74c73 9c9 777 268bd2 2aa198 666 333 b161ed 2E62AE 388058 C8421F
+set -U barracuda_colors_light 000 a9ba9d 9dc183 eee eedc82 333333 dc121f 9c9  aaa 268bd2 2aa198 666 444 b161ed 2E62AE 388058 C8421F
+
+function showcolors
+    for x in (seq (count $barracuda_colors))
+        echo (set_color $barracuda_colors[$x]) Color $x (set_color normal)
+    end
+end
 
 #------------------------------------------------------------------------------
 # Define icons
@@ -150,21 +165,21 @@ function ch_lang -a lang -d 'Change language'
 end
 
 if not set -q b_lang
-  ch_lang sp
+    ch_lang sp
 end
 
 ###############################################################################
 # => Aliases
 ###############################################################################
 function ps -w ps
- command ps -ef | awk '{print $2"\t"$8}'
+    command ps -ef | awk '{print $2"\t"$8}'
 end
-alias ls "ls -gh"
-#alias ls "ls | awk '{print $8 "\t" $4 "\t" $5 "\t" $6 "\t" $7}'"
-#alias ls "ls awk '{print $8"\t\t\t"$4"\t"$6"-"$5"-"$7}'| awk NF=NF OFS== FS=' + |[ \t]*\t[ \t]*' | column -s= -t"
+
 alias version 'echo Barracuda v$barracuda_version'
 alias spanish "ch_lang sp"
 alias english "ch_lang en"
+alias ls "exa --icons --group-directories-first"
+alias cat "bat"
 
 ###############################################################################
 # => Key bindings
@@ -216,4 +231,28 @@ if [ -f $PREFIX/bin/termux-info ]
       fc-cache -f "$font_dir"
       barracuda_reload
   end
+end
+
+###############################################################################
+# => Install needed apps
+###############################################################################
+
+function check_apps -d "Check for needed apps"
+if not set -q needed_apps
+    echo -e "\nInstalling needed apps...\n"
+    set apps "pv" "rsync" "micro" "bat" "exa" "fzf"
+    for x in $apps
+	if [ ! -f "$PATH/$x" ]
+
+	    switch $b_os
+		case "Android"
+		    apt install $x --yes
+		case "*"
+		    sudo apt install $x --yes
+	    end
+	end
+    end
+    set -U needed_apps "Installed"
+    sleep 2 && clear
+end
 end

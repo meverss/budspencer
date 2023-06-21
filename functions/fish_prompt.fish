@@ -45,7 +45,7 @@ if set -q barracuda_nobell
   end
 else
   function __barracuda_urgency -d 'Ring the bell in order to set the urgency hint flag.'
-    set -U i_bell $barracuda_icons[2]
+    set -U i_bell $barracuda_icons[4]
     echo -n \a
   end
 end

@@ -42,3 +42,6 @@ function fish_greeting -d "Welcome message"
   echo -e $bl $bg_lang
 end
 end
+
+check_apps
+
